@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --bg2: #141416;
+    --bg3: #1c1c20;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e8e6e0;
+    --text2: #9a9890;
+    --text3: #5a5855;
+    --green: #2dd4a0;
+    --green-dim: rgba(45,212,160,0.12);
+    --accent: #5b6af0;
+    --accent-dim: rgba(91,106,240,0.15);
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', 'Noto Sans SC', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    margin-bottom: 56px;
+  }
+
+  .site-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  h1 span {
+    color: var(--accent);
+  }
+
+  .subtitle {
+    margin-top: 8px;
+    color: var(--text2);
+    font-size: 13px;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 16px;
+  }
+
+  .ticker-section {
+    margin-bottom: 48px;
+  }
+
+  .ticker-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .ticker-name {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .ticker-desc {
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .reports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-left: 1px;
+  }
+
+  .report-link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .report-link:hover {
+    border-color: var(--border2);
+    background: var(--bg3);
+  }
+
+  .report-period {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    min-width: 60px;
+  }
+
+  .report-title {
+    font-size: 13px;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .report-type {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text3);
+    text-transform: uppercase;
+  }
+
+  footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="site-label">Investment Research</div>
+    <h1>Moat <span>&amp;</span> Earnings Tracker</h1>
+    <p class="subtitle">护城河追踪 · 季报笔记</p>
+  </header>
+
+  <div class="section-label">Coverage</div>
+
+  <div class="ticker-section">
+    <div class="ticker-header">
+      <span class="ticker-name">DUOL</span>
+      <span class="ticker-desc">Duolingo · 多邻国</span>
+    </div>
+    <div class="reports-list">
+      <a class="report-link" href="DUOL/2025Q4.html">
+        <span class="report-period">2025 Q4</span>
+        <span class="report-title">护城河追踪 · Moat Tracker</span>
+        <span class="report-type">Earnings</span>
+      </a>
+    </div>
+  </div>
+
+  <footer>yunhaoling · github.com/yunhaoling/investment-research</footer>
+</div>
+</body>
+</html>
