@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snowflake SNOW · 护城河追踪 FY2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --bg2: #10141c;
+    --bg3: #181e28;
+    --border: rgba(100,160,255,0.08);
+    --border2: rgba(100,160,255,0.16);
+    --text: #dde4f0;
+    --text2: #8896b0;
+    --text3: #4a5568;
+    --blue: #4da6ff;
+    --blue-dim: rgba(77,166,255,0.1);
+    --teal: #2dd4c0;
+    --teal-dim: rgba(45,212,192,0.1);
+    --amber: #f5b623;
+    --amber-dim: rgba(245,182,35,0.1);
+    --red: #f06060;
+    --red-dim: rgba(240,96,96,0.08);
+    --green: #34d98a;
+    --green-dim: rgba(52,217,138,0.1);
+    --purple: #a78bfa;
+    --purple-dim: rgba(167,139,250,0.08);
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', 'Noto Sans SC', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; line-height: 1.6; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: linear-gradient(rgba(77,166,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(77,166,255,0.02) 1px, transparent 1px);
+    background-size: 48px 48px; pointer-events: none; z-index: 0;
+  }
+  .container { max-width: 1140px; margin: 0 auto; padding: 0 24px 80px; position: relative; z-index: 1; }
+
+  header { padding: 48px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .eyebrow { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+  h1 { font-size: 30px; font-weight: 300; letter-spacing: -0.02em; color: var(--text); }
+  h1 em { color: var(--blue); font-style: normal; font-weight: 500; }
+  .header-meta { font-size: 11px; color: var(--text3); margin-top: 8px; font-family: var(--mono); }
+  .header-right { text-align: right; }
+  .stat-big { font-family: var(--mono); font-size: 26px; font-weight: 500; color: var(--text); letter-spacing: -0.02em; }
+  .stat-label { font-size: 11px; color: var(--text3); margin-top: 3px; font-family: var(--mono); }
+
+  .tab-bar { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 28px; overflow-x: auto; }
+  .tab-btn { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; padding: 9px 16px; color: var(--text3); cursor: pointer; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px; background: none; transition: color 0.15s, border-color 0.15s; white-space: nowrap; }
+  .tab-btn:hover { color: var(--text2); }
+  .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+  .panel { display: none; animation: fadeUp 0.2s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* KPI CARDS */
+  .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 24px; }
+  .kpi-card { border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; background: var(--bg2); }
+  .kpi-card.highlight { border-color: rgba(77,166,255,0.3); }
+  .kpi-label { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.08em; margin-bottom: 6px; }
+  .kpi-value { font-family: var(--mono); font-size: 20px; font-weight: 500; color: var(--text); line-height: 1; }
+  .kpi-delta { font-family: var(--mono); font-size: 10px; margin-top: 3px; }
+  .up { color: var(--green); }
+  .warn { color: var(--amber); }
+  .danger { color: var(--red); }
+  .muted { color: var(--text3); }
+  .bold { font-weight: 500; color: var(--text); }
+  .tiny { font-size: 9px; }
+
+  /* DATA TABLE */
+  .data-table { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 24px; }
+  .table-head { padding: 9px 16px; background: var(--bg3); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .table-head-label { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; }
+  .data-row { display: grid; grid-template-columns: 200px repeat(4, 1fr); border-top: 1px solid var(--border); }
+  .data-row.hdr { background: var(--bg3); }
+  .cell { padding: 9px 14px; font-size: 11px; color: var(--text2); font-family: var(--mono); }
+  .cell.lbl { color: var(--text3); font-family: var(--sans); font-size: 11px; }
+  .cell.col-hdr { font-size: 10px; color: var(--text3); letter-spacing: 0.05em; }
+  .cell.hl { background: rgba(77,166,255,0.06); color: var(--text); }
+
+  /* BAR */
+  .bar-section { margin-bottom: 20px; }
+  .bar-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+  .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 9px; }
+  .bar-q { font-family: var(--mono); font-size: 10px; color: var(--text3); width: 72px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 2px; }
+  .bar-fill.blue { background: var(--blue); }
+  .bar-fill.teal { background: var(--teal); }
+  .bar-fill.amber { background: var(--amber); }
+  .bar-val { font-family: var(--mono); font-size: 10px; width: 52px; text-align: right; flex-shrink: 0; }
+
+  /* MOAT CARDS */
+  .moat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .moat-card { border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; background: var(--bg2); }
+  .moat-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .moat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-blue { background: var(--blue); box-shadow: 0 0 6px var(--blue); }
+  .dot-teal { background: var(--teal); box-shadow: 0 0 6px var(--teal); }
+  .dot-green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .dot-amber { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+  .dot-purple { background: var(--purple); box-shadow: 0 0 6px var(--purple); }
+  .dot-red { background: var(--red); }
+  .moat-title { font-size: 13px; font-weight: 500; color: var(--text); }
+  .moat-rating { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-left: auto; }
+  .moat-body { font-size: 12px; color: var(--text2); line-height: 1.65; }
+  .moat-body strong { color: var(--text); font-weight: 500; }
+  .moat-metrics { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 6px; }
+  .metric-pill { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 4px; }
+
+  /* SIGNALS */
+  .signal-list { display: flex; flex-direction: column; gap: 8px; }
+  .signal-item { display: flex; gap: 12px; padding: 10px 14px; border-radius: 6px; font-size: 12px; line-height: 1.55; border-left: 2px solid; }
+  .signal-item.blue { background: var(--blue-dim); border-color: var(--blue); color: var(--text2); }
+  .signal-item.amber { background: var(--amber-dim); border-color: var(--amber); color: var(--text2); }
+  .signal-item.red { background: var(--red-dim); border-color: var(--red); color: var(--text2); }
+  .signal-item.green { background: var(--green-dim); border-color: var(--green); color: var(--text2); }
+
+  /* COMPETITOR TABLE */
+  .comp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
+  .comp-card { border: 1px solid var(--border); border-radius: 8px; padding: 14px; background: var(--bg2); }
+  .comp-card.self { border-color: rgba(77,166,255,0.35); }
+  .comp-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+  .comp-sub { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 10px; }
+  .comp-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--text2); padding: 3px 0; border-bottom: 1px solid var(--border); }
+  .comp-row:last-child { border-bottom: none; }
+  .comp-row .val { font-family: var(--mono); }
+
+  /* WATCHLIST */
+  .wl-block { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+  .wl-hdr { display: grid; grid-template-columns: 28px 1fr 160px 160px; background: var(--bg3); border-bottom: 1px solid var(--border); }
+  .wl-item { display: grid; grid-template-columns: 28px 1fr 160px 160px; border-top: 1px solid var(--border); background: var(--bg2); transition: background 0.15s; }
+  .wl-item:hover { background: var(--bg3); }
+  .wc { padding: 9px 12px; font-size: 11px; }
+  .wc.wc-label { color: var(--text3); font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em; }
+  .wc.wc-num { font-family: var(--mono); color: var(--text3); font-size: 10px; padding-top: 14px; }
+  .wc.wc-main { border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+  .wc.wc-guide { border-right: 1px solid var(--border); }
+  .wc-metric { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .wc-desc { font-size: 11px; color: var(--text2); line-height: 1.55; }
+  .wc-guide-val { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--amber); }
+  .wc-guide-lbl { font-family: var(--mono); font-size: 9px; color: var(--text3); margin-bottom: 4px; }
+  .wc-guide-note { font-size: 10px; color: var(--text3); margin-top: 3px; line-height: 1.4; }
+  .interp { display: flex; gap: 6px; margin-bottom: 4px; font-size: 11px; line-height: 1.4; }
+  .interp:last-child { margin-bottom: 0; }
+  .interp-arrow { font-family: var(--mono); font-size: 10px; flex-shrink: 0; margin-top: 1px; }
+  .interp-arrow.up { color: var(--green); }
+  .interp-arrow.dn { color: var(--red); }
+  .interp-arrow.mid { color: var(--amber); }
+  .interp-text { color: var(--text2); }
+  .p-badge { font-family: var(--mono); font-size: 9px; padding: 2px 6px; border-radius: 3px; }
+  .p1 { background: var(--red-dim); color: var(--red); }
+  .p2 { background: var(--amber-dim); color: var(--amber); }
+  .p3 { background: var(--green-dim); color: var(--green); }
+
+  /* ALERT */
+  .alert { border: 1px solid; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 12px; color: var(--text2); line-height: 1.65; }
+  .alert.amber { border-color: rgba(245,182,35,0.3); background: var(--amber-dim); }
+  .alert.blue { border-color: rgba(77,166,255,0.3); background: var(--blue-dim); }
+  .alert strong { color: var(--text); font-weight: 500; }
+
+  /* SOURCES */
+  .src-table { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+  .src-row { display: grid; grid-template-columns: 100px 1fr 90px 1fr; border-top: 1px solid var(--border); }
+  .src-row.src-hdr { background: var(--bg3); }
+  .sc { padding: 8px 12px; font-size: 11px; color: var(--text2); }
+  .sc.sc-label { color: var(--text3); font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em; }
+  .sc.sc-qtr { font-family: var(--mono); font-weight: 500; color: var(--text); font-size: 11px; }
+  .sc a { color: var(--blue); text-decoration: none; font-family: var(--mono); font-size: 10px; word-break: break-all; }
+  .sc a:hover { text-decoration: underline; }
+
+  /* SECTION TITLE */
+  .section-title { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; padding-bottom: 8px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+
+  /* PROSE */
+  .prose { font-size: 12px; color: var(--text2); line-height: 1.75; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; background: var(--bg2); margin-top: 12px; }
+  .prose strong { color: var(--text); font-weight: 500; }
+
+  /* NOTICE */
+  .notice { border: 1px dashed rgba(77,166,255,0.3); border-radius: 8px; padding: 10px 14px; background: rgba(77,166,255,0.04); font-size: 11px; color: var(--text2); margin-bottom: 20px; line-height: 1.6; }
+  .notice strong { color: var(--blue); }
+
+  footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer-note { font-family: var(--mono); font-size: 10px; color: var(--text3); line-height: 1.7; }
+
+  @media (max-width: 900px) {
+    .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+    .moat-grid { grid-template-columns: 1fr; }
+    .comp-grid { grid-template-columns: 1fr 1fr; }
+    .data-row { grid-template-columns: 140px repeat(4, 1fr); }
+    .cell { padding: 8px 8px; font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div>
+    <div class="eyebrow">SNOW · 企业数据云 · 护城河追踪 · FY2026</div>
+    <h1>Snowflake <em>护城河</em> 分析</h1>
+    <div class="header-meta">数据来源：SEC EDGAR · FY2026 Q1–Q4（2025.02–2026.01）· FY2027 管理层指引</div>
+  </div>
+  <div class="header-right">
+    <div class="stat-big">$4.47B</div>
+    <div class="stat-label">FY2026 产品营收 <span class="up">↑ +29% YoY</span></div>
+    <div class="stat-label" style="margin-top:4px">NRR 125% · RPO $9.77B</div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="go('overview')">财务总览</button>
+  <button class="tab-btn" onclick="go('moat')">护城河分析</button>
+  <button class="tab-btn" onclick="go('watchlist')">Q1 FY2027 观察清单</button>
+  <button class="tab-btn" onclick="go('competitive')">竞争格局</button>
+  <button class="tab-btn" onclick="go('valuation')" style="color:var(--amber)">▸ 估值分析</button>
+  <button class="tab-btn" onclick="go('sources')">数据来源</button>
+</div>
+
+<!-- ====== OVERVIEW ====== -->
+<div id="overview" class="panel active">
+
+  <div class="notice">
+    <strong>⚠ 财年说明</strong>：Snowflake 财年截止于每年 1 月 31 日。FY2026 = 2025 年 2 月 – 2026 年 1 月。FY2027 Q1 指引 = 2026 年 2–4 月。本页数据均来自 SEC 官方季报，以消费量确认的产品营收（Product Revenue）为核心指标，非订阅制 ARR。
+  </div>
+
+  <!-- KPI row -->
+  <div class="kpi-grid">
+    <div class="kpi-card highlight">
+      <div class="kpi-label">NRR（净收入留存）</div>
+      <div class="kpi-value">125%</div>
+      <div class="kpi-delta up">客户同比多消费 25%</div>
+    </div>
+    <div class="kpi-card highlight">
+      <div class="kpi-label">RPO（未来已签合同）</div>
+      <div class="kpi-value">$9.77B</div>
+      <div class="kpi-delta up">↑ +42% YoY · 连续加速</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">$1M+ 客户数</div>
+      <div class="kpi-value">733</div>
+      <div class="kpi-delta up">↑ +27% YoY · Q4 净增 46</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">$10M+ 客户数</div>
+      <div class="kpi-value">56</div>
+      <div class="kpi-delta up">↑ +56% YoY · 战略依赖加深</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Adj. FCF Margin</div>
+      <div class="kpi-value">25%</div>
+      <div class="kpi-delta up">↑ vs FY2025 ~20%</div>
+    </div>
+  </div>
+
+  <!-- Data table -->
+  <div class="data-table">
+    <div class="table-head">
+      <span class="table-head-label">FY2026 核心指标 · 季度对比</span>
+      <span class="table-head-label" style="font-size:9px">FY = 截至 1 月 31 日 · 消费制收入</span>
+    </div>
+    <div class="data-row hdr">
+      <div class="cell col-hdr lbl">指标</div>
+      <div class="cell col-hdr">Q1 FY26</div>
+      <div class="cell col-hdr">Q2 FY26</div>
+      <div class="cell col-hdr">Q3 FY26</div>
+      <div class="cell col-hdr hl">Q4 FY26</div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">产品营收（$M）</div>
+      <div class="cell">$996.8 <span class="up tiny">+26%</span></div>
+      <div class="cell">$1,093.7 <span class="up tiny">+32%</span></div>
+      <div class="cell">$1,158.5 <span class="up tiny">+29%</span></div>
+      <div class="cell hl bold">$1,227.3 <span class="up tiny">+30%</span></div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">总营收（$M）</div>
+      <div class="cell">$1,043.4 <span class="up tiny">+26%</span></div>
+      <div class="cell">$1,137.5 <span class="up tiny">+31%</span></div>
+      <div class="cell">$1,212.8 <span class="up tiny">+29%</span></div>
+      <div class="cell hl bold">$1,277.7 <span class="up tiny">+30%</span></div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">NRR</div>
+      <div class="cell">124%</div>
+      <div class="cell">125%</div>
+      <div class="cell">125%</div>
+      <div class="cell hl bold">125%</div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">RPO（$B）</div>
+      <div class="cell">$6.7B <span class="up tiny">+34%</span></div>
+      <div class="cell">$6.9B <span class="up tiny">+33%</span></div>
+      <div class="cell">$7.88B <span class="up tiny">+37%</span></div>
+      <div class="cell hl bold">$9.77B <span class="up tiny">+42% ↑加速</span></div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">$1M+ 客户数</div>
+      <div class="cell">606 <span class="up tiny">+27%</span></div>
+      <div class="cell">654 <span class="up tiny">+30%</span></div>
+      <div class="cell">688 <span class="up tiny">+29%</span></div>
+      <div class="cell hl bold">733 <span class="up tiny">+27%</span></div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">Forbes G2000 客户</div>
+      <div class="cell">754 <span class="muted tiny">+4%</span></div>
+      <div class="cell">751</div>
+      <div class="cell">766 <span class="muted tiny">+4%</span></div>
+      <div class="cell hl muted">~780+</div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">Non-GAAP 产品毛利率</div>
+      <div class="cell">75%</div>
+      <div class="cell">76%</div>
+      <div class="cell">75.9%</div>
+      <div class="cell hl bold">75%</div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">Non-GAAP 运营利润率</div>
+      <div class="cell">8%</div>
+      <div class="cell">11%</div>
+      <div class="cell">11%</div>
+      <div class="cell hl bold">11% <span class="up tiny">+2ppt YoY</span></div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">AI 账户数</div>
+      <div class="cell muted">~3,000+</div>
+      <div class="cell">6,100+</div>
+      <div class="cell">7,300+</div>
+      <div class="cell hl bold">9,100+ <span class="up tiny">↑最大单季增量</span></div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">季度关键事件</div>
+      <div class="cell muted" style="font-size:10px">AI 收入超$100M Run Rate</div>
+      <div class="cell muted" style="font-size:10px">AI 影响 ~50% 新签</div>
+      <div class="cell muted" style="font-size:10px">Observe 收购 (~$600M)</div>
+      <div class="cell hl muted" style="font-size:10px">史上最大单笔合同 $400M+</div>
+    </div>
+  </div>
+
+  <!-- Bar charts -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;">
+    <div class="bar-section">
+      <div class="bar-title">产品营收增速 YoY</div>
+      <div class="bar-row"><div class="bar-q">Q1 FY26</div><div class="bar-track"><div class="bar-fill blue" style="width:52%"></div></div><div class="bar-val up">+26%</div></div>
+      <div class="bar-row"><div class="bar-q">Q2 FY26</div><div class="bar-track"><div class="bar-fill blue" style="width:64%"></div></div><div class="bar-val up">+32%</div></div>
+      <div class="bar-row"><div class="bar-q">Q3 FY26</div><div class="bar-track"><div class="bar-fill blue" style="width:58%"></div></div><div class="bar-val up">+29%</div></div>
+      <div class="bar-row"><div class="bar-q">Q4 FY26</div><div class="bar-track"><div class="bar-fill blue" style="width:60%"></div></div><div class="bar-val up">+30%</div></div>
+      <div class="bar-row"><div class="bar-q" style="color:var(--amber)">Q1 FY27 指引</div><div class="bar-track"><div class="bar-fill" style="width:54%;background:repeating-linear-gradient(90deg,var(--amber) 0,var(--amber) 6px,transparent 6px,transparent 10px)"></div></div><div class="bar-val warn">+27%</div></div>
+    </div>
+    <div class="bar-section">
+      <div class="bar-title">RPO 增速 YoY</div>
+      <div class="bar-row"><div class="bar-q">Q1 FY26</div><div class="bar-track"><div class="bar-fill teal" style="width:52%"></div></div><div class="bar-val" style="color:var(--teal)">+34%</div></div>
+      <div class="bar-row"><div class="bar-q">Q2 FY26</div><div class="bar-track"><div class="bar-fill teal" style="width:51%"></div></div><div class="bar-val" style="color:var(--teal)">+33%</div></div>
+      <div class="bar-row"><div class="bar-q">Q3 FY26</div><div class="bar-track"><div class="bar-fill teal" style="width:57%"></div></div><div class="bar-val" style="color:var(--teal)">+37%</div></div>
+      <div class="bar-row"><div class="bar-q">Q4 FY26</div><div class="bar-track"><div class="bar-fill teal" style="width:65%"></div></div><div class="bar-val" style="color:var(--teal)">+42% ↑</div></div>
+    </div>
+    <div class="bar-section">
+      <div class="bar-title">Non-GAAP 运营利润率</div>
+      <div class="bar-row"><div class="bar-q">Q1 FY26</div><div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--green)"></div></div><div class="bar-val up">8%</div></div>
+      <div class="bar-row"><div class="bar-q">Q2 FY26</div><div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--green)"></div></div><div class="bar-val up">11%</div></div>
+      <div class="bar-row"><div class="bar-q">Q3 FY26</div><div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--green)"></div></div><div class="bar-val up">11%</div></div>
+      <div class="bar-row"><div class="bar-q">Q4 FY26</div><div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--green)"></div></div><div class="bar-val up">11%</div></div>
+      <div class="bar-row"><div class="bar-q" style="color:var(--amber)">FY27 指引</div><div class="bar-track"><div class="bar-fill" style="width:40%;background:repeating-linear-gradient(90deg,var(--amber) 0,var(--amber) 6px,transparent 6px,transparent 10px)"></div></div><div class="bar-val warn">12.5%</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== MOAT ====== -->
+<div id="moat" class="panel">
+
+  <div class="prose" style="margin-bottom:20px">
+    Snowflake 的护城河结构与消费类产品（如多邻国）有根本性不同。<strong>核心护城河是数据引力（Data Gravity）与迁移成本</strong>——一旦企业的 PB 级数据和数千条 ETL 管道运行在 Snowflake 上，迁移成本以工程月计算，而非技术壁垒。FY2026 RPO 增速从 33% 连续加速至 42%，是迁移成本正在加深的最直接财务证明：客户不仅没有离开，还在签更大、更长期的合同。
+  </div>
+
+  <div class="moat-grid">
+
+    <div class="moat-card">
+      <div class="moat-top">
+        <div class="moat-dot dot-blue"></div>
+        <div class="moat-title">数据引力 + 迁移成本</div>
+        <div class="moat-rating">★★★★★</div>
+      </div>
+      <div class="moat-body">
+        <strong>机制</strong>：数据一旦进入 Snowflake，PB 级存储、数千条 SQL/dbt 管道、Streamlit 应用、Native Apps 全部绑定在平台上。迁移不是技术决策，而是以季度计算的工程成本。<br><br>
+        <strong>核心证据</strong>：NRR 125% 连续保持——意味着每个存量客户每年多消费 25%，这是迁移成本护城河的最直接财务体现。$10M+ 客户同比 +56%，深度依赖正在加速。史上最大单笔合同 $400M+，说明战略级客户在以多年合同锁定 Snowflake。<br><br>
+        <strong>压力测试</strong>：AI 带来新的迁移诱因——Databricks 在 ML 原生工作负载上比 Snowflake 更有优势。若客户将 AI 工作负载迁到 Databricks，数据引力可能出现分裂。关注 NRR 是否维持 ≥ 120%。
+      </div>
+      <div class="moat-metrics">
+        <span class="metric-pill" style="background:var(--blue-dim);color:var(--blue)">NRR 125%</span>
+        <span class="metric-pill" style="background:var(--blue-dim);color:var(--blue)">RPO +42% YoY</span>
+        <span class="metric-pill" style="background:var(--blue-dim);color:var(--blue)">$10M+ 客户 +56%</span>
+      </div>
+    </div>
+
+    <div class="moat-card">
+      <div class="moat-top">
+        <div class="moat-dot dot-teal"></div>
+        <div class="moat-title">数据网络效应（Data Marketplace）</div>
+        <div class="moat-rating">★★★★</div>
+      </div>
+      <div class="moat-body">
+        <strong>机制</strong>：Snowflake Data Marketplace 允许企业间直接共享实时数据，无需复制。数据提供方和消费方必须同时在 Snowflake 上才能使用——这是真实的双边网络效应。随着 Marketplace 上的数据集增加，对新客户的吸引力也增加。<br><br>
+        <strong>核心证据</strong>：Snowflake 的「多云中立」架构（AWS + Azure + GCP 均可运行）是数据共享的基础。企业愿意在不同云上分别部署 Snowflake，正是为了保持与合作伙伴的数据互通能力。<br><br>
+        <strong>压力测试</strong>：目前 Marketplace 上的数据集数量、数据提供方数量均未在财报中披露——这是这条护城河的最大可观测性盲区。需要在电话会议中主动追问。
+      </div>
+      <div class="moat-metrics">
+        <span class="metric-pill" style="background:var(--teal-dim);color:var(--teal)">多云中立架构</span>
+        <span class="metric-pill" style="background:var(--teal-dim);color:var(--teal)">Forbes G2000 覆盖率</span>
+        <span class="metric-pill" style="background:var(--teal-dim);color:var(--teal)">Marketplace 数据集数</span>
+      </div>
+    </div>
+
+    <div class="moat-card">
+      <div class="moat-top">
+        <div class="moat-dot dot-purple"></div>
+        <div class="moat-title">平台生态系统锁定</div>
+        <div class="moat-rating">★★★★</div>
+      </div>
+      <div class="moat-body">
+        <strong>机制</strong>：Snowpark（Python/Java/Scala 直接在 Snowflake 运行）、Streamlit（内嵌数据应用）、Native Apps（第三方应用在 Snowflake 上运行）——每增加一个工作负载，迁移成本成倍增加。客户使用的工作负载类别越多，越难离开。<br><br>
+        <strong>核心证据</strong>：9,100+ 账户使用 Snowflake AI（Q4 最大单季增量）；Snowflake Intelligence 达 2,500+ 账户，环比近翻倍；Cortex Code 服务 4,400+ 客户。AI 工作负载正在成为平台黏性的新维度，且 AI 本质上比 SQL 查询更难迁移（模型依赖历史数据训练）。<br><br>
+        <strong>压力测试</strong>：AI 功能是否真正难以迁移，还是只是集成调用外部模型？若 AI 价值主要来自 Cortex（封装第三方 LLM），迁移成本实际上不高。
+      </div>
+      <div class="moat-metrics">
+        <span class="metric-pill" style="background:var(--purple-dim);color:var(--purple)">AI 账户 9,100+</span>
+        <span class="metric-pill" style="background:var(--purple-dim);color:var(--purple)">Intelligence 2,500+</span>
+        <span class="metric-pill" style="background:var(--purple-dim);color:var(--purple)">每客户工作负载类别数</span>
+      </div>
+    </div>
+
+    <div class="moat-card">
+      <div class="moat-top">
+        <div class="moat-dot dot-green"></div>
+        <div class="moat-title">规模经济 + 性能护城河</div>
+        <div class="moat-rating">★★★</div>
+      </div>
+      <div class="moat-body">
+        <strong>机制</strong>：Snowflake 的多租户共享存储架构使计算与存储分离，规模越大，单位成本越低。客户在平台上消费越多，Snowflake 的基础设施效率越高，反过来可以提供更具竞争力的定价，形成正向循环。<br><br>
+        <strong>核心证据</strong>：产品毛利率稳定在 75–76%，而公司持续降低客户的单位计算成本（CEO 多次提及 price-for-performance 改进），说明规模效应真实存在并传导给了客户。<br><br>
+        <strong>压力测试</strong>：云厂商（AWS Redshift、Google BigQuery、Azure Synapse）本身就是规模更大的基础设施提供商，有更强的成本优势。Snowflake 的护城河在于架构设计，而非绝对规模。
+      </div>
+      <div class="moat-metrics">
+        <span class="metric-pill" style="background:var(--green-dim);color:var(--green)">产品毛利率 75%</span>
+        <span class="metric-pill" style="background:var(--green-dim);color:var(--green)">FCF Margin 25%</span>
+        <span class="metric-pill" style="background:var(--green-dim);color:var(--green)">算力成本/Query 趋势</span>
+      </div>
+    </div>
+
+    <div class="moat-card" style="grid-column:span 2">
+      <div class="moat-top">
+        <div class="moat-dot dot-amber"></div>
+        <div class="moat-title">⚠ 当前最值得质疑的假设：AI 是护城河还是威胁？</div>
+        <div class="moat-rating">观察中</div>
+      </div>
+      <div class="moat-body" style="columns:2;gap:24px">
+        <strong>正向叙事</strong>：AI 工作负载需要企业数据作为上下文，而 Snowflake 正是数据的存储和治理中心。在 Snowflake 内部运行 AI（Cortex / Snowflake Intelligence）比把数据导出到外部更安全、更高效。AI 反而加深了数据引力——模型一旦在 Snowflake 上训练，迁移成本更高。<br><br>
+        <strong>风险叙事</strong>：Databricks 是原生 AI/ML 平台，在数据科学家生态中有更强的影响力。如果 AI 团队（而非数据工程团队）开始主导数据平台决策，Snowflake 在「AI-native」叙事上处于劣势。约 50% 新签与 AI 相关，但管理层也提到「sticker shock」——AI 成本远超预期的客户可能减少消费。<br><br>
+        <strong>关键指标</strong>：AI 工作负载的 NRR 是否高于整体 125%？AI 账户的平均消费金额 vs 非 AI 账户？这些数字目前尚未单独披露。
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-title" style="margin-top:8px">五项护城河与可观测指标映射</div>
+  <div class="data-table">
+    <div class="data-row hdr">
+      <div class="cell col-hdr lbl" style="min-width:160px">护城河</div>
+      <div class="cell col-hdr">强度</div>
+      <div class="cell col-hdr">核心可观测指标</div>
+      <div class="cell col-hdr">绿色信号（护城河加深）</div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">数据引力 / 迁移成本</div>
+      <div class="cell"><span style="color:var(--blue)">★★★★★</span></div>
+      <div class="cell" style="font-size:10px">NRR · $1M+ 客户增速 · RPO 增速</div>
+      <div class="cell" style="font-size:10px">NRR ≥ 120% · RPO 增速 > 产品营收增速</div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">数据网络效应</div>
+      <div class="cell"><span style="color:var(--teal)">★★★★</span></div>
+      <div class="cell" style="font-size:10px">Marketplace 数据集数 · 跨企业共享关系数 · G2000 渗透率</div>
+      <div class="cell" style="font-size:10px">G2000 客户环比持续增加 · 共享关系增速 > 客户增速</div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">平台生态锁定</div>
+      <div class="cell"><span style="color:var(--purple)">★★★★</span></div>
+      <div class="cell" style="font-size:10px">AI 账户数 · 每客户工作负载类别 · Native App 数量</div>
+      <div class="cell" style="font-size:10px">AI 账户数持续加速 · 多工作负载客户占比上升</div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">规模经济</div>
+      <div class="cell"><span style="color:var(--green)">★★★</span></div>
+      <div class="cell" style="font-size:10px">产品毛利率 · FCF margin · 单位计算成本趋势</div>
+      <div class="cell" style="font-size:10px">毛利率维持 ≥ 74% 同时降低客户单价</div>
+    </div>
+    <div class="data-row">
+      <div class="cell lbl">AI 平台新护城河</div>
+      <div class="cell"><span style="color:var(--amber)">★★★（演进）</span></div>
+      <div class="cell" style="font-size:10px">AI 账户 NRR · Intelligence 月活 · AI 收入 run rate</div>
+      <div class="cell" style="font-size:10px">AI 账户消费增速 > 整体 NRR · AI 收入占比持续上升</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== WATCHLIST ====== -->
+<div id="watchlist" class="panel">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+    <div>
+      <div class="section-title" style="border:none;margin:0;padding:0">Q1 FY2027 财报观察清单</div>
+      <div style="font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:4px">财报预计发布：2026 年 5 月下旬 · FY2027 Q1 = 2026 年 2–4 月</div>
+    </div>
+    <div style="display:flex;gap:6px"><span class="p-badge p1">P1 护城河核心</span><span class="p-badge p2">P2 增长质量</span><span class="p-badge p3">P3 辅助观察</span></div>
+  </div>
+
+  <div class="alert blue">
+    Q4 FY2026 是一个「加速印」：RPO 连续两季加速（37%→42%），最大合同史上首次破 $400M，AI 账户创单季最大增量。Q1 FY2027 的核心问题是：<strong>这次加速是趋势还是季节性（Q4 传统是 Snowflake 的大合同季）？</strong>
+  </div>
+
+  <div class="wl-block">
+    <div class="wl-hdr">
+      <div class="wc wc-label">#</div>
+      <div class="wc wc-label" style="border-left:1px solid var(--border)">指标 · 观察点</div>
+      <div class="wc wc-label" style="border-left:1px solid var(--border)">指引 / 基准</div>
+      <div class="wc wc-label" style="border-left:1px solid var(--border)">读数解读</div>
+    </div>
+
+    <div class="wl-item">
+      <div class="wc wc-num">01</div>
+      <div class="wc wc-main">
+        <div class="wc-metric">产品营收实际值 vs 指引 <span class="p-badge p1">P1</span></div>
+        <div class="wc-desc">管理层指引 Q1 FY27 产品营收 $1.262–1.267B（+27% YoY）。消费制收入的特点是难以精确预测——客户消费加速或放缓，会在季度内即时体现。超出指引通常意味着现有客户消费超预期（而非新签），是数据引力护城河的直接验证。</div>
+      </div>
+      <div class="wc wc-guide">
+        <div class="wc-guide-lbl">管理层指引</div>
+        <div class="wc-guide-val">$1.262–1.267B</div>
+        <div class="wc-guide-note">对应 +27% YoY · Q1 FY26 基准 $996.8M</div>
+      </div>
+      <div class="wc">
+        <div class="interp"><div class="interp-arrow up">↑</div><div class="interp-text"><strong style="color:var(--green)">&gt;$1.28B</strong>：现有客户消费超预期，NRR 可能进一步上升</div></div>
+        <div class="interp"><div class="interp-arrow mid">→</div><div class="interp-text"><strong style="color:var(--amber)">在指引范围内</strong>：增长在轨，无新信号</div></div>
+        <div class="interp"><div class="interp-arrow dn">↓</div><div class="interp-text"><strong style="color:var(--red)">&lt;$1.25B</strong>：Q4 大合同季后需求回落，AI sticker shock 风险</div></div>
+      </div>
+    </div>
+
+    <div class="wl-item">
+      <div class="wc wc-num">02</div>
+      <div class="wc wc-main">
+        <div class="wc-metric">NRR 方向 <span class="p-badge p1">P1 最关键</span></div>
+        <div class="wc-desc">NRR 已连续三季度稳定在 125%。这是迁移成本护城河最重要的单一指标——它直接告诉你存量客户是否在加深依赖。注意：Snowflake 的 NRR 计算方式是基于过去两年的比较，属于滞后指标，变化会有 1–2 季度延迟。</div>
+      </div>
+      <div class="wc wc-guide">
+        <div class="wc-guide-lbl">近期基准</div>
+        <div class="wc-guide-val">125%</div>
+        <div class="wc-guide-note">连续 Q2/Q3/Q4 FY26 稳定在 125%</div>
+      </div>
+      <div class="wc">
+        <div class="interp"><div class="interp-arrow up">↑</div><div class="interp-text"><strong style="color:var(--green)">≥127%</strong>：AI 工作负载正在加速存量客户消费，护城河加深</div></div>
+        <div class="interp"><div class="interp-arrow mid">→</div><div class="interp-text"><strong style="color:var(--amber)">123–126%</strong>：稳定区间，无新信号</div></div>
+        <div class="interp"><div class="interp-arrow dn">↓</div><div class="interp-text"><strong style="color:var(--red)">&lt;120%</strong>：迁移成本护城河出现松动，需追问原因（AI sticker shock / Databricks 分流）</div></div>
+      </div>
+    </div>
+
+    <div class="wl-item">
+      <div class="wc wc-num">03</div>
+      <div class="wc wc-main">
+        <div class="wc-metric">RPO 增速是否维持加速 <span class="p-badge p1">P1</span></div>
+        <div class="wc-desc">RPO 连续两季加速（33%→37%→42%），是最强的前瞻性信号。RPO 增速持续超过产品营收增速，说明客户在以更长时间、更大金额承诺 Snowflake，是数据引力护城河的领先指标。注意：Q4 是 Snowflake 的传统大合同季，Q1 通常会有季节性放缓。</div>
+      </div>
+      <div class="wc wc-guide">
+        <div class="wc-guide-lbl">上季基准</div>
+        <div class="wc-guide-val">$9.77B +42%</div>
+        <div class="wc-guide-note">Q4 是大合同季，Q1 RPO 环比下降属正常</div>
+      </div>
+      <div class="wc">
+        <div class="interp"><div class="interp-arrow up">↑</div><div class="interp-text"><strong style="color:var(--green)">YoY 增速 ≥40%</strong>：多年承诺势头持续，AI 战略需求被纳入长期合同</div></div>
+        <div class="interp"><div class="interp-arrow mid">→</div><div class="interp-text"><strong style="color:var(--amber)">30–40% YoY</strong>：符合正常节奏，Q1 季节性回落可接受</div></div>
+        <div class="interp"><div class="interp-arrow dn">↓</div><div class="interp-text"><strong style="color:var(--red)">&lt;30% YoY</strong>：大合同增长放缓，检查是否有大客户不续约信号</div></div>
+      </div>
+    </div>
+
+    <div class="wl-item">
+      <div class="wc wc-num">04</div>
+      <div class="wc wc-main">
+        <div class="wc-metric">AI 账户数增速及管理层定性表述 <span class="p-badge p2">P2</span></div>
+        <div class="wc-desc">Q4 出现最大单季增量，达 9,100+ 账户。更重要的是管理层对 AI 消费化进度的表述——AI 账户数增加是「激活」，AI 账户消费占产品营收的比例才是「货币化」。关注管理层是否给出 AI 收入占比或 AI revenue run rate 更新。</div>
+      </div>
+      <div class="wc wc-guide">
+        <div class="wc-guide-lbl">Q4 基准</div>
+        <div class="wc-guide-val">9,100+ 账户</div>
+        <div class="wc-guide-note">AI Run Rate 已超 $100M（FY25 Q1 实现）</div>
+      </div>
+      <div class="wc">
+        <div class="interp"><div class="interp-arrow up">↑</div><div class="interp-text"><strong style="color:var(--green)">披露 AI 收入占比 / AI NRR 高于整体</strong>：AI 开始真正驱动消费，生态锁定护城河升级</div></div>
+        <div class="interp"><div class="interp-arrow dn">↓</div><div class="interp-text"><strong style="color:var(--red)">仅披露账户数，无消费深化数据</strong>：AI 仍处于试用期，货币化进度落后于叙事</div></div>
+      </div>
+    </div>
+
+    <div class="wl-item">
+      <div class="wc wc-num">05</div>
+      <div class="wc wc-main">
+        <div class="wc-metric">Non-GAAP 运营利润率 vs 指引 9% <span class="p-badge p2">P2</span></div>
+        <div class="wc-desc">Q1 FY27 指引 non-GAAP 运营利润率约 9%（相比 Q4 的 11% 有所下降，主要因为 Observe 收购 178 名员工的整合成本和季节性）。全年指引 12.5%。考验管理层在增长投资与利润率扩张间的平衡能力。</div>
+      </div>
+      <div class="wc wc-guide">
+        <div class="wc-guide-lbl">Q1 指引</div>
+        <div class="wc-guide-val">~9%</div>
+        <div class="wc-guide-note">FY27 全年目标 12.5% · 季度前低后高</div>
+      </div>
+      <div class="wc">
+        <div class="interp"><div class="interp-arrow up">↑</div><div class="interp-text"><strong style="color:var(--green)">&gt;10%</strong>：Observe 整合成本低于预期，运营杠杆进展顺利</div></div>
+        <div class="interp"><div class="interp-arrow dn">↓</div><div class="interp-text"><strong style="color:var(--red)">&lt;7%</strong>：费用控制失控或收购整合超预期成本，全年 12.5% 目标存疑</div></div>
+      </div>
+    </div>
+
+    <div class="wl-item">
+      <div class="wc wc-num">06</div>
+      <div class="wc wc-main">
+        <div class="wc-metric">Observe 收购整合信号 <span class="p-badge p3">P3</span></div>
+        <div class="wc-desc">Snowflake 以约 $600M 收购 Observe，进入可观测性（Observability）市场，整合 178 名员工。这是 Snowflake 平台扩展战略的重要一步——把日志、追踪数据纳入平台，增加更多工作负载类型，加深生态锁定。关注：交叉销售进展、Observe 客户留存率、对产品毛利率的影响。</div>
+      </div>
+      <div class="wc wc-guide">
+        <div class="wc-guide-lbl">交易规模</div>
+        <div class="wc-guide-val">~$600M</div>
+        <div class="wc-guide-note">约 150bps FCF margin 短期拖累</div>
+      </div>
+      <div class="wc">
+        <div class="interp"><div class="interp-arrow up">↑</div><div class="interp-text"><strong style="color:var(--green)">管理层提及 Observe 交叉销售早期成功案例</strong>：平台生态扩张有效</div></div>
+        <div class="interp"><div class="interp-arrow dn">↓</div><div class="interp-text"><strong style="color:var(--red)">不再主动提及 Observe</strong>：整合遇阻或市场反应冷淡</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== COMPETITIVE ====== -->
+<div id="competitive" class="panel">
+
+  <div class="section-title">竞争格局 · 主要对手护城河对比</div>
+
+  <div class="comp-grid">
+    <div class="comp-card self">
+      <div class="comp-name">Snowflake</div>
+      <div class="comp-sub">AI Data Cloud · NYSE: SNOW</div>
+      <div class="comp-row"><span>定位</span><span class="val" style="color:var(--blue)">多云中立数据平台</span></div>
+      <div class="comp-row"><span>产品营收</span><span class="val up">$4.47B FY26 +29%</span></div>
+      <div class="comp-row"><span>NRR</span><span class="val up">125%</span></div>
+      <div class="comp-row"><span>产品毛利率</span><span class="val">75%</span></div>
+      <div class="comp-row"><span>优势</span><span class="val" style="font-size:10px;color:var(--teal)">SQL 生态 · 数据共享 · 企业治理</span></div>
+      <div class="comp-row"><span>弱势</span><span class="val" style="font-size:10px;color:var(--amber)">AI/ML 原生能力弱于 Databricks</span></div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-name">Databricks</div>
+      <div class="comp-sub">Data + AI Platform · 私有</div>
+      <div class="comp-row"><span>定位</span><span class="val" style="color:var(--purple)">AI/ML 原生数据平台</span></div>
+      <div class="comp-row"><span>ARR</span><span class="val up">~$3B+ FY25 估算</span></div>
+      <div class="comp-row"><span>NRR</span><span class="val muted">未公开（私有）</span></div>
+      <div class="comp-row"><span>优势</span><span class="val" style="font-size:10px;color:var(--teal)">MLflow · Delta Lake · 数据科学家生态</span></div>
+      <div class="comp-row"><span>弱势</span><span class="val" style="font-size:10px;color:var(--amber)">企业级治理和 SQL 体验弱于 Snowflake</span></div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-name">Google BigQuery</div>
+      <div class="comp-sub">Cloud Data Warehouse · GCP</div>
+      <div class="comp-row"><span>定位</span><span class="val" style="color:var(--amber)">GCP 原生数仓</span></div>
+      <div class="comp-row"><span>营收</span><span class="val muted">GCP 内嵌，未单独披露</span></div>
+      <div class="comp-row"><span>优势</span><span class="val" style="font-size:10px;color:var(--teal)">Gemini 原生集成 · GCP 生态</span></div>
+      <div class="comp-row"><span>弱势</span><span class="val" style="font-size:10px;color:var(--amber)">多云场景受限 · 跨平台数据共享弱</span></div>
+    </div>
+    <div class="comp-card">
+      <div class="comp-name">AWS Redshift</div>
+      <div class="comp-sub">Cloud Data Warehouse · AWS</div>
+      <div class="comp-row"><span>定位</span><span class="val" style="color:var(--amber)">AWS 原生数仓</span></div>
+      <div class="comp-row"><span>营收</span><span class="val muted">AWS 内嵌，未单独披露</span></div>
+      <div class="comp-row"><span>优势</span><span class="val" style="font-size:10px;color:var(--teal)">S3 生态深度集成 · 定价竞争力</span></div>
+      <div class="comp-row"><span>弱势</span><span class="val" style="font-size:10px;color:var(--amber)">多云不支持 · 数据共享能力弱</span></div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <strong>核心竞争判断</strong>：Snowflake 与 Databricks 的竞争是目前市场最核心的叙事。两家公司正在从两个不同方向相互入侵对方的领地——Snowflake 在补强 AI/ML（Cortex、Snowpark），Databricks 在补强 SQL 和企业治理（收购 Tabular 加强 Iceberg 支持）。<br><br>
+    <strong>投资框架的核心问题</strong>：谁会赢得企业数据平台的「统一」之战？如果企业最终只用一个平台，这场竞争的胜负将决定护城河的最终高度。目前的迹象是：大企业同时在用两家（数据工程用 Snowflake，数据科学用 Databricks），这种共存状态对 Snowflake 的护城河是稀释而非加强。<br><br>
+    <strong>观察信号</strong>：管理层是否在电话会议中提及「赢回」Databricks 客户的案例？G2 / Gartner 同行评价中，用户更多从 Databricks 迁来，还是向其迁去？
+  </div>
+
+</div>
+
+<!-- ====== SOURCES ====== -->
+<div id="sources" class="panel">
+  <div class="section-title">数据来源 · SEC 季报原始链接</div>
+
+  <div class="src-table">
+    <div class="src-row src-hdr">
+      <div class="sc sc-label">季度</div>
+      <div class="sc sc-label">核心数据</div>
+      <div class="sc sc-label">发布日期</div>
+      <div class="sc sc-label">SEC EDGAR 链接</div>
+    </div>
+    <div class="src-row">
+      <div class="sc sc-qtr">Q1 FY26</div>
+      <div class="sc">产品营收 $996.8M +26% · NRR 124% · $1M+ 606 · RPO $6.7B</div>
+      <div class="sc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">2025-05-21</div>
+      <div class="sc"><a href="https://www.sec.gov/Archives/edgar/data/0001640147/000164014725000094/fy2026q1earnings.htm" target="_blank">fy2026q1earnings.htm ↗</a></div>
+    </div>
+    <div class="src-row">
+      <div class="sc sc-qtr">Q2 FY26</div>
+      <div class="sc">产品营收 $1,093.7M +32% · NRR 125% · $1M+ 654 · RPO $6.9B</div>
+      <div class="sc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">2025-09-03</div>
+      <div class="sc"><a href="https://www.sec.gov/Archives/edgar/data/0001640147/000164014725000177/fy2026q2earnings.htm" target="_blank">fy2026q2earnings.htm ↗</a></div>
+    </div>
+    <div class="src-row">
+      <div class="sc sc-qtr">Q3 FY26</div>
+      <div class="sc">产品营收 $1,158.5M +29% · NRR 125% · $1M+ 688 · RPO $7.88B</div>
+      <div class="sc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">2025-12-03</div>
+      <div class="sc"><a href="https://www.sec.gov/Archives/edgar/data/0001640147/000164014725000207/fy2026q3earnings.htm" target="_blank">fy2026q3earnings.htm ↗</a></div>
+    </div>
+    <div class="src-row">
+      <div class="sc sc-qtr">Q4 FY26</div>
+      <div class="sc">产品营收 $1,227.3M +30% · NRR 125% · $1M+ 733 · RPO $9.77B +42%</div>
+      <div class="sc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">2026-02-25</div>
+      <div class="sc"><a href="https://www.sec.gov/Archives/edgar/data/0001640147/000162828026011631/fy2026q4earnings.htm" target="_blank">fy2026q4earnings.htm ↗</a></div>
+    </div>
+    <div class="src-row">
+      <div class="sc sc-qtr">EDGAR 归档</div>
+      <div class="sc">所有 Snowflake SEC 公开文件（CIK: 0001640147）</div>
+      <div class="sc"></div>
+      <div class="sc"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001640147&type=8-K&count=10" target="_blank">SNOW SEC Filing Index ↗</a></div>
+    </div>
+    <div class="src-row">
+      <div class="sc sc-qtr">IR 主页</div>
+      <div class="sc">Snowflake 官方投资者关系页面</div>
+      <div class="sc"></div>
+      <div class="sc"><a href="https://investors.snowflake.com" target="_blank">investors.snowflake.com ↗</a></div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:20px">FY2027 指引来源</div>
+  <div style="border:1px solid var(--border);border-radius:8px;padding:14px 16px;background:var(--bg2);">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;font-size:11px;">
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">Q1 FY27 产品营收指引</div><div style="font-family:var(--mono);color:var(--amber)">$1.262–1.267B（+27% YoY）</div></div>
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">FY27 全年产品营收指引</div><div style="font-family:var(--mono);color:var(--amber)">~$5.66B（+27% YoY）</div></div>
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">FY27 Non-GAAP 运营利润率</div><div style="font-family:var(--mono);color:var(--amber)">12.5%（vs FY26 实际 10%）</div></div>
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">FY27 产品毛利率</div><div style="font-family:var(--mono);color:var(--amber)">~75%</div></div>
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">FY27 Adj. FCF Margin</div><div style="font-family:var(--amber)">~23%（含 Observe ~150bps 拖累）</div></div>
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">Q1 FY27 Non-GAAP 运营利润率</div><div style="font-family:var(--amber)">~9%（季节性低点）</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== VALUATION ====== -->
+<div id="valuation" class="panel">
+
+<style>
+.val-header { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:20px; }
+.scenario-card { border:1px solid var(--border); border-radius:10px; padding:16px 18px; background:var(--bg2); }
+.scenario-card.bear { border-color:rgba(240,96,96,0.35); }
+.scenario-card.base { border-color:rgba(77,166,255,0.35); }
+.scenario-card.bull { border-color:rgba(52,217,138,0.35); }
+.sc-title { font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:10px; }
+.sc-title.bear { color:var(--red); }
+.sc-title.base { color:var(--blue); }
+.sc-title.bull { color:var(--green); }
+.sc-price { font-family:var(--mono); font-size:28px; font-weight:500; line-height:1; margin-bottom:4px; }
+.sc-price.bear { color:var(--red); }
+.sc-price.base { color:var(--blue); }
+.sc-price.bull { color:var(--green); }
+.sc-updown { font-family:var(--mono); font-size:12px; margin-bottom:10px; }
+.sc-assum { font-size:11px; color:var(--text2); line-height:1.6; }
+.sc-assum span { font-family:var(--mono); font-size:10px; display:block; padding:2px 0; border-bottom:1px solid var(--border); }
+.sc-assum span:last-child { border-bottom:none; }
+
+.method-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
+.method-card { border:1px solid var(--border); border-radius:10px; padding:16px 18px; background:var(--bg2); }
+.method-title { font-size:13px; font-weight:500; color:var(--text); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.method-tag { font-family:var(--mono); font-size:9px; padding:2px 6px; border-radius:3px; background:var(--bg3); color:var(--text3); }
+
+.range-bar { position:relative; height:28px; background:var(--bg3); border-radius:6px; margin:10px 0; overflow:visible; }
+.range-fill-bear { position:absolute; height:100%; background:rgba(240,96,96,0.2); border-radius:6px 0 0 6px; }
+.range-fill-base { position:absolute; height:100%; background:rgba(77,166,255,0.2); }
+.range-fill-bull { position:absolute; height:100%; background:rgba(52,217,138,0.2); border-radius:0 6px 6px 0; }
+.range-current { position:absolute; width:2px; background:var(--amber); top:-4px; bottom:-4px; border-radius:1px; z-index:10; }
+.range-current::after { content:'现价'; font-family:var(--mono); font-size:8px; color:var(--amber); position:absolute; top:-14px; left:50%; transform:translateX(-50%); white-space:nowrap; }
+.range-label { display:flex; justify-content:space-between; font-family:var(--mono); font-size:10px; color:var(--text3); margin-top:4px; }
+
+.comp-val-table { border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:14px; }
+.cvr { display:grid; grid-template-columns:140px 90px 90px 90px 90px 1fr; border-top:1px solid var(--border); }
+.cvr.hdr { background:var(--bg3); }
+.cv { padding:8px 12px; font-size:11px; color:var(--text2); font-family:var(--mono); }
+.cv.lbl { font-family:var(--sans); color:var(--text3); font-size:10px; }
+.cv.self { color:var(--blue); font-weight:500; }
+.cv.hi { color:var(--green); }
+.cv.lo { color:var(--red); }
+.cv.note { font-family:var(--sans); font-size:10px; color:var(--text3); }
+
+.hist-row { display:grid; grid-template-columns:80px 80px 80px 80px 80px 1fr; border-top:1px solid var(--border); }
+.hc { padding:7px 12px; font-family:var(--mono); font-size:11px; color:var(--text2); }
+.hc.yr { color:var(--text3); }
+.hc.cur { color:var(--blue); font-weight:500; }
+
+.dcf-table { border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:14px; }
+.dr { display:grid; grid-template-columns:90px repeat(5,1fr) 90px; border-top:1px solid var(--border); }
+.dr.hdr { background:var(--bg3); }
+.dc { padding:7px 10px; font-family:var(--mono); font-size:10px; color:var(--text2); }
+.dc.lbl { color:var(--text3); font-family:var(--sans); font-size:10px; }
+.dc.bear { color:var(--red); }
+.dc.base { color:var(--blue); }
+.dc.bull { color:var(--green); }
+
+.caveat-box { border:1px solid rgba(245,182,35,0.3); border-radius:8px; padding:12px 16px; background:rgba(245,182,35,0.05); font-size:11px; color:var(--text2); line-height:1.7; margin-top:12px; }
+.caveat-box strong { color:var(--amber); }
+</style>
+
+<div class="notice" style="margin-bottom:20px">
+  <strong>估值说明</strong>：数据截至 2026 年 3 月 23 日。当前股价约 $175，EV 约 $65B（市值 $60B + 债务 $2.74B - 现金 $4.8B）。Snowflake GAAP 下持续亏损，<strong>GAAP P/E 无意义</strong>，主要采用 EV/Revenue（P/S）、EV/FCF 及 DCF 三种方法。所有估值均为分析框架，不构成投资建议。
+</div>
+
+<!-- Scenario Summary -->
+<div class="section-title">三情景目标价汇总（综合三种估值方法加权）</div>
+<div class="val-header">
+  <div class="scenario-card bear">
+    <div class="sc-title bear">▼ 熊市情景</div>
+    <div class="sc-price bear">$130–150</div>
+    <div class="sc-updown" style="color:var(--red)">vs 当前 $175 · 下行 -14%~-26%</div>
+    <div class="sc-assum">
+      <span>增速放缓至 +20%（低于指引 +27%）</span>
+      <span>Databricks 蚕食 AI 工作负载</span>
+      <span>NRR 回落至 118–120%</span>
+      <span>FCF margin 压缩至 18–20%</span>
+      <span>EV/Revenue 压缩至 8–9x FY27E</span>
+    </div>
+  </div>
+  <div class="scenario-card base">
+    <div class="sc-title base">◆ 基准情景</div>
+    <div class="sc-price base">$230–280</div>
+    <div class="sc-updown" style="color:var(--blue)">vs 当前 $175 · 上行 +31%~+60%</div>
+    <div class="sc-assum">
+      <span>增速符合指引 +27%</span>
+      <span>NRR 稳定在 125%</span>
+      <span>FCF margin 维持 23–25%</span>
+      <span>AI 工作负载贡献持续提升</span>
+      <span>EV/Revenue 扩展至 11–12x FY27E</span>
+    </div>
+  </div>
+  <div class="scenario-card bull">
+    <div class="sc-title bull">▲ 牛市情景</div>
+    <div class="sc-price bull">$380–500</div>
+    <div class="sc-updown" style="color:var(--green)">vs 当前 $175 · 上行 +117%~+186%</div>
+    <div class="sc-assum">
+      <span>AI 加速至 +30%+ 增速</span>
+      <span>NRR 回升至 127–130%</span>
+      <span>FCF margin 扩张至 28–32%</span>
+      <span>Snowflake Intelligence 成为企业 AI 标准</span>
+      <span>EV/Revenue 重评至 15–18x FY27E</span>
+    </div>
+  </div>
+</div>
+
+<!-- Price range visualizer -->
+<div class="method-card" style="margin-bottom:20px">
+  <div class="method-title">综合估值区间可视化 <span class="method-tag">基于 FY27E 指引</span></div>
+  <div style="position:relative;height:36px;background:var(--bg3);border-radius:8px;margin:8px 0 4px;overflow:visible;">
+    <!-- Bear zone 0-40% of bar = $0-200 range mapped, current price $175, bear $130-150, base $230-280, bull $380-500 -->
+    <div style="position:absolute;left:0%;width:30%;height:100%;background:rgba(240,96,96,0.18);border-radius:8px 0 0 8px;"></div>
+    <div style="position:absolute;left:30%;width:22%;height:100%;background:rgba(77,166,255,0.18);"></div>
+    <div style="position:absolute;left:52%;width:48%;height:100%;background:rgba(52,217,138,0.18);border-radius:0 8px 8px 0;"></div>
+    <!-- Current price marker at ~35% (=$175 on $0-500 scale) -->
+    <div style="position:absolute;left:35%;width:3px;background:var(--amber);top:-6px;bottom:-6px;border-radius:2px;z-index:10;">
+      <div style="position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;color:var(--amber);white-space:nowrap;">现价 $175</div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:8px">
+    <span>$0</span><span style="color:var(--red)">熊 $130–150</span><span style="color:var(--blue)">基准 $230–280</span><span style="color:var(--green)">牛 $380–500</span><span>$500+</span>
+  </div>
+  <div style="font-size:11px;color:var(--text2)">当前股价 $175 处于熊市与基准情景的过渡区。市场目前隐含约 +18% 的增长预期，低于管理层指引的 +27%——说明市场对 AI 货币化进度存在折扣定价。</div>
+</div>
+
+<!-- Method 1: P/S -->
+<div class="section-title">方法一：EV/Revenue（P/S）—— 成长期企业主要估值锚</div>
+
+<div class="method-grid">
+  <div class="method-card">
+    <div class="method-title">纵向：Snowflake 自身历史 EV/Revenue <span class="method-tag">5年复盘</span></div>
+    <div class="comp-val-table" style="margin-bottom:10px;">
+      <div class="hist-row hdr" style="grid-template-columns:70px 80px 80px 80px 90px 1fr">
+        <div class="hc yr" style="padding:7px 12px;font-size:9px">财年</div>
+        <div class="hc" style="padding:7px 12px;font-size:9px">产品营收</div>
+        <div class="hc" style="padding:7px 12px;font-size:9px">增速</div>
+        <div class="hc" style="padding:7px 12px;font-size:9px">EV</div>
+        <div class="hc" style="padding:7px 12px;font-size:9px">EV/Rev</div>
+        <div class="hc" style="padding:7px 12px;font-size:9px">市场情绪</div>
+      </div>
+      <div class="hist-row" style="grid-template-columns:70px 80px 80px 80px 90px 1fr">
+        <div class="hc yr">FY22</div><div class="hc">$1.14B</div><div class="hc up">+102%</div><div class="hc">~$88B</div><div class="hc" style="color:var(--red)">77.6x</div><div class="hc" style="color:var(--text3);font-family:var(--sans);font-size:10px">IPO 狂热期峰值</div>
+      </div>
+      <div class="hist-row" style="grid-template-columns:70px 80px 80px 80px 90px 1fr">
+        <div class="hc yr">FY23</div><div class="hc">$1.94B</div><div class="hc up">+70%</div><div class="hc">~$55B</div><div class="hc" style="color:var(--amber)">28.4x</div><div class="hc" style="color:var(--text3);font-family:var(--sans);font-size:10px">利率上升估值压缩</div>
+      </div>
+      <div class="hist-row" style="grid-template-columns:70px 80px 80px 80px 90px 1fr">
+        <div class="hc yr">FY24</div><div class="hc">$2.67B</div><div class="hc up">+38%</div><div class="hc">~$52B</div><div class="hc" style="color:var(--amber)">19.5x</div><div class="hc" style="color:var(--text3);font-family:var(--sans);font-size:10px">云优化拖累 · NRR 下降</div>
+      </div>
+      <div class="hist-row" style="grid-template-columns:70px 80px 80px 80px 90px 1fr">
+        <div class="hc yr">FY25</div><div class="hc">$3.46B</div><div class="hc up">+29%</div><div class="hc">~$52B</div><div class="hc" style="color:var(--blue)">15.0x</div><div class="hc" style="color:var(--text3);font-family:var(--sans);font-size:10px">增速回稳 · 新 CEO</div>
+      </div>
+      <div class="hist-row" style="grid-template-columns:70px 80px 80px 80px 90px 1fr;background:rgba(77,166,255,0.05)">
+        <div class="hc yr" style="color:var(--blue)">FY26</div><div class="hc self">$4.47B</div><div class="hc up">+29%</div><div class="hc self">~$65B</div><div class="hc self">14.5x</div><div class="hc" style="color:var(--text3);font-family:var(--sans);font-size:10px">AI 加速 · RPO +42%</div>
+      </div>
+      <div class="hist-row" style="grid-template-columns:70px 80px 80px 80px 90px 1fr;border-top:1px dashed rgba(245,182,35,0.3)">
+        <div class="hc yr" style="color:var(--amber)">FY27E</div><div class="hc" style="color:var(--amber)">$5.93B</div><div class="hc warn">+27%</div><div class="hc" style="color:var(--amber)">$65B</div><div class="hc warn">11.0x</div><div class="hc" style="color:var(--text3);font-family:var(--sans);font-size:10px">基于当前 EV 隐含倍数</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text2);line-height:1.6">历史中位数 23.0x；当前 11.0x FY27E 处于 5 年低位，比历史中位数折价约 52%。若 AI 推动增速维持 25%+，合理中枢应在 12–15x FY27E 之间。</div>
+  </div>
+
+  <div class="method-card">
+    <div class="method-title">横向：同类高增长企业 SaaS EV/Revenue 对比 <span class="method-tag">2026 Q1</span></div>
+    <div class="comp-val-table">
+      <div class="cvr hdr">
+        <div class="cv lbl">公司</div>
+        <div class="cv lbl">增速</div>
+        <div class="cv lbl">NRR</div>
+        <div class="cv lbl">FCF%</div>
+        <div class="cv lbl">EV/Rev NTM</div>
+        <div class="cv note">估值逻辑</div>
+      </div>
+      <div class="cvr" style="background:rgba(77,166,255,0.04)">
+        <div class="cv self">Snowflake</div><div class="cv">+27–30%</div><div class="cv self">125%</div><div class="cv self">23%</div><div class="cv self">11x</div><div class="cv note">历史低位 · AI 折扣定价</div>
+      </div>
+      <div class="cvr">
+        <div class="cv">Datadog</div><div class="cv">+20–22%</div><div class="cv">~118%</div><div class="cv">~25%</div><div class="cv hi">~14x</div><div class="cv note">可观测性龙头 · 溢价</div>
+      </div>
+      <div class="cvr">
+        <div class="cv">CrowdStrike</div><div class="cv">+20–22%</div><div class="cv">~118%</div><div class="cv">~30%</div><div class="cv hi">~14x</div><div class="cv note">安全赛道溢价</div>
+      </div>
+      <div class="cvr">
+        <div class="cv">ServiceNow</div><div class="cv">+18–20%</div><div class="cv">~125%</div><div class="cv">~30%</div><div class="cv">~12x</div><div class="cv note">成熟 · 盈利好 · 溢价</div>
+      </div>
+      <div class="cvr">
+        <div class="cv">MongoDB</div><div class="cv">+18–20%</div><div class="cv">~120%</div><div class="cv">~15%</div><div class="cv">~8x</div><div class="cv note">增速放缓折价</div>
+      </div>
+      <div class="cvr">
+        <div class="cv">Palantir</div><div class="cv">+25–30%</div><div class="cv">N/A</div><div class="cv">~20%</div><div class="cv" style="color:var(--red)">~30x</div><div class="cv note">AI 叙事大幅溢价</div>
+      </div>
+      <div class="cvr" style="background:var(--bg3)">
+        <div class="cv lbl">行业中位</div><div class="cv">~20%</div><div class="cv">~118%</div><div class="cv">~22%</div><div class="cv">~12x</div><div class="cv note">25–30%增速公司应 14–16x</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text2);line-height:1.6;margin-top:8px">Snowflake 以 11x FY27E EV/Rev 的倍数，低于同等增速（+27%）的 SaaS 同类均值约 25–35%。这隐含市场对其 AI 货币化进度的不确定性折扣，或对增速能否维持的疑虑。</div>
+  </div>
+</div>
+
+<!-- P/S scenario targets -->
+<div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px;">
+  <div style="padding:9px 16px;background:var(--bg3);font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase">EV/Revenue 三情景目标价测算（基于 FY27E 总营收 ~$5.93B，EV→股价：加回净现金 $2.06B ÷ 342M 股）</div>
+  <div style="display:grid;grid-template-columns:120px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+    <div style="padding:9px 14px;font-size:10px;color:var(--text3);font-family:var(--mono)">倍数假设</div>
+    <div style="padding:9px 14px;font-size:11px;color:var(--red);font-family:var(--mono);border-left:1px solid var(--border)">熊：8–9x<br><span style="font-size:9px;color:var(--text3)">低于历史低位 · 增速降至 20%</span></div>
+    <div style="padding:9px 14px;font-size:11px;color:var(--blue);font-family:var(--mono);border-left:1px solid var(--border)">基准：11–13x<br><span style="font-size:9px;color:var(--text3)">同类公司折价 · 指引实现</span></div>
+    <div style="padding:9px 14px;font-size:11px;color:var(--green);font-family:var(--mono);border-left:1px solid var(--border)">牛：16–20x<br><span style="font-size:9px;color:var(--text3)">AI 溢价 · 历史中位数修复</span></div>
+  </div>
+  <div style="display:grid;grid-template-columns:120px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+    <div style="padding:9px 14px;font-size:10px;color:var(--text3);font-family:var(--mono)">隐含 EV</div>
+    <div style="padding:9px 14px;font-size:12px;color:var(--red);font-family:var(--mono);border-left:1px solid var(--border)">$47.4B–$53.4B</div>
+    <div style="padding:9px 14px;font-size:12px;color:var(--blue);font-family:var(--mono);border-left:1px solid var(--border)">$65.2B–$77.1B</div>
+    <div style="padding:9px 14px;font-size:12px;color:var(--green);font-family:var(--mono);border-left:1px solid var(--border)">$94.9B–$118.6B</div>
+  </div>
+  <div style="display:grid;grid-template-columns:120px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+    <div style="padding:9px 14px;font-size:10px;color:var(--text3);font-family:var(--mono)">目标股价</div>
+    <div style="padding:9px 14px;font-size:14px;font-weight:500;color:var(--red);font-family:var(--mono);border-left:1px solid var(--border)">$144–$161</div>
+    <div style="padding:9px 14px;font-size:14px;font-weight:500;color:var(--blue);font-family:var(--mono);border-left:1px solid var(--border)">$196–$231</div>
+    <div style="padding:9px 14px;font-size:14px;font-weight:500;color:var(--green);font-family:var(--mono);border-left:1px solid var(--border)">$283–$353</div>
+  </div>
+</div>
+
+<!-- Method 2: EV/FCF -->
+<div class="section-title">方法二：EV/FCF —— 现金流现实主义视角</div>
+<div class="method-grid">
+  <div class="method-card">
+    <div class="method-title">FY2026 FCF 数据核验 <span class="method-tag">季度拼接</span></div>
+    <div style="font-size:11px;color:var(--text2);line-height:1.7;margin-bottom:10px">Snowflake 的 FCF 有强烈季节性——Q4 是现金收款高峰（大合同年底签署后 Q4 收款），Q2 是全年低谷。FY26 全年 Adj. FCF margin 约 25%，即约 $1.17B。</div>
+    <div class="comp-val-table">
+      <div class="cvr hdr" style="grid-template-columns:70px 90px 90px 1fr">
+        <div class="cv lbl">季度</div><div class="cv lbl">Adj. FCF</div><div class="cv lbl">Margin</div><div class="cv note">说明</div>
+      </div>
+      <div class="cvr" style="grid-template-columns:70px 90px 90px 1fr">
+        <div class="cv">Q1 FY26</div><div class="cv">$206.3M</div><div class="cv">20%</div><div class="cv note">Q1 季节性强，大合同收款</div>
+      </div>
+      <div class="cvr" style="grid-template-columns:70px 90px 90px 1fr">
+        <div class="cv">Q2 FY26</div><div class="cv">$67.8M</div><div class="cv lo">6%</div><div class="cv note">全年低谷，投资支出集中</div>
+      </div>
+      <div class="cvr" style="grid-template-columns:70px 90px 90px 1fr">
+        <div class="cv">Q3 FY26</div><div class="cv">$136.4M</div><div class="cv">11%</div><div class="cv note">逐步回升</div>
+      </div>
+      <div class="cvr" style="grid-template-columns:70px 90px 90px 1fr">
+        <div class="cv">Q4 FY26</div><div class="cv hi">~$762M</div><div class="cv hi">~60%</div><div class="cv note">大合同年底签署后 Q4 集中收款</div>
+      </div>
+      <div class="cvr" style="grid-template-columns:70px 90px 90px 1fr;background:rgba(77,166,255,0.06)">
+        <div class="cv self">FY26 全年</div><div class="cv self">~$1.17B</div><div class="cv self">~25%</div><div class="cv note">管理层全年指引 25% adj. FCF margin ✓</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="method-card">
+    <div class="method-title">EV/FCF 三情景测算 <span class="method-tag">基于 FY27E</span></div>
+    <div style="font-size:11px;color:var(--text2);margin-bottom:10px">FY27E Adj. FCF = 总营收 $5.93B × 23% margin = ~$1.36B</div>
+    <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px">
+      <div style="display:grid;grid-template-columns:90px 1fr 1fr 1fr;background:var(--bg3)">
+        <div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">指标</div>
+        <div style="padding:7px 10px;font-size:9px;color:var(--red);font-family:var(--mono)">熊市</div>
+        <div style="padding:7px 10px;font-size:9px;color:var(--blue);font-family:var(--mono)">基准</div>
+        <div style="padding:7px 10px;font-size:9px;color:var(--green);font-family:var(--mono)">牛市</div>
+      </div>
+      <div style="display:grid;grid-template-columns:90px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+        <div style="padding:7px 10px;font-size:10px;color:var(--text3);font-family:var(--sans)">FCF margin</div>
+        <div style="padding:7px 10px;font-size:11px;color:var(--red);font-family:var(--mono)">18%</div>
+        <div style="padding:7px 10px;font-size:11px;color:var(--blue);font-family:var(--mono)">23%</div>
+        <div style="padding:7px 10px;font-size:11px;color:var(--green);font-family:var(--mono)">28%</div>
+      </div>
+      <div style="display:grid;grid-template-columns:90px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+        <div style="padding:7px 10px;font-size:10px;color:var(--text3);font-family:var(--sans)">FY27E FCF</div>
+        <div style="padding:7px 10px;font-size:11px;color:var(--red);font-family:var(--mono)">~$1.07B</div>
+        <div style="padding:7px 10px;font-size:11px;color:var(--blue);font-family:var(--mono)">~$1.36B</div>
+        <div style="padding:7px 10px;font-size:11px;color:var(--green);font-family:var(--mono)">~$1.66B</div>
+      </div>
+      <div style="display:grid;grid-template-columns:90px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+        <div style="padding:7px 10px;font-size:10px;color:var(--text3);font-family:var(--sans)">EV/FCF 倍数</div>
+        <div style="padding:7px 10px;font-size:11px;color:var(--red);font-family:var(--mono)">38–42x</div>
+        <div style="padding:7px 10px;font-size:11px;color:var(--blue);font-family:var(--mono)">50–55x</div>
+        <div style="padding:7px 10px;font-size:11px;color:var(--green);font-family:var(--mono)">60–70x</div>
+      </div>
+      <div style="display:grid;grid-template-columns:90px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+        <div style="padding:7px 10px;font-size:10px;color:var(--text3);font-family:var(--sans)">隐含 EV</div>
+        <div style="padding:7px 10px;font-size:11px;color:var(--red);font-family:var(--mono)">$40.7–$44.9B</div>
+        <div style="padding:7px 10px;font-size:11px;color:var(--blue);font-family:var(--mono)">$68–$74.8B</div>
+        <div style="padding:7px 10px;font-size:11px;color:var(--green);font-family:var(--mono)">$99.6–$116.2B</div>
+      </div>
+      <div style="display:grid;grid-template-columns:90px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+        <div style="padding:7px 10px;font-size:10px;color:var(--text3);font-family:var(--sans)">目标股价</div>
+        <div style="padding:7px 10px;font-size:13px;font-weight:500;color:var(--red);font-family:var(--mono)">$124–$135</div>
+        <div style="padding:7px 10px;font-size:13px;font-weight:500;color:var(--blue);font-family:var(--mono)">$204–$225</div>
+        <div style="padding:7px 10px;font-size:13px;font-weight:500;color:var(--green);font-family:var(--mono)">$299–$349</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text2)">参照同类公司 EV/FCF：Datadog ~60x, ServiceNow ~45x, CrowdStrike ~70x。Snowflake 当前 EV/FCF ~56x（FY26 实际 FCF），在增速 +27% 背景下属于中性定价区间。</div>
+  </div>
+</div>
+
+<!-- Method 3: DCF -->
+<div class="section-title">方法三：DCF —— 5 年现金流折现（退出倍数法）</div>
+<div class="method-card" style="margin-bottom:16px">
+  <div class="method-title">核心假设矩阵 <span class="method-tag">FY27–FY31</span><span class="method-tag">退出 EV/Revenue</span></div>
+  <div class="dcf-table">
+    <div class="dr hdr">
+      <div class="dc lbl">假设</div>
+      <div class="dc lbl">FY27E</div>
+      <div class="dc lbl">FY28E</div>
+      <div class="dc lbl">FY29E</div>
+      <div class="dc lbl">FY30E</div>
+      <div class="dc lbl">FY31E 退出</div>
+      <div class="dc lbl">WACC / 退出倍数</div>
+    </div>
+    <!-- Bear -->
+    <div class="dr">
+      <div class="dc bear lbl" style="font-family:var(--sans)">熊：营收增速</div>
+      <div class="dc bear">+20%</div><div class="dc bear">+15%</div><div class="dc bear">+12%</div><div class="dc bear">+10%</div>
+      <div class="dc bear">$8.57B</div><div class="dc bear">WACC 10% · 退出 8x</div>
+    </div>
+    <div class="dr">
+      <div class="dc bear lbl" style="font-family:var(--sans)">熊：FCF margin</div>
+      <div class="dc bear">18%</div><div class="dc bear">18%</div><div class="dc bear">19%</div><div class="dc bear">20%</div>
+      <div class="dc bear">终端 EV $68.6B</div><div class="dc bear">目标价 ~$146</div>
+    </div>
+    <!-- Base -->
+    <div class="dr" style="background:rgba(77,166,255,0.04)">
+      <div class="dc base lbl" style="font-family:var(--sans)">基准：营收增速</div>
+      <div class="dc base">+27%</div><div class="dc base">+22%</div><div class="dc base">+18%</div><div class="dc base">+15%</div>
+      <div class="dc base">$10.99B</div><div class="dc base">WACC 9% · 退出 12x</div>
+    </div>
+    <div class="dr" style="background:rgba(77,166,255,0.04)">
+      <div class="dc base lbl" style="font-family:var(--sans)">基准：FCF margin</div>
+      <div class="dc base">23%</div><div class="dc base">25%</div><div class="dc base">26%</div><div class="dc base">27%</div>
+      <div class="dc base">终端 EV $131.9B</div><div class="dc base">目标价 ~$281</div>
+    </div>
+    <!-- Bull -->
+    <div class="dr">
+      <div class="dc bull lbl" style="font-family:var(--sans)">牛：营收增速</div>
+      <div class="dc bull">+30%</div><div class="dc bull">+28%</div><div class="dc bull">+25%</div><div class="dc bull">+22%</div>
+      <div class="dc bull">$14.22B</div><div class="dc bull">WACC 8% · 退出 16x</div>
+    </div>
+    <div class="dr">
+      <div class="dc bull lbl" style="font-family:var(--sans)">牛：FCF margin</div>
+      <div class="dc bull">28%</div><div class="dc bull">30%</div><div class="dc bull">31%</div><div class="dc bull">32%</div>
+      <div class="dc bull">终端 EV $227.5B</div><div class="dc bull">目标价 ~$492</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--text3);margin-top:8px;font-family:var(--mono)">目标价计算：EV = 终端 EV 折现 + 预测期 FCF 折现之和；股权价值 = EV + 净现金 $2.06B；每股价值 ÷ 342M 股</div>
+</div>
+
+<!-- Summary table -->
+<div class="section-title">三方法综合汇总</div>
+<div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px">
+  <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 1fr;background:var(--bg3)">
+    <div style="padding:9px 14px;font-size:10px;color:var(--text3);font-family:var(--mono)">估值方法</div>
+    <div style="padding:9px 14px;font-size:10px;color:var(--red);font-family:var(--mono)">熊市目标价</div>
+    <div style="padding:9px 14px;font-size:10px;color:var(--blue);font-family:var(--mono)">基准目标价</div>
+    <div style="padding:9px 14px;font-size:10px;color:var(--green);font-family:var(--mono)">牛市目标价</div>
+    <div style="padding:9px 14px;font-size:10px;color:var(--text3);font-family:var(--mono)">权重</div>
+  </div>
+  <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 1fr;border-top:1px solid var(--border)">
+    <div style="padding:9px 14px;font-size:11px;color:var(--text2)">EV/Revenue (P/S)</div>
+    <div style="padding:9px 14px;font-size:12px;color:var(--red);font-family:var(--mono)">$144–$161</div>
+    <div style="padding:9px 14px;font-size:12px;color:var(--blue);font-family:var(--mono)">$196–$231</div>
+    <div style="padding:9px 14px;font-size:12px;color:var(--green);font-family:var(--mono)">$283–$353</div>
+    <div style="padding:9px 14px;font-size:11px;color:var(--text3)">40%</div>
+  </div>
+  <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 1fr;border-top:1px solid var(--border)">
+    <div style="padding:9px 14px;font-size:11px;color:var(--text2)">EV/FCF</div>
+    <div style="padding:9px 14px;font-size:12px;color:var(--red);font-family:var(--mono)">$124–$135</div>
+    <div style="padding:9px 14px;font-size:12px;color:var(--blue);font-family:var(--mono)">$204–$225</div>
+    <div style="padding:9px 14px;font-size:12px;color:var(--green);font-family:var(--mono)">$299–$349</div>
+    <div style="padding:9px 14px;font-size:11px;color:var(--text3)">30%</div>
+  </div>
+  <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 1fr;border-top:1px solid var(--border)">
+    <div style="padding:9px 14px;font-size:11px;color:var(--text2)">DCF（5年退出倍数）</div>
+    <div style="padding:9px 14px;font-size:12px;color:var(--red);font-family:var(--mono)">~$146</div>
+    <div style="padding:9px 14px;font-size:12px;color:var(--blue);font-family:var(--mono)">~$281</div>
+    <div style="padding:9px 14px;font-size:12px;color:var(--green);font-family:var(--mono)">~$492</div>
+    <div style="padding:9px 14px;font-size:11px;color:var(--text3)">30%</div>
+  </div>
+  <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 1fr;border-top:2px solid var(--border2);background:var(--bg2)">
+    <div style="padding:10px 14px;font-size:11px;font-weight:500;color:var(--text)">加权综合</div>
+    <div style="padding:10px 14px;font-size:14px;font-weight:500;color:var(--red);font-family:var(--mono)">~$138</div>
+    <div style="padding:10px 14px;font-size:14px;font-weight:500;color:var(--blue);font-family:var(--mono)">~$236</div>
+    <div style="padding:10px 14px;font-size:14px;font-weight:500;color:var(--green);font-family:var(--mono)">~$377</div>
+    <div style="padding:10px 14px;font-size:11px;color:var(--text3)">当前 $175</div>
+  </div>
+</div>
+
+<div class="caveat-box">
+  <strong>⚠ 核心估值风险与局限性（必读）</strong><br><br>
+  <strong>1. GAAP P/E 为负，本报告不使用</strong>：Snowflake FY26 GAAP EPS 约 -$3.95，GAAP P/E 为 -44x，无法作为估值锚点。Non-GAAP 运营利润率 10% 是更合理的盈利能力代理指标，但需警惕 SBC（股票薪酬）显著侵蚀真实股东回报（FY26 SBC 约占营收 25%+）。<br><br>
+  <strong>2. 消费制的预测不确定性</strong>：Snowflake 的消费制定价使季度营收可见性低于订阅制。单一大客户消费减速（如 AI workload 产生「sticker shock」）可能导致单季营收明显偏离指引，引发估值重定价。<br><br>
+  <strong>3. SBC 稀释效应被低估</strong>：以 342M 股为基准计算的每股价值，未充分反映未来 SBC 导致的持续稀释。FY26 全年加权平均稀释股数约 352M，建议使用 350–360M 进行保守测算，目标价相应下调约 2–5%。<br><br>
+  <strong>4. 多重估值方法的内生矛盾</strong>：三种方法在牛市情景下的目标价差异极大（$353 vs $492），主要来源于终端增速假设的微小变化。DCF 对远期假设高度敏感，应作为参考框架而非精确预测。P/S 倍数法在当前市场环境下更具实用性。<br><br>
+  <strong>5. 最关键的单一变量</strong>：NRR 是所有估值方法共同依赖的基础假设。若 NRR 从 125% 回落至 118–120%（意味着存量客户消费扩张放缓），所有情景目标价均需下调 20–30%。这是本报告中敏感度最高的单一指标。
+</div>
+
+</div>
+
+<footer>
+  <div class="footer-note">
+    数据来源：Snowflake SEC EDGAR 季报 · Q1–Q4 FY2026（截至 2026 年 1 月 31 日）<br>
+    FY2027 指引来自 Q4 FY2026 财报电话会议（2026 年 2 月 25 日）<br>
+    本页面为个人投资研究记录，不构成任何投资建议
+  </div>
+  <div class="footer-note" style="text-align:right">
+    页面版本：v2.0 · 2026 年 3 月<br>
+    配套模板：ENTERPRISE_SAAS_AGENT_TEMPLATE.md<br>
+    下次更新：2026 年 5 月（Q1 FY2027 财报后）
+  </div>
+</footer>
+
+</div>
+<script>
+function go(id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`[onclick="go('${id}')"]`).classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>
