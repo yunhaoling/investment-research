@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>多邻国 DUOL · 护城河追踪 2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --bg2: #141416;
+    --bg3: #1c1c20;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e8e6e0;
+    --text2: #9a9890;
+    --text3: #5a5855;
+    --green: #2dd4a0;
+    --green-dim: rgba(45,212,160,0.12);
+    --amber: #f5a623;
+    --amber-dim: rgba(245,166,35,0.12);
+    --red: #f06060;
+    --red-dim: rgba(240,96,96,0.1);
+    --blue: #6eb3f7;
+    --blue-dim: rgba(110,179,247,0.1);
+    --accent: #5b6af0;
+    --accent-dim: rgba(91,106,240,0.15);
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', 'Noto Sans SC', sans-serif;
+    --serif: Georgia, serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* grid lines background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  header {
+    padding: 48px 0 36px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 36px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .header-left {}
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-size: 32px;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  h1 span {
+    color: var(--green);
+    font-weight: 500;
+  }
+
+  .header-meta {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 8px;
+    font-family: var(--mono);
+  }
+
+  .header-right {
+    text-align: right;
+  }
+
+  .stat-big {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 2px;
+    font-family: var(--mono);
+  }
+
+  .badge-up { color: var(--green); }
+  .badge-warn { color: var(--amber); }
+  .badge-danger { color: var(--red); }
+
+  /* TABS */
+  .tab-bar {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+
+  .tab-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    color: var(--text3);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.2s, border-color 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+
+  .tab-btn:hover { color: var(--text2); }
+  .tab-btn.active { color: var(--green); border-bottom-color: var(--green); }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* QUARTER CARDS */
+  .q-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .q-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    background: var(--bg2);
+  }
+
+  .q-card:hover { border-color: var(--border2); background: var(--bg3); }
+  .q-card.active { border-color: var(--green); background: rgba(45,212,160,0.05); }
+  .q-card.guidance { border-style: dashed; border-color: rgba(245,166,35,0.3); }
+  .q-card.guidance.active { border-color: var(--amber); background: var(--amber-dim); }
+
+  .q-quarter {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .guide-pill {
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: var(--amber-dim);
+    color: var(--amber);
+    font-family: var(--mono);
+  }
+
+  .q-dau {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .q-yoy {
+    font-size: 11px;
+    margin-top: 4px;
+    font-family: var(--mono);
+  }
+
+  /* DATA TABLE */
+  .data-table {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+
+  .table-head {
+    padding: 10px 16px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .table-head-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .data-row {
+    display: grid;
+    grid-template-columns: 160px repeat(5, 1fr);
+    border-top: 1px solid var(--border);
+  }
+
+  .data-row.header-row { background: var(--bg3); }
+
+  .cell {
+    padding: 9px 14px;
+    font-size: 12px;
+    color: var(--text2);
+    transition: background 0.2s;
+    font-family: var(--mono);
+  }
+
+  .cell.row-label {
+    color: var(--text3);
+    font-size: 11px;
+    font-family: var(--sans);
+  }
+
+  .cell.col-header {
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.06em;
+  }
+
+  .cell.hl { background: rgba(45,212,160,0.06); color: var(--text); }
+  .cell.guide-col { background: rgba(245,166,35,0.04); }
+  .cell.guide-col.hl { background: rgba(245,166,35,0.1); }
+
+  .cell .up { color: var(--green); }
+  .cell .warn { color: var(--amber); }
+  .cell .danger { color: var(--red); }
+  .cell .dim { color: var(--text3); }
+  .cell .bold { font-weight: 500; color: var(--text); }
+  .cell .tiny { font-size: 9px; }
+
+  /* BARS */
+  .bar-section { margin-bottom: 28px; }
+  .bar-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .bar-q-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    width: 72px;
+    flex-shrink: 0;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 4px;
+    background: var(--bg3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  .bar-fill.green { background: var(--green); }
+  .bar-fill.amber { background: var(--amber); }
+  .bar-fill.dashed {
+    background: repeating-linear-gradient(
+      90deg, var(--amber) 0, var(--amber) 6px, transparent 6px, transparent 10px
+    );
+  }
+
+  .bar-val {
+    font-family: var(--mono);
+    font-size: 11px;
+    width: 48px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* MOAT SECTION */
+  .moat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .moat-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    background: var(--bg2);
+  }
+
+  .moat-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .moat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot-green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .dot-amber { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+  .dot-red { background: var(--red); box-shadow: 0 0 6px var(--red); }
+
+  .moat-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .moat-body {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+
+  .moat-body strong { color: var(--text); font-weight: 500; }
+
+  /* ALERT BOX */
+  .alert {
+    border: 1px solid;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  .alert.amber {
+    border-color: rgba(245,166,35,0.3);
+    background: var(--amber-dim);
+    color: var(--text2);
+  }
+
+  .alert.amber strong { color: var(--amber); }
+
+  /* SIGNAL ITEMS */
+  .signals { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+
+  .signal-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .signal-item.blue { background: var(--blue-dim); color: var(--text2); border-left: 2px solid var(--blue); }
+  .signal-item.amber { background: var(--amber-dim); color: var(--text2); border-left: 2px solid var(--amber); }
+  .signal-item.green { background: var(--green-dim); color: var(--text2); border-left: 2px solid var(--green); }
+
+  /* OUTLOOK TABLE */
+  .outlook-table {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .outlook-row {
+    display: grid;
+    grid-template-columns: 130px 140px 140px 110px 1fr;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+  }
+
+  .outlook-row:first-child { border-top: none; background: var(--bg3); }
+
+  .ocell {
+    padding: 9px 12px;
+    color: var(--text2);
+    font-family: var(--mono);
+  }
+
+  .ocell.label { color: var(--text3); font-family: var(--sans); font-size: 11px; }
+
+  /* WATCHLIST */
+  .wl-header {
+    display: grid;
+    grid-template-columns: 32px 1fr 160px 160px;
+    gap: 0;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--bg3);
+    border-radius: 10px 10px 0 0;
+  }
+
+  .wl-item {
+    display: grid;
+    grid-template-columns: 32px 1fr 160px 160px;
+    gap: 0;
+    border-top: 1px solid var(--border);
+    background: var(--bg2);
+    transition: background 0.15s;
+    cursor: default;
+  }
+
+  .wl-item:hover { background: var(--bg3); }
+
+  .wl-item:last-child { border-radius: 0 0 10px 10px; }
+
+  .wl-num {
+    padding: 16px 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    display: flex;
+    align-items: flex-start;
+    padding-top: 18px;
+  }
+
+  .wl-main {
+    padding: 14px 16px 14px 0;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+
+  .wl-metric {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .wl-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    letter-spacing: 0.04em;
+  }
+
+  .wl-tag.green { background: var(--green-dim); color: var(--green); }
+  .wl-tag.amber { background: var(--amber-dim); color: var(--amber); }
+  .wl-tag.red { background: var(--red-dim); color: var(--red); }
+  .wl-tag.blue { background: var(--blue-dim); color: var(--blue); }
+
+  .wl-desc {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  .wl-guidance {
+    padding: 14px 14px;
+    border-right: 1px solid var(--border);
+  }
+
+  .wl-guidance-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text3);
+    margin-bottom: 5px;
+    letter-spacing: 0.06em;
+  }
+
+  .wl-guidance-val {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--amber);
+  }
+
+  .wl-guidance-note {
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  .wl-interp {
+    padding: 14px 14px;
+  }
+
+  .interp-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 5px;
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  .interp-row:last-child { margin-bottom: 0; }
+
+  .interp-arrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .interp-arrow.up { color: var(--green); }
+  .interp-arrow.dn { color: var(--red); }
+  .interp-arrow.mid { color: var(--amber); }
+
+  .interp-text { color: var(--text2); }
+
+  .wl-divider {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 20px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .wl-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .wl-block { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 8px; }
+
+  .wl-priority-badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .priority-1 { background: rgba(240,96,96,0.15); color: var(--red); }
+  .priority-2 { background: var(--amber-dim); color: var(--amber); }
+  .priority-3 { background: var(--green-dim); color: var(--green); }
+
+  /* SOURCES TAB */
+  .src-section { margin-bottom: 28px; }
+  .src-section-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  .src-table { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .src-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 80px 1fr;
+    border-top: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .src-row:first-child { border-top: none; background: var(--bg3); }
+  .src-row:not(:first-child):hover { background: var(--bg3); }
+  .sc { padding: 9px 14px; font-size: 11px; }
+  .sc.label { color: var(--text3); font-size: 10px; letter-spacing: 0.06em; font-family: var(--mono); }
+  .sc.quarter { font-family: var(--mono); font-weight: 500; color: var(--text); }
+  .sc.desc { color: var(--text2); }
+  .sc.date { font-family: var(--mono); color: var(--text3); }
+  .sc.link a {
+    color: var(--blue);
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 10px;
+    word-break: break-all;
+  }
+  .sc.link a:hover { color: var(--green); text-decoration: underline; }
+
+  .verify-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .verify-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    background: var(--bg2);
+  }
+  .verify-metric { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .verify-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-bottom: 6px;
+  }
+  .verify-status.ok { background: var(--green-dim); color: var(--green); }
+  .verify-status.fixed { background: var(--amber-dim); color: var(--amber); }
+  .verify-note { font-size: 11px; color: var(--text2); line-height: 1.5; }
+  .verify-note code {
+    font-family: var(--mono);
+    font-size: 10px;
+    background: var(--bg3);
+    padding: 1px 4px;
+    border-radius: 3px;
+    color: var(--text);
+  }
+
+  /* FOOTER */
+  footer {
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    line-height: 1.7;
+  }
+
+  /* NOTICE */
+  .notice {
+    border: 1px dashed rgba(245,166,35,0.35);
+    border-radius: 8px;
+    padding: 12px 16px;
+    background: rgba(245,166,35,0.05);
+    font-size: 12px;
+    color: var(--text2);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  .notice strong { color: var(--amber); }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .prose {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.75;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    background: var(--bg2);
+    margin-top: 16px;
+  }
+
+  .prose strong { color: var(--text); font-weight: 500; }
+
+  @media (max-width: 800px) {
+    .q-grid { grid-template-columns: repeat(3, 1fr); }
+    .data-row { grid-template-columns: 100px repeat(5, 1fr); font-size: 10px; }
+    .cell { padding: 7px 8px; font-size: 10px; }
+    .moat-grid { grid-template-columns: 1fr; }
+    .outlook-row { grid-template-columns: 100px 1fr 1fr; }
+    .ocell:nth-child(4), .ocell:nth-child(5) { display: none; }
+  }
+
+  @media (max-width: 560px) {
+    .q-grid { grid-template-columns: repeat(2, 1fr); }
+    h1 { font-size: 24px; }
+    header { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel.active { animation: fadeIn 0.25s ease; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="header-left">
+      <div class="eyebrow">DUOL · 护城河解构研究 · 价值投资追踪</div>
+      <h1>多邻国 <span>护城河</span> 追踪</h1>
+      <div class="header-meta">数据来源：SEC EDGAR 季报 · Q1 2025 — Q4 2025 实际 + Q1 2026 管理层指引</div>
+    </div>
+    <div class="header-right">
+      <div class="stat-big">$1,037.6M</div>
+      <div class="stat-label">FY2025 全年营收 <span class="badge-up">↑ +39% YoY</span></div>
+      <div class="stat-label" style="margin-top:6px">更新时间：2026 年 3 月</div>
+    </div>
+  </header>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('overview')">用户与财务</button>
+    <button class="tab-btn" onclick="switchTab('moat')">护城河信号</button>
+    <button class="tab-btn" onclick="switchTab('outlook')">2026 指引</button>
+    <button class="tab-btn" onclick="switchTab('framework')">分析框架</button>
+    <button class="tab-btn" onclick="switchTab('watchlist')" style="color:var(--amber)">▸ Q1 2026 观察清单</button>
+    <button class="tab-btn" onclick="switchTab('sources')">数据来源</button>
+  </div>
+
+  <!-- ======== OVERVIEW ======== -->
+  <div id="overview" class="panel active">
+
+    <div class="notice">
+      <strong>⚠ Q1 2026 说明</strong>：Q1 2026 于 3 月 31 日结束，财报预计 5 月中旬发布。当前 Q1 2026 列为管理层在 Q4 2025 财报中给出的<strong>官方指引</strong>，非实际值，用虚线边框与橙色底色区分。
+    </div>
+
+    <!-- Quarter selector -->
+    <div class="q-grid">
+      <div class="q-card" onclick="selQ(0)" id="qc0">
+        <div class="q-quarter">Q1 2025</div>
+        <div class="q-dau">46.6M</div>
+        <div class="q-yoy badge-up">↑ +49% DAU YoY</div>
+      </div>
+      <div class="q-card active" onclick="selQ(1)" id="qc1">
+        <div class="q-quarter">Q2 2025</div>
+        <div class="q-dau">47.7M</div>
+        <div class="q-yoy badge-up">↑ +40% DAU YoY</div>
+      </div>
+      <div class="q-card" onclick="selQ(2)" id="qc2">
+        <div class="q-quarter">Q3 2025</div>
+        <div class="q-dau">50.5M</div>
+        <div class="q-yoy badge-up">↑ +36% DAU YoY</div>
+      </div>
+      <div class="q-card" onclick="selQ(3)" id="qc3">
+        <div class="q-quarter">Q4 2025</div>
+        <div class="q-dau">52.7M</div>
+        <div class="q-yoy badge-warn">↑ +30% DAU YoY</div>
+      </div>
+      <div class="q-card guidance" onclick="selQ(4)" id="qc4">
+        <div class="q-quarter">Q1 2026 <span class="guide-pill">指引</span></div>
+        <div class="q-dau">~55.9M</div>
+        <div class="q-yoy badge-warn">~+20% DAU YoY</div>
+      </div>
+    </div>
+
+    <!-- Data table -->
+    <div class="data-table">
+      <div class="table-head">
+        <span class="table-head-label">核心数据对比</span>
+        <span class="table-head-label" style="font-size:9px">点击季度卡片切换高亮</span>
+      </div>
+      <div class="data-row header-row">
+        <div class="cell col-header row-label">指标</div>
+        <div class="cell col-header">Q1 2025</div>
+        <div class="cell col-header hl">Q2 2025</div>
+        <div class="cell col-header">Q3 2025</div>
+        <div class="cell col-header">Q4 2025</div>
+        <div class="cell col-header guide-col">Q1 2026 指引</div>
+      </div>
+      <div class="data-row">
+        <div class="cell row-label">DAU（百万）</div>
+        <div class="cell">46.6 <span class="up tiny">+49%</span></div>
+        <div class="cell hl"><span class="bold">47.7</span> <span class="up tiny">+40%</span></div>
+        <div class="cell">50.5 <span class="up tiny">+36%</span></div>
+        <div class="cell">52.7 <span class="warn tiny">+30%</span></div>
+        <div class="cell guide-col">~55.9 <span class="warn tiny">~+20%</span></div>
+      </div>
+      <div class="data-row">
+        <div class="cell row-label">MAU（百万）</div>
+        <div class="cell">130.2 <span class="up tiny">+33%</span></div>
+        <div class="cell hl">128.3 <span class="danger tiny">-1.9M↓</span></div>
+        <div class="cell">135.3 <span class="up tiny">+20%</span></div>
+        <div class="cell">133.1 <span class="danger tiny">-2.2M↓</span></div>
+        <div class="cell guide-col dim">— 未披露</div>
+      </div>
+      <div class="data-row">
+        <div class="cell row-label">DAU/MAU 比率</div>
+        <div class="cell bold">35.8%</div>
+        <div class="cell hl bold">37.2%</div>
+        <div class="cell bold">37.3%</div>
+        <div class="cell bold">39.6% <span class="up tiny">↑峰值</span></div>
+        <div class="cell guide-col dim">— 未披露</div>
+      </div>
+      <div class="data-row">
+        <div class="cell row-label">付费用户（百万）</div>
+        <div class="cell">10.3 <span class="up tiny">+40%</span></div>
+        <div class="cell hl">10.9 <span class="up tiny">+37%</span></div>
+        <div class="cell">11.5 <span class="up tiny">+34%</span></div>
+        <div class="cell">12.2 <span class="warn tiny">+28%</span></div>
+        <div class="cell guide-col dim">— 未披露</div>
+      </div>
+      <div class="data-row">
+        <div class="cell row-label">总 Bookings（$M）</div>
+        <div class="cell">$271.6 <span class="up tiny">+38%</span></div>
+        <div class="cell hl">$268.0 <span class="up tiny">+41%</span></div>
+        <div class="cell">$281.9 <span class="up tiny">+33%</span></div>
+        <div class="cell">$336.8 <span class="warn tiny">+24%</span></div>
+        <div class="cell guide-col">~$301.5 <span class="warn tiny">+11%</span></div>
+      </div>
+      <div class="data-row">
+        <div class="cell row-label">营收（$M）</div>
+        <div class="cell">$230.7 <span class="up tiny">+38%</span></div>
+        <div class="cell hl">$252.3 <span class="up tiny">+41%</span></div>
+        <div class="cell">$271.7 <span class="up tiny">+41%</span></div>
+        <div class="cell">$282.9 <span class="up tiny">+35%</span></div>
+        <div class="cell guide-col">~$288.5 <span class="warn tiny">+25%</span></div>
+      </div>
+      <div class="data-row">
+        <div class="cell row-label">毛利率</div>
+        <div class="cell">~71.1%</div>
+        <div class="cell hl">72.4%</div>
+        <div class="cell">72.5%</div>
+        <div class="cell">72.8% <span class="up tiny">+90bps YoY</span></div>
+        <div class="cell guide-col danger">~71% <span class="tiny">AI成本扩张</span></div>
+      </div>
+      <div class="data-row">
+        <div class="cell row-label">Adj. EBITDA 利润率</div>
+        <div class="cell">27.2%</div>
+        <div class="cell hl bold">31.2% <span class="up tiny">↑峰值</span></div>
+        <div class="cell">29.5%</div>
+        <div class="cell">29.8%</div>
+        <div class="cell guide-col danger bold">~25.5% <span class="tiny">主动压缩</span></div>
+      </div>
+      <div class="data-row">
+        <div class="cell row-label">季度关键事件</div>
+        <div class="cell dim" style="font-size:10px">Dead Duo 营销<br>AI成本优化启动</div>
+        <div class="cell hl dim" style="font-size:10px">创记录净利润<br>Max ARPU +6%</div>
+        <div class="cell dim" style="font-size:10px">破5000万DAU<br>Chess最快增长</div>
+        <div class="cell dim" style="font-size:10px">MAU环比下滑<br>战略转向宣布</div>
+        <div class="cell guide-col" style="font-size:10px;color:var(--amber)">AI功能向免费用户开放<br>投资用户增长</div>
+      </div>
+    </div>
+
+    <!-- Bar charts -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div class="bar-section">
+        <div class="bar-title">DAU 同比增速</div>
+        <div class="bar-row">
+          <div class="bar-q-label">Q1 2025</div>
+          <div class="bar-track"><div class="bar-fill green" style="width:82%"></div></div>
+          <div class="bar-val badge-up">+49%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-q-label">Q2 2025</div>
+          <div class="bar-track"><div class="bar-fill green" style="width:67%"></div></div>
+          <div class="bar-val badge-up">+40%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-q-label">Q3 2025</div>
+          <div class="bar-track"><div class="bar-fill amber" style="width:60%"></div></div>
+          <div class="bar-val badge-warn">+36%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-q-label">Q4 2025</div>
+          <div class="bar-track"><div class="bar-fill amber" style="width:50%"></div></div>
+          <div class="bar-val badge-warn">+30%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-q-label" style="color:var(--amber)">Q1 '26 指引</div>
+          <div class="bar-track"><div class="bar-fill dashed" style="width:33%"></div></div>
+          <div class="bar-val badge-warn">~+20%</div>
+        </div>
+      </div>
+
+      <div class="bar-section">
+        <div class="bar-title">Adj. EBITDA 利润率</div>
+        <div class="bar-row">
+          <div class="bar-q-label">Q1 2025</div>
+          <div class="bar-track"><div class="bar-fill green" style="width:54%"></div></div>
+          <div class="bar-val">27.2%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-q-label">Q2 2025</div>
+          <div class="bar-track"><div class="bar-fill green" style="width:62%"></div></div>
+          <div class="bar-val badge-up">31.2%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-q-label">Q3 2025</div>
+          <div class="bar-track"><div class="bar-fill green" style="width:59%"></div></div>
+          <div class="bar-val">29.5%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-q-label">Q4 2025</div>
+          <div class="bar-track"><div class="bar-fill green" style="width:60%"></div></div>
+          <div class="bar-val">29.8%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-q-label" style="color:var(--amber)">Q1 '26 指引</div>
+          <div class="bar-track"><div class="bar-fill dashed" style="width:51%"></div></div>
+          <div class="bar-val badge-danger">25.5%</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======== MOAT ======== -->
+  <div id="moat" class="panel">
+
+    <div class="section-title">四条护城河 · 2025 年信号更新</div>
+
+    <div class="moat-grid">
+      <div class="moat-card">
+        <div class="moat-top">
+          <div class="moat-dot dot-green"></div>
+          <div class="moat-title">行为锁定：持续强化，但 MAU 出现裂缝</div>
+        </div>
+        <div class="moat-body">DAU/MAU 比率从 35.8% 升至 39.6%，连续四季度创历史新高，说明存量用户习惯机制在加深。但 MAU 在 Q2 和 Q4 均出现环比下滑，说明平台正在变成「高黏性但难进新用户」的状态。<strong>MAU 的环比方向，是 2026 年这条护城河最重要的单一观测指标。</strong></div>
+      </div>
+
+      <div class="moat-card">
+        <div class="moat-top">
+          <div class="moat-dot dot-amber"></div>
+          <div class="moat-title">数据飞轮：2026 年主动承压，等待验证</div>
+        </div>
+        <div class="moat-body">管理层将 AI 功能向所有免费用户开放，导致毛利率指引从 72.8% 下调至 Q1 约 71%、Q2–Q4 约 69%。这是<strong>主动选择用短期毛利换用户规模</strong>的飞轮投资。Max 订阅 Bookings 在 Q3 同比翻倍，说明 AI 功能的货币化有效，但 GenAI 成本仍是主要压制。2026 年全年是关键验证期。</div>
+      </div>
+
+      <div class="moat-card">
+        <div class="moat-top">
+          <div class="moat-dot dot-amber"></div>
+          <div class="moat-title">品牌资产：正在修复与商业化的冲突</div>
+        </div>
+        <div class="moat-body">Q3 因减少"unhinged"内容导致 DAU 增速放缓，Q4 管理层公开承认"过度变现摩擦了免费用户体验"。S&M 费用占收入比持续低于 12%，说明品牌飞轮仍在转，但增长效率边际下降。<strong>2026 年重新向免费用户投资，是在修复品牌护城河与商业化目标之间的短期冲突。</strong></div>
+      </div>
+
+      <div class="moat-card">
+        <div class="moat-top">
+          <div class="moat-dot dot-green"></div>
+          <div class="moat-title">网络效应：Chess 是新变量</div>
+        </div>
+        <div class="moat-body">Chess 成为 2025 年增长最快科目，与 Luckin Coffee 亚洲联名实现 10 亿+曝光，显示社交传播能力扩展到语言学习之外。Friend Streak 渗透率持续提升（约 1/3 DAU）。目前网络效应仍较弱，但 Chess 的社区化潜力是从★★向★★★★演进的早期信号，<strong>尚无量化数据，持续观察。</strong></div>
+      </div>
+    </div>
+
+    <div class="alert amber">
+      <strong>⚠ 全年最关键信号：MAU 连续两次环比下滑</strong><br>
+      Q2 MAU 130.2M → 128.3M，Q4 MAU 135.3M → 133.1M。MAU 反映平台对新用户的吸引力（拉新能力），DAU 反映老用户黏性（留存能力）。两者出现背离——DAU/MAU 不断创新高，但 MAU 绝对值在下滑——意味着平台正在进入「护城河保护存量有效，但增量扩张受阻」的状态。这是管理层宣布战略转向的核心原因。
+    </div>
+
+    <div class="section-title" style="margin-top:24px">5 月财报发布后，立即核对的三个数字</div>
+    <div class="signals">
+      <div class="signal-item blue">① <strong>MAU 环比方向</strong>：止跌回升 = 战略转向初步有效；继续下滑 = 用户获取能力结构性受损，需要重新评估增长假设</div>
+      <div class="signal-item amber">② <strong>毛利率实际值 vs 指引 71%</strong>：低于 70% = AI 成本失控；高于 71.5% = 成本优化超预期，数据飞轮在加速</div>
+      <div class="signal-item green">③ <strong>付费订阅增速方向</strong>：若从 28% 继续下滑，说明免费用户扩张在稀释转化率；若企稳或反弹，说明飞轮的货币化端在运转</div>
+    </div>
+
+  </div>
+
+  <!-- ======== OUTLOOK ======== -->
+  <div id="outlook" class="panel">
+
+    <div class="section-title">2026 管理层官方指引（Q4 2025 股东信 · 2025.02.20）</div>
+
+    <div class="outlook-table">
+      <div class="outlook-row">
+        <div class="ocell label" style="font-weight:500;color:var(--text3)">指标</div>
+        <div class="ocell label" style="color:var(--text3)">Q1 2026 指引</div>
+        <div class="ocell label" style="color:var(--text3)">FY 2026 指引</div>
+        <div class="ocell label" style="color:var(--text3)">vs 2025 实际</div>
+        <div class="ocell label" style="color:var(--text3)">含义</div>
+      </div>
+      <div class="outlook-row">
+        <div class="ocell label">DAU 增速</div>
+        <div class="ocell badge-warn">~+20%</div>
+        <div class="ocell badge-warn">~+20% 全年</div>
+        <div class="ocell badge-danger">↓ vs 2025 均值 ~39%</div>
+        <div class="ocell dim">基数效应 + 变现摩擦遗留影响</div>
+      </div>
+      <div class="outlook-row">
+        <div class="ocell label">营收增速</div>
+        <div class="ocell badge-up">+25%</div>
+        <div class="ocell">+15%–18%</div>
+        <div class="ocell badge-danger">↓ vs 2025 实际 +39%</div>
+        <div class="ocell dim">Bookings 增速下滑的滞后传导</div>
+      </div>
+      <div class="outlook-row">
+        <div class="ocell label">毛利率</div>
+        <div class="ocell badge-danger">~71%（Q1）</div>
+        <div class="ocell badge-danger">~69%（Q2–Q4）</div>
+        <div class="ocell badge-danger">↓ vs Q4 实际 72.8%</div>
+        <div class="ocell dim">向免费用户扩展 AI 功能的直接成本</div>
+      </div>
+      <div class="outlook-row">
+        <div class="ocell label">EBITDA 利润率</div>
+        <div class="ocell badge-danger">~25.5%</div>
+        <div class="ocell badge-danger">~25% 全年</div>
+        <div class="ocell badge-danger">↓ vs 2025 实际 29.5%</div>
+        <div class="ocell dim">主动牺牲 ~4–5ppt 换用户增长投资</div>
+      </div>
+      <div class="outlook-row">
+        <div class="ocell label">中期 DAU 目标</div>
+        <div class="ocell badge-up" style="grid-column:span 2">1 亿 DAU（约 2028 年）</div>
+        <div class="ocell badge-up">vs 当前 52.7M，需约翻倍</div>
+        <div class="ocell dim">需维持 ~20% 复合增长约 3 年，或重新提速</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <strong>怎么理解这次战略转向</strong><br><br>
+      管理层的核心逻辑是：过去两年过度优化变现，向免费用户插入更多广告、减少免费功能，伤害了用户体验，导致 MAU 增长放缓。现在的纠偏是把 AI 功能（原本仅限 Max 付费层）向所有用户开放，以此换回免费用户的增长和留存。这意味着 <strong>2026 年是一个有意识的「播种年」</strong>：短期利润率压缩，换取 2027–2028 年更大的用户基数，再在更大基数上做付费转化。<br><br>
+      在护城河框架里，这次转向本质上是在<strong>主动加固行为锁定护城河</strong>（更多用户 + 更好免费体验 = 更深习惯锁定），同时接受<strong>数据飞轮短期效率下降</strong>（AI 成本外溢到免费层）。判断这个赌注是否值得的核心指标，就是 2026 年每季度的 MAU 环比变化。MAU 止跌回升 = 赌注在轨；MAU 继续下滑 = 前提假设需重新审视。
+    </div>
+
+  </div>
+
+  <!-- ======== WATCHLIST ======== -->
+  <div id="watchlist" class="panel">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:8px;">
+      <div>
+        <div class="section-title" style="border:none;margin:0;padding:0">Q1 2026 财报观察清单</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;font-family:var(--mono)">财报预计发布：2026 年 5 月中旬 · 数据截止：2026 年 3 月 31 日</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="wl-priority-badge priority-1">P1 核心假设</span>
+        <span class="wl-priority-badge priority-2">P2 飞轮验证</span>
+        <span class="wl-priority-badge priority-3">P3 辅助观察</span>
+      </div>
+    </div>
+
+    <div style="font-size:12px;color:var(--text2);margin-bottom:24px;line-height:1.65;padding:12px 14px;border:1px solid var(--border);border-radius:8px;background:var(--bg2)">
+      Q4 2025 财报标志着多邻国进入战略转向期：主动压缩利润率、向免费用户开放 AI、目标 2028 年达到 1 亿 DAU。Q1 2026 是验证转向是否奏效的<strong style="color:var(--text)">第一个数据点</strong>。以下清单按优先级排列，帮助你在财报发布后 24 小时内快速判断护城河状态。
+    </div>
+
+    <!-- P1 -->
+    <div class="wl-divider">P1 · 核心假设验证 <span style="color:var(--red);font-size:9px">— 这三个数字决定护城河是否在修复</span></div>
+
+    <div class="wl-block">
+      <div class="wl-header">
+        <div></div>
+        <div>指标 · 观察点</div>
+        <div>管理层指引 / 基准</div>
+        <div>读数解读</div>
+      </div>
+
+      <div class="wl-item">
+        <div class="wl-num">01</div>
+        <div class="wl-main">
+          <div class="wl-metric">
+            MAU 环比方向
+            <span class="wl-tag red">P1 最关键</span>
+            <span class="wl-tag amber">行为锁定</span>
+          </div>
+          <div class="wl-desc">
+            Q2 和 Q4 2025 MAU 均出现环比下滑（-1.9M、-2.2M），是管理层宣布战略转向的核心原因。这一季度，管理层把开放 AI 功能作为修复免费用户体验的主要手段，MAU 的环比变化是最直接的疗效验证。<br>
+            <span style="color:var(--text3);font-size:11px;margin-top:4px;display:block">来源位置：季报用户指标表第一行 · 对比上季度 Q4 2025：133.1M</span>
+          </div>
+        </div>
+        <div class="wl-guidance">
+          <div class="wl-guidance-label">上季末基准</div>
+          <div class="wl-guidance-val">133.1M</div>
+          <div class="wl-guidance-note">管理层未对 MAU 作出具体指引，需自行观察绝对值变化</div>
+        </div>
+        <div class="wl-interp">
+          <div class="interp-row">
+            <div class="interp-arrow up">↑</div>
+            <div class="interp-text"><strong style="color:var(--green)">止跌回升</strong>：战略转向初步有效，拉新端摩擦在减少，可维持假设</div>
+          </div>
+          <div class="interp-row">
+            <div class="interp-arrow mid">→</div>
+            <div class="interp-text"><strong style="color:var(--amber)">持平 ±1M</strong>：转向效果尚未显现，需再观察一个季度</div>
+          </div>
+          <div class="interp-row">
+            <div class="interp-arrow dn">↓</div>
+            <div class="interp-text"><strong style="color:var(--red)">继续下滑 &gt;2M</strong>：用户获取能力可能结构性受损，需重新评估增长假设和 1 亿 DAU 路径</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wl-item">
+        <div class="wl-num">02</div>
+        <div class="wl-main">
+          <div class="wl-metric">
+            DAU/MAU 比率
+            <span class="wl-tag red">P1</span>
+            <span class="wl-tag amber">行为锁定</span>
+          </div>
+          <div class="wl-desc">
+            Q4 2025 达到历史新高 39.6%，连续四季度上升，是行为锁定护城河最健康的信号。即使 MAU 承压，只要比率继续提升，说明存量用户的习惯机制没有损坏。需同时结合 MAU 绝对值一起看——比率上升但 MAU 继续下滑，意味着护城河在「收缩中加固」，而非扩张。<br>
+            <span style="color:var(--text3);font-size:11px;margin-top:4px;display:block">计算方式：DAU ÷ MAU · 对比 Q4 2025：39.6%（历史峰值）</span>
+          </div>
+        </div>
+        <div class="wl-guidance">
+          <div class="wl-guidance-label">DAU 指引基准</div>
+          <div class="wl-guidance-val">~55.9M</div>
+          <div class="wl-guidance-note">管理层指引 DAU ~+20% YoY（Q1 2025 实际 46.6M × 1.20）</div>
+        </div>
+        <div class="wl-interp">
+          <div class="interp-row">
+            <div class="interp-arrow up">↑</div>
+            <div class="interp-text"><strong style="color:var(--green)">&gt;40%</strong>：习惯锁定持续加深，护城河完整</div>
+          </div>
+          <div class="interp-row">
+            <div class="interp-arrow mid">→</div>
+            <div class="interp-text"><strong style="color:var(--amber)">37%–40%</strong>：稳定区间，无明显信号</div>
+          </div>
+          <div class="interp-row">
+            <div class="interp-arrow dn">↓</div>
+            <div class="interp-text"><strong style="color:var(--red)">&lt;37%</strong>：习惯机制出现松动，优先级最高的警报</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wl-item">
+        <div class="wl-num">03</div>
+        <div class="wl-main">
+          <div class="wl-metric">
+            毛利率实际值
+            <span class="wl-tag red">P1</span>
+            <span class="wl-tag blue">数据飞轮</span>
+          </div>
+          <div class="wl-desc">
+            管理层明确指引 Q1 毛利率约 71%，原因是向所有免费用户开放 AI 功能导致 GenAI 托管成本上升。这是一个「主动降低」的成本，而非失控。实际值与 71% 的偏差方向，能告诉你 AI 成本优化是否比预期更快或更慢。若低于 70%，说明 AI 成本扩张速度超出管理层掌控范围，需要重新评估飞轮逻辑。<br>
+            <span style="color:var(--text3);font-size:11px;margin-top:4px;display:block">历史基准：Q4 2025 实际 72.8% · Q2–Q4 2026 指引更低至约 69%</span>
+          </div>
+        </div>
+        <div class="wl-guidance">
+          <div class="wl-guidance-label">管理层指引</div>
+          <div class="wl-guidance-val">~71%</div>
+          <div class="wl-guidance-note">Q2–Q4 2026 将进一步降至约 69%，全年平均约 70%</div>
+        </div>
+        <div class="wl-interp">
+          <div class="interp-row">
+            <div class="interp-arrow up">↑</div>
+            <div class="interp-text"><strong style="color:var(--green)">&gt;71.5%</strong>：AI 成本控制超预期，飞轮效率在改善</div>
+          </div>
+          <div class="interp-row">
+            <div class="interp-arrow mid">→</div>
+            <div class="interp-text"><strong style="color:var(--amber)">70%–71.5%</strong>：符合指引，在轨</div>
+          </div>
+          <div class="interp-row">
+            <div class="interp-arrow dn">↓</div>
+            <div class="interp-text"><strong style="color:var(--red)">&lt;70%</strong>：AI 成本失控信号，需重新评估数据飞轮的单位经济性</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- P2 -->
+    <div class="wl-divider">P2 · 飞轮运转验证 <span style="color:var(--amber);font-size:9px">— 验证战略投资是否在产生效果</span></div>
+
+    <div class="wl-block">
+      <div class="wl-header">
+        <div></div>
+        <div>指标 · 观察点</div>
+        <div>管理层指引 / 基准</div>
+        <div>读数解读</div>
+      </div>
+
+      <div class="wl-item">
+        <div class="wl-num">04</div>
+        <div class="wl-main">
+          <div class="wl-metric">
+            付费订阅增速方向
+            <span class="wl-tag amber">P2</span>
+            <span class="wl-tag blue">数据飞轮</span>
+          </div>
+          <div class="wl-desc">
+            Q4 2025 增速已从 Q1 的 +40% 放缓至 +28%，说明付费转化在随 MAU 增速同步放缓。2026 年战略转向的逻辑是：先扩大免费用户基数，再从更大基数上做付费转化。如果 Q1 2026 付费用户增速继续下滑（如低于 20%），说明扩大免费基数的效果尚未传导到转化端；如果增速企稳或反弹，飞轮的货币化端在运转。<br>
+            <span style="color:var(--text3);font-size:11px;margin-top:4px;display:block">Q4 2025 实际：12.2M 付费用户，+28% YoY · Q1 2025 基数：10.3M</span>
+          </div>
+        </div>
+        <div class="wl-guidance">
+          <div class="wl-guidance-label">Q4 2025 实际基准</div>
+          <div class="wl-guidance-val">12.2M</div>
+          <div class="wl-guidance-note">管理层未对付费用户数量作具体指引</div>
+        </div>
+        <div class="wl-interp">
+          <div class="interp-row">
+            <div class="interp-arrow up">↑</div>
+            <div class="interp-text"><strong style="color:var(--green)">增速反弹 &gt;30%</strong>：免费扩张开始驱动转化，飞轮在转</div>
+          </div>
+          <div class="interp-row">
+            <div class="interp-arrow mid">→</div>
+            <div class="interp-text"><strong style="color:var(--amber)">20%–30%</strong>：增速放缓但可接受，等待 MAU 扩张传导</div>
+          </div>
+          <div class="interp-row">
+            <div class="interp-arrow dn">↓</div>
+            <div class="interp-text"><strong style="color:var(--red)">&lt;20%</strong>：免费扩张稀释了转化率，需重新审视变现模型</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wl-item">
+        <div class="wl-num">05</div>
+        <div class="wl-main">
+          <div class="wl-metric">
+            Subscription ARPU（每付费用户平均收入）
+            <span class="wl-tag amber">P2</span>
+            <span class="wl-tag blue">数据飞轮</span>
+          </div>
+          <div class="wl-desc">
+            Q2 2025 ARPU +6% YoY、Q3 +7% YoY，主要驱动力是更多用户迁移至 Max 和 Family Plan 等高价层。2026 年战略转向把 AI 功能向免费层开放，理论上会让用户感受到产品质量提升，但也可能减少付费升级的动力——观察 ARPU 增速是否会因此放缓。<br>
+            <span style="color:var(--text3);font-size:11px;margin-top:4px;display:block">计算方式：Subscription Revenue ÷ 平均付费用户数 · 需自行计算，财报中有分项数据</span>
+          </div>
+        </div>
+        <div class="wl-guidance">
+          <div class="wl-guidance-label">近期趋势基准</div>
+          <div class="wl-guidance-val">+6–7% YoY</div>
+          <div class="wl-guidance-note">Q2、Q3 2025 ARPU 增速，主要来自高价层组合变化</div>
+        </div>
+        <div class="wl-interp">
+          <div class="interp-row">
+            <div class="interp-arrow up">↑</div>
+            <div class="interp-text"><strong style="color:var(--green)">继续 +5% 以上</strong>：高价层迁移趋势未中断，货币化端健康</div>
+          </div>
+          <div class="interp-row">
+            <div class="interp-arrow dn">↓</div>
+            <div class="interp-text"><strong style="color:var(--red)">低于 +3% 或负增长</strong>：免费 AI 功能减少了付费升级动力，对 Max 层需求分流</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wl-item">
+        <div class="wl-num">06</div>
+        <div class="wl-main">
+          <div class="wl-metric">
+            Adj. EBITDA 利润率实际值
+            <span class="wl-tag amber">P2</span>
+          </div>
+          <div class="wl-desc">
+            管理层指引 Q1 2026 EBITDA 利润率约 25.5%，相较 Q4 2025 的 29.8% 主动压缩约 4 个百分点。压缩的来源是 R&D 和 S&M 增速快于营收增速。关键在于：压缩幅度是否如期发生？若实际利润率高于 27%，说明费用爬坡慢于预期（可能意味着用户增长投资尚未真正落地）；若低于 24%，说明费用失控。<br>
+            <span style="color:var(--text3);font-size:11px;margin-top:4px;display:block">管理层预告：Q2 2026 将再压缩约 3ppt，后半年逐步改善，Q4 为全年最高</span>
+          </div>
+        </div>
+        <div class="wl-guidance">
+          <div class="wl-guidance-label">管理层指引</div>
+          <div class="wl-guidance-val">~25.5%</div>
+          <div class="wl-guidance-note">若低于 24% 或高于 27%，均需追问原因</div>
+        </div>
+        <div class="wl-interp">
+          <div class="interp-row">
+            <div class="interp-arrow up">↑</div>
+            <div class="interp-text"><strong style="color:var(--green)">&gt;27%</strong>：费用投入低于预期，战略转向执行不足，需关注用户增长是否真的加速</div>
+          </div>
+          <div class="interp-row">
+            <div class="interp-arrow mid">→</div>
+            <div class="interp-text"><strong style="color:var(--amber)">24%–27%</strong>：在轨，符合战略转向节奏</div>
+          </div>
+          <div class="interp-row">
+            <div class="interp-arrow dn">↓</div>
+            <div class="interp-text"><strong style="color:var(--red)">&lt;24%</strong>：费用失控或 AI 成本超预期，需结合毛利率一起判断</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- P3 -->
+    <div class="wl-divider">P3 · 辅助观察 <span style="color:var(--green);font-size:9px">— 建立更完整的护城河图景</span></div>
+
+    <div class="wl-block">
+      <div class="wl-header">
+        <div></div>
+        <div>指标 · 观察点</div>
+        <div>管理层指引 / 基准</div>
+        <div>读数解读</div>
+      </div>
+
+      <div class="wl-item">
+        <div class="wl-num">07</div>
+        <div class="wl-main">
+          <div class="wl-metric">
+            管理层对「免费 AI 功能效果」的定性表述
+            <span class="wl-tag green">P3</span>
+            <span class="wl-tag blue">数据飞轮</span>
+          </div>
+          <div class="wl-desc">
+            这是本季度战略转向的核心落地动作。在电话会议和股东信中，管理层是否披露了免费 AI 功能（如 Duolingo Max 功能下沉）的早期用户数据或留存数据？有没有具体的数字（如「免费用户 7 日留存提升 X%」「AI 功能日均使用次数」）？定性表述的颗粒度能反映他们对结果的信心程度。<br>
+            <span style="color:var(--text3);font-size:11px;margin-top:4px;display:block">关注：电话会议 Q&A 部分、股东信「用户增长」段落</span>
+          </div>
+        </div>
+        <div class="wl-guidance">
+          <div class="wl-guidance-label">观察方式</div>
+          <div class="wl-guidance-val">定性</div>
+          <div class="wl-guidance-note">无可量化指引，听电话会 / 读股东信</div>
+        </div>
+        <div class="wl-interp">
+          <div class="interp-row">
+            <div class="interp-arrow up">↑</div>
+            <div class="interp-text"><strong style="color:var(--green)">披露具体数字</strong>：管理层有足够信心公开数据，早期效果可观</div>
+          </div>
+          <div class="interp-row">
+            <div class="interp-arrow dn">↓</div>
+            <div class="interp-text"><strong style="color:var(--red)">仅给出定性描述</strong>：效果尚不显著，或管理层对数字不确定，增加等待周期</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wl-item">
+        <div class="wl-num">08</div>
+        <div class="wl-main">
+          <div class="wl-metric">
+            DAU 实际值 vs 指引 ~55.9M
+            <span class="wl-tag green">P3</span>
+            <span class="wl-tag amber">行为锁定</span>
+          </div>
+          <div class="wl-desc">
+            管理层给出了约 +20% YoY 的 DAU 指引，对应约 55.9M（基于 Q1 2025 实际 46.6M × 1.20）。超出或低于指引的幅度和原因同样重要：如果超出是因为免费 AI 功能拉动了新用户，这是战略转向的直接验证；如果超出是因为营销支出增加，则只是短期拉力，护城河本身没有加固。<br>
+            <span style="color:var(--text3);font-size:11px;margin-top:4px;display:block">Q1 2025 实际：46.6M · YoY +20% 对应约 55.9M 季均；需确认管理层指引是季均还是期末</span>
+          </div>
+        </div>
+        <div class="wl-guidance">
+          <div class="wl-guidance-label">管理层指引</div>
+          <div class="wl-guidance-val">~+20% YoY</div>
+          <div class="wl-guidance-note">全年均值，Q1 通常受新年效应拉高，季节性注意</div>
+        </div>
+        <div class="wl-interp">
+          <div class="interp-row">
+            <div class="interp-arrow up">↑</div>
+            <div class="interp-text"><strong style="color:var(--green)">超出指引 +5% 以上</strong>：用户增长重新加速，观察驱动原因</div>
+          </div>
+          <div class="interp-row">
+            <div class="interp-arrow dn">↓</div>
+            <div class="interp-text"><strong style="color:var(--red)">低于指引 -5% 以上</strong>：1 亿 DAU 路径需要重新测算时间线</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wl-item">
+        <div class="wl-num">09</div>
+        <div class="wl-main">
+          <div class="wl-metric">
+            Chess 科目数据或定性描述
+            <span class="wl-tag green">P3</span>
+            <span class="wl-tag green">网络效应</span>
+          </div>
+          <div class="wl-desc">
+            Chess 在 Q3 2025 被描述为增长最快科目，是多邻国从「语言学习」向「认知技能学习」扩展的关键实验。网络效应护城河是否在从★★向★★★升级，很大程度上取决于 Chess 能否形成有竞争属性的社区。管理层是否披露 Chess 的用户规模或留存数据？是否有社区化迹象（联赛参与率、好友对战数据）？<br>
+            <span style="color:var(--text3);font-size:11px;margin-top:4px;display:block">关注：股东信产品段落、App Store 评论中 Chess 相关内容</span>
+          </div>
+        </div>
+        <div class="wl-guidance">
+          <div class="wl-guidance-label">观察方式</div>
+          <div class="wl-guidance-val">定性</div>
+          <div class="wl-guidance-note">Q3 2025：Chess 为增长最快科目，具体数字未披露</div>
+        </div>
+        <div class="wl-interp">
+          <div class="interp-row">
+            <div class="interp-arrow up">↑</div>
+            <div class="interp-text"><strong style="color:var(--green)">披露具体留存或社区数据</strong>：网络效应护城河演进中，长期看好</div>
+          </div>
+          <div class="interp-row">
+            <div class="interp-arrow dn">↓</div>
+            <div class="interp-text"><strong style="color:var(--red)">不再提及 Chess</strong>：增长势头减弱，网络效应扩展假设暂时搁置</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Summary scorecard -->
+    <div class="wl-divider" style="margin-top:24px">财报当日快速评分</div>
+    <div style="border:1px solid var(--border);border-radius:10px;background:var(--bg2);padding:18px 20px;">
+      <div style="font-size:12px;color:var(--text2);line-height:1.75;margin-bottom:12px">
+        财报发布后，按以下权重对照上方清单打分，快速判断护城河综合健康度：
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;">
+        <div style="border:1px solid rgba(240,96,96,0.25);border-radius:8px;padding:12px;background:var(--red-dim)">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--red);margin-bottom:6px;letter-spacing:0.06em">P1 核心 × 3 权重</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.55">MAU 方向 · DAU/MAU 比率 · 毛利率<br>全部符合预期 → 护城河在修复中</div>
+        </div>
+        <div style="border:1px solid rgba(245,166,35,0.25);border-radius:8px;padding:12px;background:var(--amber-dim)">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--amber);margin-bottom:6px;letter-spacing:0.06em">P2 飞轮 × 2 权重</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.55">订阅增速 · ARPU · EBITDA 利润率<br>2/3 符合 → 飞轮在轨</div>
+        </div>
+        <div style="border:1px solid rgba(45,212,160,0.2);border-radius:8px;padding:12px;background:var(--green-dim)">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--green);margin-bottom:6px;letter-spacing:0.06em">P3 辅助 × 1 权重</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.55">AI 效果 · DAU 超指引 · Chess<br>有任意一个正向信号 → 加分</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);font-family:var(--mono);border-top:1px solid var(--border);padding-top:12px;line-height:1.7">
+        综合判断 → P1 全部正向 + P2 多数正向 = <span style="color:var(--green)">护城河修复中，维持假设</span><br>
+        综合判断 → P1 出现任意一个负向（尤其 MAU 继续下滑）= <span style="color:var(--red)">重新评估增长路径，关注后续季度</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======== FRAMEWORK ======== -->
+  <div id="framework" class="panel">
+
+    <div class="section-title">护城河解构方法论</div>
+
+    <div class="moat-grid">
+      <div class="moat-card">
+        <div class="moat-top">
+          <div class="moat-dot dot-green"></div>
+          <div class="moat-title">行为锁定 ★★★★★</div>
+        </div>
+        <div class="moat-body">
+          <strong>机制</strong>：Streak（连续打卡）利用损失厌恶心理，把用户锁定在习惯而非数据中。迁移成本不是账号信息，而是「中断感」。<br><br>
+          <strong>核心指标</strong>：DAU/MAU 比率（习惯深度）、1年+ Streak 用户数（深度锁定规模）、Friend Streak 渗透率（社交摩擦层）<br><br>
+          <strong>压力测试问题</strong>：ChatGPT 等 AI 工具提供即时语言练习，但没有 Streak 机制——如果用户习惯迁移到 AI 原生工具，这条护城河失效。追踪：Google Trends 对比"Duolingo" vs "ChatGPT language learning"
+        </div>
+      </div>
+
+      <div class="moat-card">
+        <div class="moat-top">
+          <div class="moat-dot dot-green"></div>
+          <div class="moat-title">数据飞轮 ★★★★</div>
+        </div>
+        <div class="moat-body">
+          <strong>机制</strong>：规模效应（持续摊薄生产成本）+ AI 训练数据积累。每一个新用户产生的行为数据，在摊薄研发成本的同时，反哺模型优化。<br><br>
+          <strong>核心指标</strong>：毛利率走势（73% 基准）、R&D 占收入比（从 41% 降至 31%）、Max ARPU 增速（AI 货币化直接证明）<br><br>
+          <strong>压力测试问题</strong>：若 GPT-4o 等模型直接用于语言教学，多邻国私有行为数据的稀缺性会被稀释。关注：OpenAI / Google 教育产品发布动向
+        </div>
+      </div>
+
+      <div class="moat-card">
+        <div class="moat-top">
+          <div class="moat-dot dot-amber"></div>
+          <div class="moat-title">品牌资产 ★★★</div>
+        </div>
+        <div class="moat-body">
+          <strong>机制</strong>：「Duo 小绿鸟」已成为 Z 世代语言学习的文化符号。Dead Duo 活动近乎零成本获得约 20 亿次曝光，这是难以复制的品牌杠杆。<br><br>
+          <strong>核心指标</strong>：S&M 占收入比（↓说明品牌飞轮在转）、DAU 增速 vs S&M 比率的剪刀差、App Store 评分趋势<br><br>
+          <strong>压力测试问题</strong>：品牌吸引的是「想学语言的人」还是「喜欢这个品牌的人」？若两者重叠度下降，转化率和留存会同步下滑。
+        </div>
+      </div>
+
+      <div class="moat-card">
+        <div class="moat-top">
+          <div class="moat-dot dot-amber"></div>
+          <div class="moat-title">网络效应 ★★</div>
+        </div>
+        <div class="moat-body">
+          <strong>机制</strong>：排行榜、Friend Streak、新科目社区化。目前最弱的护城河——多邻国核心使用场景是个人行为，不像 Discord 或 LinkedIn 那样离开平台价值归零。<br><br>
+          <strong>核心指标</strong>：Friend Streak 渗透率（约 33% DAU）、Chess 社区活跃度、用户因「朋友在用」而留存的定性证据<br><br>
+          <strong>演进路径</strong>：Chess 等有竞争属性的科目，有可能把网络效应从★★提升至★★★★。这是最值得长期观察的潜在变量。
+        </div>
+      </div>
+    </div>
+
+    <div class="prose" style="margin-top:20px;">
+      <strong>护城河追踪的核心逻辑</strong><br><br>
+      多邻国最值得建模的，是「习惯锁定 × 品牌获客 × AI降本」三者的联动关系：品牌拉来用户 → 习惯机制锁住用户 → 数据反哺 AI → AI 提升产品体验 → 进一步强化品牌和习惯。<strong>DAU/MAU 是这整条链路健康度的最简化代理指标。</strong>当它不再上升，整条链路某一环出了问题，再去找是哪一环。<br><br>
+      关于「软件开发成本极速下降」的双刃剑：一面是多邻国自身 R&D 成本可能继续下降（利好）；另一面是竞争对手进入门槛降低（利空）。观察信号是 Max 层级付费渗透率增速，以及管理层对 AI 内容生成效率的表述——这两个指标能在一个季度里同时感知到双刃剑的两个方向。
+    </div>
+
+  </div>
+
+  <!-- ======== SOURCES ======== -->
+  <div id="sources" class="panel">
+
+    <div style="font-size:12px;color:var(--text2);line-height:1.65;padding:12px 14px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);margin-bottom:24px;">
+      页面所有定量数据均直接来自 Duolingo SEC 公开文件。下方列出每条来源的原始链接，点击可直接访问 SEC EDGAR 原文。<br>
+      <span style="color:var(--text3);font-size:11px;margin-top:4px;display:block">⚠ 本次核查发现 1 处计算错误（Q1 2026 DAU 估算基准用错），已在页面中修正，详见下方「数据校验记录」。</span>
+    </div>
+
+    <!-- Primary sources: quarterly shareholder letters -->
+    <div class="src-section">
+      <div class="src-section-title">一级来源 · SEC 季度股东信（Shareholder Letter）</div>
+      <div class="src-table">
+        <div class="src-row">
+          <div class="sc label">季度</div>
+          <div class="sc label">文件描述</div>
+          <div class="sc label">发布日期</div>
+          <div class="sc label">SEC EDGAR 原始链接</div>
+        </div>
+        <div class="src-row">
+          <div class="sc quarter">Q1 2025</div>
+          <div class="sc desc">股东信 · DAU 46.6M / MAU 130.2M / 付费 10.3M / 营收 $230.7M / EBITDA 27.2%</div>
+          <div class="sc date">2025-05-07</div>
+          <div class="sc link"><a href="https://www.sec.gov/Archives/edgar/data/0001562088/000156208825000098/q1fy25duolingo3-31x25share.htm" target="_blank">q1fy25duolingo3-31x25share.htm ↗</a></div>
+        </div>
+        <div class="src-row">
+          <div class="sc quarter">Q2 2025</div>
+          <div class="sc desc">股东信 · DAU 47.7M / MAU 128.3M / 付费 10.9M / 营收 $252.3M / EBITDA 31.2%</div>
+          <div class="sc date">2025-08-06</div>
+          <div class="sc link"><a href="https://www.sec.gov/Archives/edgar/data/0001562088/000156208825000165/q2fy25duolingo6-30x25share.htm" target="_blank">q2fy25duolingo6-30x25share.htm ↗</a></div>
+        </div>
+        <div class="src-row">
+          <div class="sc quarter">Q3 2025</div>
+          <div class="sc desc">股东信 · DAU 50.5M / MAU 135.3M / 付费 11.5M / 营收 $271.7M / EBITDA 29.5%</div>
+          <div class="sc date">2025-11-05</div>
+          <div class="sc link"><a href="https://www.sec.gov/Archives/edgar/data/1562088/000162828025049514/q3fy25duolingo9-30x25share.htm" target="_blank">q3fy25duolingo9-30x25share.htm ↗</a></div>
+        </div>
+        <div class="src-row">
+          <div class="sc quarter">Q4 2025</div>
+          <div class="sc desc">股东信 · DAU 52.7M / MAU 133.1M / 付费 12.2M / 营收 $282.9M / EBITDA 29.8% · 含 2026 全年指引</div>
+          <div class="sc date">2026-02-20</div>
+          <div class="sc link"><a href="https://www.sec.gov/Archives/edgar/data/0001562088/000162828026012246/q4fy25duolingo12-31x25shar.htm" target="_blank">q4fy25duolingo12-31x25shar.htm ↗</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Press releases -->
+    <div class="src-section">
+      <div class="src-section-title">一级来源 · SEC 季度新闻稿（Press Release / 8-K）</div>
+      <div class="src-table">
+        <div class="src-row">
+          <div class="sc label">季度</div>
+          <div class="sc label">文件描述</div>
+          <div class="sc label">发布日期</div>
+          <div class="sc label">SEC EDGAR 原始链接</div>
+        </div>
+        <div class="src-row">
+          <div class="sc quarter">Q1 2025</div>
+          <div class="sc desc">8-K 新闻稿 · 同期股东信附件</div>
+          <div class="sc date">2025-05-07</div>
+          <div class="sc link"><a href="https://www.sec.gov/Archives/edgar/data/0001562088/000156208825000098/q1fy25duolingo3-31x25share.htm" target="_blank">Q1 2025 Press Release ↗</a></div>
+        </div>
+        <div class="src-row">
+          <div class="sc quarter">Q3 2025</div>
+          <div class="sc desc">8-K 新闻稿 · "Surpasses 50M DAUs, Grows 36% YoY"</div>
+          <div class="sc date">2025-11-05</div>
+          <div class="sc link"><a href="https://www.sec.gov/Archives/edgar/data/0001562088/000162828025049514/q3fy25duolingo9-30x25press.htm" target="_blank">q3fy25duolingo9-30x25press.htm ↗</a></div>
+        </div>
+        <div class="src-row">
+          <div class="sc quarter">Q4 2025</div>
+          <div class="sc desc">8-K 新闻稿 · "Duolingo Reports Fourth Quarter and Full Year 2025 Results"</div>
+          <div class="sc date">2026-02-20</div>
+          <div class="sc link"><a href="https://www.sec.gov/Archives/edgar/data/1562088/000162828026012246/q4fy25duolingo12-31x25pres.htm" target="_blank">q4fy25duolingo12-31x25pres.htm ↗</a></div>
+        </div>
+        <div class="src-row">
+          <div class="sc quarter">Q4 2025</div>
+          <div class="sc desc">8-K/A 修正报告 · 含 2026 指引修订版（常数汇率口径）</div>
+          <div class="sc date">2026-02-27</div>
+          <div class="sc link"><a href="https://www.stocktitan.net/sec-filings/DUOL/8-k-a-duolingo-inc-amends-material-event-report-6bd9eff99b49.html" target="_blank">8-K/A Amendment ↗</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IR page -->
+    <div class="src-section">
+      <div class="src-section-title">官方渠道 · 投资者关系页面</div>
+      <div class="src-table">
+        <div class="src-row">
+          <div class="sc label">来源</div>
+          <div class="sc label">描述</div>
+          <div class="sc label">类型</div>
+          <div class="sc label">链接</div>
+        </div>
+        <div class="src-row">
+          <div class="sc quarter">IR 主页</div>
+          <div class="sc desc">Duolingo 官方投资者关系页面，含所有历史股东信 PDF 版本</div>
+          <div class="sc date">官方</div>
+          <div class="sc link"><a href="https://investors.duolingo.com" target="_blank">investors.duolingo.com ↗</a></div>
+        </div>
+        <div class="src-row">
+          <div class="sc quarter">EDGAR 主页</div>
+          <div class="sc desc">Duolingo SEC 所有公开文件归档（DUOL · CIK 0001562088）</div>
+          <div class="sc date">SEC</div>
+          <div class="sc link"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001562088&type=8-K&dateb=&owner=include&count=40" target="_blank">SEC EDGAR DUOL 文件 ↗</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data verification log -->
+    <div class="src-section">
+      <div class="src-section-title">数据校验记录</div>
+      <div style="font-size:11px;color:var(--text2);margin-bottom:12px;line-height:1.6">
+        对页面所有核心数据点逐一与 SEC 原文核对，结果如下：
+      </div>
+      <div class="verify-grid">
+
+        <div class="verify-card">
+          <div class="verify-metric">DAU / MAU / 付费用户（各季度）</div>
+          <div><span class="verify-status ok">✓ 已核实</span></div>
+          <div class="verify-note">与 SEC 股东信用户指标表逐季核对。Q3 2025 DAU 50.5M 已由 Q3 press release 交叉验证（"more than 50M DAUs"）。</div>
+        </div>
+
+        <div class="verify-card">
+          <div class="verify-metric">Q1 2026 DAU 指引估算</div>
+          <div><span class="verify-status fixed">⚠ 已修正</span></div>
+          <div class="verify-note">原错误：<code>~63.2M</code>（误用 Q4 2025 的 52.7M × 1.20）<br>
+          正确计算：<code>Q1 2025 实际 46.6M × 1.20 = ~55.9M</code><br>
+          管理层原文："expect 2026 DAU growth to be about 20%"，为 YoY 表述，基准为同期上年数据。</div>
+        </div>
+
+        <div class="verify-card">
+          <div class="verify-metric">各季度 EBITDA 利润率</div>
+          <div><span class="verify-status ok">✓ 已核实</span></div>
+          <div class="verify-note">Q1: 27.2%（$62.8M / $230.7M）✓ · Q2: 31.2%（$78.7M / $252.3M）✓ · Q3: 29.5%（$80.0M / $271.7M）✓ · Q4: 29.8%（$84.3M / $282.9M）✓</div>
+        </div>
+
+        <div class="verify-card">
+          <div class="verify-metric">Q2 2025 EBITDA 利润率（31.2%）</div>
+          <div><span class="verify-status ok">✓ 已核实</span></div>
+          <div class="verify-note">Q2 股东信原文：EBITDA $78.7M，Revenue $252.3M。$78.7 / $252.3 = 31.19%，页面显示 31.2%，四舍五入正确。</div>
+        </div>
+
+        <div class="verify-card">
+          <div class="verify-metric">Q1 2025 毛利率（~71.1%）</div>
+          <div><span class="verify-status ok">✓ 已核实</span></div>
+          <div class="verify-note">Q2 股东信原文："expanded gross margin by 130 basis points to 72.4% from Q1 to Q2"，反推 Q1 毛利率为 72.4% − 1.3% = 71.1%。</div>
+        </div>
+
+        <div class="verify-card">
+          <div class="verify-metric">Q1 2026 Bookings / Revenue 指引</div>
+          <div><span class="verify-status ok">✓ 已核实</span></div>
+          <div class="verify-note">Bookings：Q1 2025 $271.6M × 1.11 = $301.5M ✓<br>Revenue：Q1 2025 $230.7M × 1.25 = $288.4M ≈ $288.5M（与 SEC 8-K 原文一致）✓</div>
+        </div>
+
+        <div class="verify-card">
+          <div class="verify-metric">DAU/MAU 比率（各季度）</div>
+          <div><span class="verify-status ok">✓ 已核实</span></div>
+          <div class="verify-note">Q1: 46.6/130.2=35.8% · Q2: 47.7/128.3=37.2% · Q3: 50.5/135.3=37.3% · Q4: 52.7/133.1=39.6%。均由原始 DAU/MAU 数据自行计算，非管理层披露数字。</div>
+        </div>
+
+        <div class="verify-card">
+          <div class="verify-metric">FY2025 全年营收 $1,037.6M</div>
+          <div><span class="verify-status ok">✓ 已核实</span></div>
+          <div class="verify-note">Q4 2025 股东信 FY2025 汇总表原文：Revenues $1,037.6M，+39% YoY。全年 Bookings $1,158.4M，+33% YoY。</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="border:1px solid var(--border);border-radius:8px;padding:14px 16px;background:var(--bg2);font-size:11px;color:var(--text2);line-height:1.7;">
+      <strong style="color:var(--text)">关于「管理层定性表述」的来源</strong><br>
+      护城河分析中引用的定性内容（Dead Duo 活动曝光量 ~20亿次、Chess 为增长最快科目、Luckin Coffee 联名 10M+ 杯等），均来自对应季度股东信的叙述段落，非精确量化数字，仅作护城河强度的参考信号，不纳入量化核验范围。
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-note">
+      数据来源：Duolingo SEC EDGAR 季报 · Q1–Q4 FY2025<br>
+      Q1 2026 为管理层官方指引，非实际值 · 实际财报预计 2026 年 5 月中旬发布<br>
+      本页面为个人投资研究记录，不构成任何投资建议
+    </div>
+    <div class="footer-note" style="text-align:right">
+      框架更新：2026 年 3 月<br>
+      下次更新：2026 年 5 月（Q1 2026 财报后）
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  function switchTab(id) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelector(`[onclick="switchTab('${id}')"]`).classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+
+  function selQ(idx) {
+    for (let i = 0; i < 5; i++) {
+      const card = document.getElementById('qc' + i);
+      card.classList.toggle('active', i === idx);
+    }
+    document.querySelectorAll('.data-row').forEach(row => {
+      row.querySelectorAll('.cell').forEach((c, ci) => {
+        if (ci === 0) return;
+        const isGuide = c.classList.contains('guide-col');
+        if (idx === 4) {
+          // selecting guidance col
+          c.classList.toggle('hl', isGuide);
+        } else {
+          if (isGuide) {
+            c.classList.remove('hl');
+          } else {
+            c.classList.toggle('hl', ci - 1 === idx);
+          }
+        }
+      });
+    });
+  }
+
+  // init: Q2 selected
+  selQ(1);
+</script>
+</body>
+</html>
