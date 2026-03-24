@@ -135,7 +135,6 @@
     gap: 0;
     border-bottom: 1px solid var(--border);
     margin-bottom: 32px;
-    flex-wrap: wrap;
   }
 
   .tab-btn {
@@ -153,7 +152,6 @@
     border-top: none;
     border-left: none;
     border-right: none;
-    white-space: nowrap;
   }
 
   .tab-btn:hover { color: var(--text2); }
@@ -850,6 +848,7 @@
     <button class="tab-btn" onclick="switchTab('framework')">分析框架</button>
     <button class="tab-btn" onclick="switchTab('watchlist')" style="color:var(--amber)">▸ Q1 2026 观察清单</button>
     <button class="tab-btn" onclick="switchTab('sources')">数据来源</button>
+    <button class="tab-btn" onclick="switchTab('valuation')" style="color:var(--amber)">▸ 估值分析</button>
     <div class="tab-divider"></div>
     <span class="tab-group-label">用户情绪</span>
     <button class="tab-btn" onclick="switchTab('sent_ratings')">应用评分</button>
@@ -2014,6 +2013,526 @@
       <div class="ref-row"><div class="rc plat-name">Class Central</div><div class="rc"><span class="access-tag type-free">免费</span></div><div class="rc">独立分析文章、季度深度解读</div><div class="rc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">每季度财报后</div><div class="rc"><a href="https://www.classcentral.com/report/duolingo-2025/" target="_blank">Class Central ↗</a></div></div>
     </div>
     <div class="prose"><strong>Agent 采集建议</strong>：每季度财报发布后 2 周内，按频率更新上表各平台数据。每月用 web_search 搜索 Reddit r/duolingo 月度热帖主题，作为补充定性信号。Trustpilot 和 Sitejabber 的低分需结合投诉类型解读——计费争议 ≠ 产品质量下降，需区分。</div>
+  </div>
+
+  <!-- ======== VALUATION ======== -->
+  <div id="valuation" class="panel">
+
+  <div class="notice">
+    <strong>数据基准（2026 年 3 月 23 日）</strong>：股价约 $98，流通股 46.95M，市值约 $4.6B，净现金约 $0.94B（现金 $1.04B − 负债 $0.097B），EV 约 $3.66B。FY2025 全年营收 $1,037.6M，FCF $360.4M（34.7% margin），EBITDA $305.9M（29.5% margin）。<strong>GAAP 净利润 $414.1M 包含 $256.7M 一次性递延税资产释放，正常化净利润约 $157.4M，需以此计算 P/E。</strong>
+  </div>
+
+  <!-- ── 三情景概览 ─────────────────── -->
+  <div class="section-title">三情景目标价（综合 P/S · EV/FCF · DCF 加权）</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px">
+
+    <div style="border:1px solid rgba(240,96,96,0.35);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:10px">▼ 熊市情景</div>
+      <div style="font-family:var(--mono);font-size:30px;font-weight:500;color:var(--red);line-height:1;margin-bottom:4px">$65–80</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--red);margin-bottom:10px">vs 当前 $98 · 下行 -18%~-34%</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.6">
+        <div style="padding:3px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px">Bookings 增速降至 +5–8%，未及指引</div>
+        <div style="padding:3px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px">DAU 增速停在 15%，MAU 未止跌</div>
+        <div style="padding:3px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px">EBITDA margin 压缩至 20–22%</div>
+        <div style="padding:3px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px">FCF 降至 $280–300M（投资加码）</div>
+        <div style="padding:3px 0;font-family:var(--mono);font-size:10px">EV/Revenue 2.0–2.5x FY26E</div>
+      </div>
+    </div>
+
+    <div style="border:1px solid rgba(110,179,247,0.35);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:10px">◆ 基准情景</div>
+      <div style="font-family:var(--mono);font-size:30px;font-weight:500;color:var(--blue);line-height:1;margin-bottom:4px">$150–200</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--blue);margin-bottom:10px">vs 当前 $98 · 上行 +53%~+104%</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.6">
+        <div style="padding:3px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px">Bookings 符合指引 +10–12%</div>
+        <div style="padding:3px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px">MAU 2026 止跌，DAU ~20% 增速</div>
+        <div style="padding:3px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px">EBITDA margin ~25% 全年在轨</div>
+        <div style="padding:3px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px">FCF >$350M（与指引一致）</div>
+        <div style="padding:3px 0;font-family:var(--mono);font-size:10px">EV/Revenue 3.5–4.5x FY26E</div>
+      </div>
+    </div>
+
+    <div style="border:1px solid rgba(45,212,160,0.35);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin-bottom:10px">▲ 牛市情景</div>
+      <div style="font-family:var(--mono);font-size:30px;font-weight:500;color:var(--green);line-height:1;margin-bottom:4px">$280–400</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--green);margin-bottom:10px">vs 当前 $98 · 上行 +186%~+308%</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.6">
+        <div style="padding:3px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px">2026 投资奏效，2027 重新加速至 25%+</div>
+        <div style="padding:3px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px">MAU 止跌并反弹，DAU 重回 30%+</div>
+        <div style="padding:3px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px">AI 功能驱动 ARPU 提升 10%+</div>
+        <div style="padding:3px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px">EBITDA margin 恢复至 29–32%</div>
+        <div style="padding:3px 0;font-family:var(--mono);font-size:10px">EV/Revenue 重估至 7–9x FY26E</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 区间可视化 -->
+  <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px;background:var(--bg2);margin-bottom:20px">
+    <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:10px">综合目标价区间（以 $0–$400 为刻度）</div>
+    <div style="position:relative;height:32px;background:var(--bg3);border-radius:6px;margin-bottom:6px;overflow:visible">
+      <div style="position:absolute;left:0;width:20%;height:100%;background:rgba(240,96,96,0.18);border-radius:6px 0 0 6px"></div>
+      <div style="position:absolute;left:20%;width:25%;height:100%;background:rgba(110,179,247,0.18)"></div>
+      <div style="position:absolute;left:45%;width:55%;height:100%;background:rgba(45,212,160,0.15);border-radius:0 6px 6px 0"></div>
+      <!-- current price at $98 ≈ 24.5% of $400 -->
+      <div style="position:absolute;left:24.5%;width:3px;background:var(--amber);top:-6px;bottom:-6px;border-radius:2px;z-index:10">
+        <div style="position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;color:var(--amber);white-space:nowrap">现价 $98</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--text3)">
+      <span>$0</span>
+      <span style="color:var(--red)">熊 $65–80</span>
+      <span style="color:var(--blue)">基准 $150–200</span>
+      <span style="color:var(--green)">牛 $280–400</span>
+      <span>$400</span>
+    </div>
+    <div style="font-size:11px;color:var(--text2);margin-top:10px;line-height:1.6">当前股价 $98 处于熊市区间上沿（距 52 周高点 $545 下跌 82%）。股价隐含市场认为 Bookings 减速是结构性的，而非战略性的暂时牺牲。<strong style="color:var(--text)">最大的估值争议点：$400M 股票回购计划是否足以为股价托底？</strong></div>
+  </div>
+
+  <!-- ── 方法一：P/S ─────────────────── -->
+  <div class="section-title">方法一：P/S（价格/营收）· 成长期消费科技主要估值锚</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+
+    <!-- 纵向历史 -->
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px">纵向：Duolingo 自身历史 P/S <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:3px;background:var(--bg3);color:var(--text3);margin-left:6px">4年复盘</span></div>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px">
+        <div style="display:grid;grid-template-columns:60px 70px 80px 80px 1fr;background:var(--bg3)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">年份</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">营收</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">增速</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">市值</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">P/S</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 70px 80px 80px 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2022</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$370M</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+49%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">~$4.5B</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">12x</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 70px 80px 80px 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2023</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$531M</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+44%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">~$8.5B</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">16x</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 70px 80px 80px 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2024</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$748M</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+41%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">~$11B</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">15x</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 70px 80px 80px 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2025峰</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$1.04B</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+39%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">~$25B</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">24x</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 70px 80px 80px 1fr;border-top:1px solid var(--border);background:rgba(110,179,247,0.05)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">现在</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text)">$1.04B</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">+39%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text)">$4.6B</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue)">4.4x ↓历史低</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 70px 80px 80px 1fr;border-top:1px dashed rgba(245,166,35,0.3)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">FY26E</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">~$1.21B</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">+17%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">$4.6B</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">3.8x 隐含</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.6">历史中位数约 14–15x；当前 4.4x TTM 为历史最低。即使用最保守的 5x TTM P/S，目标市值 = $5.2B → 目标股价 ~$111。历史均值 14x 对应市值 $14.5B → 目标股价 ~$309。<strong style="color:var(--amber)">核心问题：增速放缓是否应让 P/S 永久性压缩至 4–5x？</strong></div>
+    </div>
+
+    <!-- 横向对比 -->
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px">横向：可比公司 P/S 对比 <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:3px;background:var(--bg3);color:var(--text3);margin-left:6px">2026 Q1</span></div>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px">
+        <div style="display:grid;grid-template-columns:110px 55px 60px 60px 1fr;background:var(--bg3)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">公司</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">增速</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">毛利率</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">P/S NTM</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">对比逻辑</div>
+        </div>
+        <div style="display:grid;grid-template-columns:110px 55px 60px 60px 1fr;border-top:1px solid var(--border);background:rgba(110,179,247,0.05)">
+          <div style="padding:7px 10px;font-size:11px;font-weight:500;color:var(--green)">Duolingo</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">+15–18%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">72%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue)">3.8x</div>
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">投资年 · 历史低位</div>
+        </div>
+        <div style="display:grid;grid-template-columns:110px 55px 60px 60px 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-size:11px;color:var(--text2)">Spotify</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">+15%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">28%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">~4x</div>
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">消费订阅巨头对标</div>
+        </div>
+        <div style="display:grid;grid-template-columns:110px 55px 60px 60px 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-size:11px;color:var(--text2)">Pinterest</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">+16%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">75%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">~5x</div>
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">消费科技高毛利对标</div>
+        </div>
+        <div style="display:grid;grid-template-columns:110px 55px 60px 60px 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-size:11px;color:var(--text2)">Reddit</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+50%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">87%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">~8x</div>
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">高增速溢价参照</div>
+        </div>
+        <div style="display:grid;grid-template-columns:110px 55px 60px 60px 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-size:11px;color:var(--text2)">Roblox</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+28%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">25%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">~4x</div>
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">游戏化教育类对标</div>
+        </div>
+        <div style="display:grid;grid-template-columns:110px 55px 60px 60px 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-size:11px;color:var(--text2)">Match Group</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">-3%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">73%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">~2x</div>
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">消费订阅衰退折价</div>
+        </div>
+        <div style="display:grid;grid-template-columns:110px 55px 60px 60px 1fr;border-top:1px solid var(--border);background:var(--bg3)">
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">同类中位</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">~16%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">~60%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">~4.5x</div>
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">Duolingo 与同类持平或折价</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.6">Duolingo 以 3.8x NTM P/S 与消费科技同类持平（Spotify 4x / Pinterest 5x），但 Duolingo 的 FCF margin 35% 远高于多数可比公司，理论上应享受溢价，而非折价。<strong style="color:var(--amber)">折价核心原因：市场担心 Bookings +10–12% 指引意味着 2027 营收增速可能低于 15%。</strong></div>
+    </div>
+  </div>
+
+  <!-- P/S 目标价测算 -->
+  <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
+    <div style="padding:9px 16px;background:var(--bg3);font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase">P/S 三情景目标价（FY2026E 营收 ~$1.21B · 股权价值 = 市值 = P/S × 营收，共 46.95M 股）</div>
+    <div style="display:grid;grid-template-columns:140px 1fr 1fr 1fr">
+      <div style="padding:9px 14px;font-size:10px;color:var(--text3);font-family:var(--mono);background:var(--bg3)">P/S 假设</div>
+      <div style="padding:9px 14px;font-size:11px;color:var(--red);font-family:var(--mono);border-left:1px solid var(--border)">熊：2.0x<br><span style="font-size:9px;color:var(--text3)">Bookings 持续低迷 · 增速降至 5–8%</span></div>
+      <div style="padding:9px 14px;font-size:11px;color:var(--blue);font-family:var(--mono);border-left:1px solid var(--border)">基准：4.0x<br><span style="font-size:9px;color:var(--text3)">指引实现 · 与同类持平</span></div>
+      <div style="padding:9px 14px;font-size:11px;color:var(--green);font-family:var(--mono);border-left:1px solid var(--border)">牛：7.0x<br><span style="font-size:9px;color:var(--text3)">2027 重新加速 · 历史溢价修复</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:140px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+      <div style="padding:9px 14px;font-size:10px;color:var(--text3);font-family:var(--sans)">隐含市值</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--red);font-family:var(--mono);border-left:1px solid var(--border)">$2.42B</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--blue);font-family:var(--mono);border-left:1px solid var(--border)">$4.84B</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--green);font-family:var(--mono);border-left:1px solid var(--border)">$8.47B</div>
+    </div>
+    <div style="display:grid;grid-template-columns:140px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+      <div style="padding:9px 14px;font-size:10px;color:var(--text3);font-family:var(--sans)">目标股价</div>
+      <div style="padding:9px 14px;font-size:14px;font-weight:500;color:var(--red);font-family:var(--mono);border-left:1px solid var(--border)">$52</div>
+      <div style="padding:9px 14px;font-size:14px;font-weight:500;color:var(--blue);font-family:var(--mono);border-left:1px solid var(--border)">$103</div>
+      <div style="padding:9px 14px;font-size:14px;font-weight:500;color:var(--green);font-family:var(--mono);border-left:1px solid var(--border)">$180</div>
+    </div>
+  </div>
+
+  <!-- ── 方法二：EV/FCF ─────────────── -->
+  <div class="section-title">方法二：EV/FCF · 现金流现实主义（Duolingo 最独特的优势）</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px">FCF 历史追踪 <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:3px;background:var(--green-dim);color:var(--green);margin-left:6px">数据已核验</span></div>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px">
+        <div style="display:grid;grid-template-columns:60px 80px 70px 80px;background:var(--bg3)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">年份</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">FCF</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">Margin</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">来源</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 80px;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2022</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">~$46M</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">12.4%</div>
+          <div style="padding:7px 10px;font-size:9px;color:var(--text3)">年报</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 80px;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2023</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$144.3M</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">27.2%</div>
+          <div style="padding:7px 10px;font-size:9px;color:var(--text3)">Q4 FY23</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 80px;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2024</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$274.9M</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">36.8%</div>
+          <div style="padding:7px 10px;font-size:9px;color:var(--text3)">Q4 FY24</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 80px;border-top:1px solid var(--border);background:rgba(110,179,247,0.05)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">2025</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text)">$360.4M</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--green)">34.7%</div>
+          <div style="padding:7px 10px;font-size:9px;color:var(--text3)">Q4 FY25 ✓</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 80px;border-top:1px dashed rgba(245,166,35,0.3)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">2026E</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">&gt;$350M</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">~29%</div>
+          <div style="padding:7px 10px;font-size:9px;color:var(--amber)">管理层指引</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.6">当前 EV/FCF = $3.66B / $360.4M = <strong style="color:var(--green)">10.2x</strong>——在高成长消费科技中极为罕见。FCF 收益率 = $360M / $4.6B市值 = <strong style="color:var(--green)">7.8%</strong>，接近价值股水平，而 Duolingo 营收仍在增长 15–18%。</div>
+    </div>
+
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px">EV/FCF 三情景（基于 FY2026E FCF）</div>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px">
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;background:var(--bg3)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">指标</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--red)">熊</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--blue)">基准</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--green)">牛</div>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">FCF margin</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">24%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">29%</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">33%</div>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">FY26E FCF</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">$290M</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">$351M</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">$400M</div>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">EV/FCF 倍数</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">10–12x</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">14–18x</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">22–28x</div>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">隐含 EV</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">$2.9–3.5B</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">$4.9–6.3B</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">$8.8–11.2B</div>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">目标股价</div>
+          <div style="padding:7px 10px;font-size:13px;font-weight:500;color:var(--red);font-family:var(--mono)">$80–$94</div>
+          <div style="padding:7px 10px;font-size:13px;font-weight:500;color:var(--blue);font-family:var(--mono)">$122–$154</div>
+          <div style="padding:7px 10px;font-size:13px;font-weight:500;color:var(--green);font-family:var(--mono)">$208–$260</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.6">注：目标股价 = (EV + 净现金 $0.94B) / 46.95M 股。参照系：Spotify EV/FCF ~30x（更低增速）；Match Group EV/FCF ~10x（营收下滑）。Duolingo 当前 10.2x 与 Match Group 衰退公司估值相同，是显著的低估信号或严峻的增速预期。</div>
+    </div>
+  </div>
+
+  <!-- ── 方法三：P/E ─────────────────── -->
+  <div class="section-title">方法三：P/E · 盈利能力视角（须扣除一次性税务影响）</div>
+  <div style="border:1px solid var(--amber-dim);border-radius:8px;padding:12px 16px;margin-bottom:14px;font-size:11px;color:var(--text2);line-height:1.65">
+    <strong style="color:var(--amber)">⚠ 重要核验</strong>：FY2025 GAAP 净利润 $414.1M 包含 <strong style="color:var(--text)">$256.7M 递延税资产一次性释放</strong>（税率调整导致），该收益不会重复发生。正常化净利润 = $414.1M − $256.7M = <strong style="color:var(--text)">$157.4M</strong>，对应 EPS ≈ $3.35/股，P/E 约 29x。直接用 GAAP 净利润 $414.1M 计算 P/E 为 11x，<strong style="color:var(--red)">严重失真，不可使用。</strong>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px">正常化 P/E 历史追踪</div>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px">
+        <div style="display:grid;grid-template-columns:60px 80px 70px 70px;background:var(--bg3)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">年份</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">净利润</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">EPS</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">正常化 P/E</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 70px;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2022</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">-$97M</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">亏损</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">N/A</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 70px;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2023</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$16.1M</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">~$0.35</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">~600x</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 70px;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2024</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$88.6M</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">~$1.92</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">~100x</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 70px;border-top:1px solid var(--border);background:rgba(110,179,247,0.05)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">2025</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text)">$157.4M*</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text)">~$3.35</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue)">29x</div>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 70px;border-top:1px dashed rgba(245,166,35,0.3)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">2026E</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">~$140M</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">~$2.98</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">~33x</div>
+        </div>
+      </div>
+      <div style="font-size:10px;color:var(--text3);font-family:var(--mono)">* $414.1M − $256.7M 一次性税务收益 = $157.4M 正常化净利润</div>
+    </div>
+
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px">P/E 三情景目标价（基于 FY2026E 正常化 EPS）</div>
+      <div style="font-size:11px;color:var(--text2);margin-bottom:10px;line-height:1.55">FY2026E 净利润估算：EBITDA ~$302M（25% margin）× 0.85 税后调整 × 0.85 SBC 调整 ≈ <strong style="color:var(--amber)">$140M</strong>，EPS ≈ $2.98</div>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px">
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;background:var(--bg3)">
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">情景</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--red)">熊：20x P/E</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--blue)">基准：35x P/E</div>
+          <div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--green)">牛：55x P/E</div>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">逻辑依据</div>
+          <div style="padding:7px 10px;font-size:10px;color:var(--red)">增速降至 10%，P/E 压缩</div>
+          <div style="padding:7px 10px;font-size:10px;color:var(--blue)">增速 15–18%，消费科技中等</div>
+          <div style="padding:7px 10px;font-size:10px;color:var(--green)">增速重回 25%+，高成长溢价</div>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+          <div style="padding:7px 10px;font-size:10px;color:var(--text3)">目标股价</div>
+          <div style="padding:7px 10px;font-size:14px;font-weight:500;color:var(--red);font-family:var(--mono)">$60</div>
+          <div style="padding:7px 10px;font-size:14px;font-weight:500;color:var(--blue);font-family:var(--mono)">$104</div>
+          <div style="padding:7px 10px;font-size:14px;font-weight:500;color:var(--green);font-family:var(--mono)">$164</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.6">P/E 方法对 Duolingo 局限性较大：(1) 公司仍在快速扩张，净利润受 SBC 和研发投资波动影响大；(2) 正常化净利润受税务假设影响。FCF 和 EV/Revenue 方法更稳健。P/E 仅作为辅助交叉验证。</div>
+    </div>
+  </div>
+
+  <!-- ── 方法四：DCF ─────────────────── -->
+  <div class="section-title">方法四：DCF · 5 年 FCF 折现（退出 EV/Revenue 法）</div>
+  <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px">
+    <div style="padding:9px 16px;background:var(--bg3);font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase">三情景核心假设矩阵（FY2026E–FY2030E · 退出 EV/Revenue 倍数）</div>
+    <div style="display:grid;grid-template-columns:100px repeat(5,1fr) 120px;background:var(--bg3);border-top:1px solid var(--border)">
+      <div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">假设</div>
+      <div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">FY26E</div>
+      <div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">FY27E</div>
+      <div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">FY28E</div>
+      <div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">FY29E</div>
+      <div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">FY30E 营收</div>
+      <div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">WACC · 退出倍数</div>
+    </div>
+    <!-- Bear -->
+    <div style="display:grid;grid-template-columns:100px repeat(5,1fr) 120px;border-top:1px solid var(--border)">
+      <div style="padding:7px 10px;font-size:10px;color:var(--red)">熊：增速</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">+15%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">+10%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">+8%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">+6%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">$1.60B</div>
+      <div style="padding:7px 10px;font-size:10px;color:var(--red)">WACC 10% · 退出 3x</div>
+    </div>
+    <div style="display:grid;grid-template-columns:100px repeat(5,1fr) 120px;border-top:1px solid var(--border)">
+      <div style="padding:7px 10px;font-size:10px;color:var(--red)">熊：FCF%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">24%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">24%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">25%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">26%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">终端 EV $4.8B</div>
+      <div style="padding:7px 10px;font-size:10px;color:var(--red)"><strong>目标价 ~$79</strong></div>
+    </div>
+    <!-- Base -->
+    <div style="display:grid;grid-template-columns:100px repeat(5,1fr) 120px;border-top:1px solid var(--border);background:rgba(110,179,247,0.04)">
+      <div style="padding:7px 10px;font-size:10px;color:var(--blue)">基准：增速</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">+17%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">+20%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">+18%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">+15%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">$2.45B</div>
+      <div style="padding:7px 10px;font-size:10px;color:var(--blue)">WACC 9% · 退出 5x</div>
+    </div>
+    <div style="display:grid;grid-template-columns:100px repeat(5,1fr) 120px;border-top:1px solid var(--border);background:rgba(110,179,247,0.04)">
+      <div style="padding:7px 10px;font-size:10px;color:var(--blue)">基准：FCF%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">29%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">32%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">33%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">34%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">终端 EV $12.3B</div>
+      <div style="padding:7px 10px;font-size:10px;color:var(--blue)"><strong>目标价 ~$184</strong></div>
+    </div>
+    <!-- Bull -->
+    <div style="display:grid;grid-template-columns:100px repeat(5,1fr) 120px;border-top:1px solid var(--border)">
+      <div style="padding:7px 10px;font-size:10px;color:var(--green)">牛：增速</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+18%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+28%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+28%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+25%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">$3.89B</div>
+      <div style="padding:7px 10px;font-size:10px;color:var(--green)">WACC 8% · 退出 8x</div>
+    </div>
+    <div style="display:grid;grid-template-columns:100px repeat(5,1fr) 120px;border-top:1px solid var(--border)">
+      <div style="padding:7px 10px;font-size:10px;color:var(--green)">牛：FCF%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">33%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">36%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">37%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">38%</div>
+      <div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">终端 EV $31.1B</div>
+      <div style="padding:7px 10px;font-size:10px;color:var(--green)"><strong>目标价 ~$389</strong></div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--text3);margin-bottom:20px;font-family:var(--mono)">目标股价 = (终端 EV 折现 + 预测期 FCF 折现之和 + 净现金 $0.94B) ÷ 46.95M 股</div>
+
+  <!-- ── 综合汇总 ─────────────────────── -->
+  <div class="section-title">综合汇总 · 三方法加权</div>
+  <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px">
+    <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 60px;background:var(--bg3)">
+      <div style="padding:9px 14px;font-family:var(--mono);font-size:10px;color:var(--text3)">估值方法</div>
+      <div style="padding:9px 14px;font-family:var(--mono);font-size:10px;color:var(--red)">熊市</div>
+      <div style="padding:9px 14px;font-family:var(--mono);font-size:10px;color:var(--blue)">基准</div>
+      <div style="padding:9px 14px;font-family:var(--mono);font-size:10px;color:var(--green)">牛市</div>
+      <div style="padding:9px 14px;font-family:var(--mono);font-size:10px;color:var(--text3)">权重</div>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 60px;border-top:1px solid var(--border)">
+      <div style="padding:9px 14px;font-size:11px;color:var(--text2)">P/S（EV/Rev）</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--red);font-family:var(--mono)">$52</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--blue);font-family:var(--mono)">$103</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--green);font-family:var(--mono)">$180</div>
+      <div style="padding:9px 14px;font-size:11px;color:var(--text3)">35%</div>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 60px;border-top:1px solid var(--border)">
+      <div style="padding:9px 14px;font-size:11px;color:var(--text2)">EV/FCF</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--red);font-family:var(--mono)">$87</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--blue);font-family:var(--mono)">$138</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--green);font-family:var(--mono)">$234</div>
+      <div style="padding:9px 14px;font-size:11px;color:var(--text3)">35%</div>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 60px;border-top:1px solid var(--border)">
+      <div style="padding:9px 14px;font-size:11px;color:var(--text2)">DCF（5年）</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--red);font-family:var(--mono)">$79</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--blue);font-family:var(--mono)">$184</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--green);font-family:var(--mono)">$389</div>
+      <div style="padding:9px 14px;font-size:11px;color:var(--text3)">20%</div>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 60px;border-top:1px solid var(--border)">
+      <div style="padding:9px 14px;font-size:11px;color:var(--text2)">P/E（辅助）</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--red);font-family:var(--mono)">$60</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--blue);font-family:var(--mono)">$104</div>
+      <div style="padding:9px 14px;font-size:12px;color:var(--green);font-family:var(--mono)">$164</div>
+      <div style="padding:9px 14px;font-size:11px;color:var(--text3)">10%</div>
+    </div>
+    <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 60px;border-top:2px solid var(--border2);background:var(--bg2)">
+      <div style="padding:10px 14px;font-size:11px;font-weight:500;color:var(--text)">加权综合</div>
+      <div style="padding:10px 14px;font-size:15px;font-weight:500;color:var(--red);font-family:var(--mono)">~$72</div>
+      <div style="padding:10px 14px;font-size:15px;font-weight:500;color:var(--blue);font-family:var(--mono)">~$130</div>
+      <div style="padding:10px 14px;font-size:15px;font-weight:500;color:var(--green);font-family:var(--mono)">~$236</div>
+      <div style="padding:10px 14px;font-size:11px;color:var(--text3)">当前 $98</div>
+    </div>
+  </div>
+
+  <!-- 关键风险 -->
+  <div style="border:1px solid rgba(245,166,35,0.3);border-radius:8px;padding:14px 16px;background:rgba(245,166,35,0.05);font-size:12px;color:var(--text2);line-height:1.75">
+    <strong style="color:var(--amber)">⚠ 核心估值风险与局限性</strong><br><br>
+    <strong style="color:var(--text)">1. Bookings 增速 +10–12% 的解读分歧是最大变量。</strong>管理层称这是主动牺牲短期变现以换取用户增长，但 Bookings 是收入的领先指标——若 2026 全年 Bookings 仅增 10–12%，则 2027 营收增速可能低于 15%，届时 P/S 3.8x 也会显得贵。最关键的单一数据点：<strong style="color:var(--text)">Q1 2026 实际 Bookings vs +11% 指引</strong>。<br><br>
+    <strong style="color:var(--text)">2. 股票回购 $400M 的双重解读。</strong>利好：管理层认为股价被低估，托底意愿强；利空：若未来 12 个月按均价 $100 回购，将消耗约 400M / $100 = 400万股，占流通股 8.5%，EPS 将相应提升 ~9%——这是否意味着管理层对有机增长信心不足而转向工程性 EPS 提升？<br><br>
+    <strong style="color:var(--text)">3. SBC 对净利润的侵蚀。</strong>FY2025 SBC 约占营收 15–20%，正常化 EPS $3.35 仍受此影响。FCF 口径因排除 SBC 而比 GAAP EPS 更真实，但 FCF 也包含 SBC 带来的"假现金"效应（员工税款流入）。<br><br>
+    <strong style="color:var(--text)">4. Duolingo 不是 B2B SaaS，P/S 估值的参照系本质不同。</strong>消费应用的 P/S 天花板比 B2B SaaS 低，因为没有合同锁定和 NRR 概念，增速波动性更高。当前 3.8x 与 Spotify（更低毛利、更大体量）持平，说明市场已以消费类公司定价，而非以 SaaS 溢价定价。
+  </div>
+
   </div>
 
   <footer>
