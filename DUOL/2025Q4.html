@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>多邻国 DUOL · 护城河追踪 2025</title>
+<title>多邻国 DUOL · 投资研究仪表板</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
@@ -135,6 +135,7 @@
     gap: 0;
     border-bottom: 1px solid var(--border);
     margin-bottom: 32px;
+    flex-wrap: wrap;
   }
 
   .tab-btn {
@@ -152,6 +153,7 @@
     border-top: none;
     border-left: none;
     border-right: none;
+    white-space: nowrap;
   }
 
   .tab-btn:hover { color: var(--text2); }
@@ -670,6 +672,79 @@
     color: var(--text);
   }
 
+  /* ── SENTIMENT TRACKER ─────────────────────────── */
+  .tab-divider {
+    width: 1px; background: var(--border2); margin: 6px 4px; align-self: stretch; flex-shrink: 0;
+  }
+  .tab-group-label {
+    font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 0 8px; align-self: center; white-space: nowrap;
+  }
+  .platform-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 28px; }
+  .platform-card { border: 1px solid var(--border); border-radius: 10px; padding: 16px; background: var(--bg2); transition: border-color 0.15s; }
+  .platform-card:hover { border-color: var(--border2); }
+  .platform-card.highlight { border-color: rgba(45,212,160,0.25); }
+  .platform-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+  .platform-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .platform-type { font-family: var(--mono); font-size: 9px; padding: 2px 7px; border-radius: 3px; }
+  .type-free { background: var(--green-dim); color: var(--green); }
+  .type-paid { background: var(--amber-dim); color: var(--amber); }
+  .type-freemium { background: var(--blue-dim); color: var(--blue); }
+  .platform-rating { font-family: var(--mono); font-size: 24px; font-weight: 500; color: var(--text); line-height: 1; margin-bottom: 2px; }
+  .platform-rating span { font-size: 12px; color: var(--text3); font-weight: 400; }
+  .platform-count { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 10px; }
+  .platform-signal { font-size: 11px; color: var(--text2); line-height: 1.5; padding: 8px 10px; border-radius: 6px; background: var(--bg3); border-left: 2px solid; }
+  .signal-green { border-color: var(--green); }
+  .signal-amber { border-color: var(--amber); }
+  .signal-red { border-color: var(--red); }
+  .platform-link { display: block; margin-top: 10px; font-family: var(--mono); font-size: 10px; color: var(--text3); text-decoration: none; transition: color 0.15s; }
+  .platform-link:hover { color: var(--blue); }
+  .platform-updated { font-family: var(--mono); font-size: 9px; color: var(--text3); margin-top: 6px; }
+
+  .snt-timeline { position: relative; padding-left: 24px; }
+  .snt-timeline::before { content: ''; position: absolute; left: 6px; top: 0; bottom: 0; width: 1px; background: var(--border); }
+  .tl-item { position: relative; margin-bottom: 20px; }
+  .tl-item::before { content: ''; position: absolute; left: -21px; top: 5px; width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--border2); background: var(--bg); }
+  .tl-item.green::before { background: var(--green); border-color: var(--green); box-shadow: 0 0 6px var(--green); }
+  .tl-item.amber::before { background: var(--amber); border-color: var(--amber); }
+  .tl-item.red::before { background: var(--red); border-color: var(--red); }
+  .tl-date { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 4px; }
+  .tl-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .tl-body { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .tl-source { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-top: 4px; }
+
+  .theme-row { display: grid; grid-template-columns: 170px 1fr 110px 130px; gap: 0; border-top: 1px solid var(--border); }
+  .theme-row.header-row { background: var(--bg3); }
+  .tc { padding: 9px 14px; font-size: 11px; }
+  .tc.tc-label { color: var(--text3); font-family: var(--mono); font-size: 10px; letter-spacing: 0.05em; }
+  .tc.theme-name { font-weight: 500; color: var(--text); }
+  .tc.theme-desc { color: var(--text2); line-height: 1.5; }
+  .sentiment-bar { height: 4px; border-radius: 2px; background: var(--bg3); overflow: hidden; margin-top: 4px; }
+  .sentiment-fill { height: 100%; border-radius: 2px; }
+  .trend-tag { font-family: var(--mono); font-size: 9px; padding: 2px 6px; border-radius: 3px; }
+  .trend-up { background: var(--green-dim); color: var(--green); }
+  .trend-dn { background: var(--red-dim); color: var(--red); }
+  .trend-flat { background: var(--bg3); color: var(--text3); }
+
+  .ref-table { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+  .ref-row { display: grid; grid-template-columns: 150px 80px 1fr 130px 160px; border-top: 1px solid var(--border); }
+  .ref-row.ref-header { background: var(--bg3); }
+  .rc { padding: 9px 14px; font-size: 11px; color: var(--text2); }
+  .rc.rc-label { color: var(--text3); font-family: var(--mono); font-size: 10px; letter-spacing: 0.05em; }
+  .rc a { color: var(--blue); text-decoration: none; font-family: var(--mono); font-size: 10px; }
+  .rc a:hover { text-decoration: underline; }
+  .rc.plat-name { font-weight: 500; color: var(--text); }
+  .access-tag { font-family: var(--mono); font-size: 9px; padding: 2px 6px; border-radius: 3px; display: inline-block; }
+
+  @media (max-width: 800px) {
+    .platform-grid { grid-template-columns: 1fr 1fr; }
+    .ref-row { grid-template-columns: 130px 70px 1fr; }
+    .rc:nth-child(4), .rc:nth-child(5) { display: none; }
+  }
+  @media (max-width: 560px) { .platform-grid { grid-template-columns: 1fr; } }
+
+  /* ── END SENTIMENT CSS ──────────────────────────── */
+
   /* FOOTER */
   footer {
     margin-top: 56px;
@@ -775,6 +850,12 @@
     <button class="tab-btn" onclick="switchTab('framework')">分析框架</button>
     <button class="tab-btn" onclick="switchTab('watchlist')" style="color:var(--amber)">▸ Q1 2026 观察清单</button>
     <button class="tab-btn" onclick="switchTab('sources')">数据来源</button>
+    <div class="tab-divider"></div>
+    <span class="tab-group-label">用户情绪</span>
+    <button class="tab-btn" onclick="switchTab('sent_ratings')">应用评分</button>
+    <button class="tab-btn" onclick="switchTab('sent_themes')">反馈主题</button>
+    <button class="tab-btn" onclick="switchTab('sent_timeline')">情绪时间线</button>
+    <button class="tab-btn" onclick="switchTab('sent_platforms')">平台目录</button>
   </div>
 
   <!-- ======== OVERVIEW ======== -->
@@ -1687,14 +1768,263 @@
 
   </div>
 
+  <!-- ======== SENT: RATINGS ======== -->
+  <div id="sent_ratings" class="panel">
+    <div class="section-title">核心评分 · 公开可采集 · 每季度更新</div>
+    <div class="platform-grid">
+      <div class="platform-card highlight">
+        <div class="platform-top"><div class="platform-name">Apple App Store</div><span class="platform-type type-free">免费直采</span></div>
+        <div class="platform-rating">4.7 <span>/ 5</span></div>
+        <div style="color:var(--amber);font-size:13px;margin-bottom:6px">★★★★★</div>
+        <div class="platform-count">4,100,000+ 条评分 · iOS 全球</div>
+        <div class="platform-signal signal-green">评分长期维持高位，品牌护城河在 App Store 端表现稳定。高分主要来自游戏化体验和免费内容策略。</div>
+        <a class="platform-link" href="https://apps.apple.com/us/app/duolingo-language-lessons/id570060128" target="_blank">apps.apple.com/us/app/duolingo ↗</a>
+        <div class="platform-updated">更新时间：2026-03 · 数据来源：App Store 页面</div>
+      </div>
+      <div class="platform-card highlight">
+        <div class="platform-top"><div class="platform-name">Google Play Store</div><span class="platform-type type-free">免费直采</span></div>
+        <div class="platform-rating">4.5 <span>/ 5</span></div>
+        <div style="color:var(--amber);font-size:13px;margin-bottom:6px">★★★★½</div>
+        <div class="platform-count">33,000,000+ 条评分 · Android 全球</div>
+        <div class="platform-signal signal-green">样本量极大，是最具统计显著性的用户情绪指标。近期低分集中在广告频次和 Energy 系统。</div>
+        <a class="platform-link" href="https://play.google.com/store/apps/details?id=com.duolingo" target="_blank">play.google.com/store/apps/com.duolingo ↗</a>
+        <div class="platform-updated">更新时间：2026-03 · 数据来源：Google Play 页面</div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-top"><div class="platform-name">Trustpilot</div><span class="platform-type type-free">免费直采</span></div>
+        <div class="platform-rating" style="color:var(--red)">1.7 <span>/ 5</span></div>
+        <div style="color:var(--red);font-size:13px;margin-bottom:6px">★☆☆☆☆</div>
+        <div class="platform-count">数万条评价 · 以 1 星为主</div>
+        <div class="platform-signal signal-red">存在显著「投诉偏差」——低分主要来自计费争议和客服问题，<strong style="color:var(--text)">而非产品体验本身</strong>。需结合投诉类型解读，不能与 App Store 直接比较。</div>
+        <a class="platform-link" href="https://www.trustpilot.com/review/duolingo.com" target="_blank">trustpilot.com/review/duolingo.com ↗</a>
+        <div class="platform-updated">更新时间：2026-03 · 数据来源：Trustpilot 页面</div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-top"><div class="platform-name">Sitejabber</div><span class="platform-type type-free">免费直采</span></div>
+        <div class="platform-rating" style="color:var(--amber)">2.3 <span>/ 5</span></div>
+        <div style="color:var(--amber);font-size:13px;margin-bottom:6px">★★☆☆☆</div>
+        <div class="platform-count">数千条评价</div>
+        <div class="platform-signal signal-amber">与 Trustpilot 类似，主要反映付费争议。作为计费投诉趋势的补充信号，而非产品质量判断。</div>
+        <a class="platform-link" href="https://www.sitejabber.com/reviews/duolingo.com" target="_blank">sitejabber.com/reviews/duolingo.com ↗</a>
+        <div class="platform-updated">更新时间：2026-03 · 数据来源：Sitejabber 页面</div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-top"><div class="platform-name">Reddit r/duolingo</div><span class="platform-type type-free">免费直采</span></div>
+        <div class="platform-rating" style="font-size:18px;padding-top:4px">~2.4M <span>成员</span></div>
+        <div class="platform-count">每日活跃讨论 · 社区情绪晴雨表</div>
+        <div class="platform-signal signal-amber">高质量定性信号。近期热点：Energy 系统、AI 功能开放、Chess。「AI-first」声明在 2025 Q1–Q2 引发强烈社区反弹。</div>
+        <a class="platform-link" href="https://www.reddit.com/r/duolingo" target="_blank">reddit.com/r/duolingo ↗</a>
+        <div class="platform-updated">追踪方式：关键词搜索 + 热帖情绪 · 每月人工采样</div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-top"><div class="platform-name">Google Trends</div><span class="platform-type type-free">免费直采</span></div>
+        <div class="platform-rating" style="font-size:18px;padding-top:4px">搜索热度 <span>指数</span></div>
+        <div class="platform-count">相对搜索量 · 可追踪地区和时间趋势</div>
+        <div class="platform-signal signal-green">追踪「Duolingo」vs「ChatGPT language learning」相对热度，是品牌护城河侵蚀的早期预警。也可追踪竞品（Babbel / Pimsleur）趋势。</div>
+        <a class="platform-link" href="https://trends.google.com/trends/explore?q=duolingo" target="_blank">trends.google.com/trends?q=duolingo ↗</a>
+        <div class="platform-updated">追踪方式：每季度截图 · 比较 12 个月趋势</div>
+      </div>
+    </div>
+
+    <div class="section-title">付费 / 专业平台 · 更深度数据</div>
+    <div class="platform-grid">
+      <div class="platform-card">
+        <div class="platform-top"><div class="platform-name">Sensor Tower</div><span class="platform-type type-paid">需付费</span></div>
+        <div class="platform-count" style="margin-top:6px">月下载量：~11M · 月收入估算：~$12M</div>
+        <div class="platform-signal signal-green">下载量、收入、评论量趋势、关键词排名、竞品对比。2024 年收购 data.ai（原 App Annie），现为最全面的移动端数据平台。定价约 $3,000–$20,000/年，有免费预览。</div>
+        <a class="platform-link" href="https://app.sensortower.com/overview/com.duolingo" target="_blank">app.sensortower.com/overview/com.duolingo ↗</a>
+        <div class="platform-updated">免费页面：可查下载量趋势 · 评论数据需订阅</div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-top"><div class="platform-name">AppFollow</div><span class="platform-type type-freemium">Freemium</span></div>
+        <div class="platform-count" style="margin-top:6px">评论管理 + AI 情绪分析</div>
+        <div class="platform-signal signal-amber">多平台评论聚合（App Store + Google Play）、情绪评分、主题分类、关键词追踪。有 10 天免费试用，适合季度评论深度分析。</div>
+        <a class="platform-link" href="https://appfollow.io" target="_blank">appfollow.io ↗</a>
+        <div class="platform-updated">追踪建议：每季度导出评论 + 情绪分布快照</div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-top"><div class="platform-name">Kimola</div><span class="platform-type type-freemium">Freemium</span></div>
+        <div class="platform-count" style="margin-top:6px">NLP 评论分析 · 主题提取</div>
+        <div class="platform-signal signal-amber">已有多邻国 Google Play 评论的预制分析报告，包含情绪分类、高频短语、时间趋势图。有免费预览版本。</div>
+        <a class="platform-link" href="https://kimola.com/reports/comprehensive-duolingo-review-report-insights-feedback-google-play-en-us-142121" target="_blank">kimola.com · Duolingo Report ↗</a>
+        <div class="platform-updated">已有现成报告可直接参考 · 深度分析需付费</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== SENT: THEMES ======== -->
+  <div id="sent_themes" class="panel">
+    <div class="section-title">用户反馈主题矩阵 · 基于 2025 年全年评论分析</div>
+    <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px;">
+      <div class="theme-row header-row">
+        <div class="tc tc-label">主题</div>
+        <div class="tc tc-label">用户典型表述</div>
+        <div class="tc tc-label">情绪倾向</div>
+        <div class="tc tc-label">护城河信号</div>
+      </div>
+      <div class="theme-row">
+        <div class="tc theme-name">游戏化 / Streak</div>
+        <div class="tc theme-desc">「连续打卡 1000 天了，停不下来」「Streak 让我每天都回来」「因为 Streak 而付费升级」</div>
+        <div class="tc"><div style="font-family:var(--mono);font-size:10px;color:var(--green);margin-bottom:4px">正面为主</div><div class="sentiment-bar"><div class="sentiment-fill" style="width:78%;background:var(--green)"></div></div></div>
+        <div class="tc"><span class="trend-tag trend-up">行为锁定 ✓</span></div>
+      </div>
+      <div class="theme-row">
+        <div class="tc theme-name">广告体验</div>
+        <div class="tc theme-desc">「每课后 40 秒广告，课只有 30 秒」「广告频次变高了」「被逼升级 Super 的感觉很差」</div>
+        <div class="tc"><div style="font-family:var(--mono);font-size:10px;color:var(--red);margin-bottom:4px">负面为主</div><div class="sentiment-bar"><div class="sentiment-fill" style="width:70%;background:var(--red)"></div></div></div>
+        <div class="tc"><span class="trend-tag trend-dn">MAU 下滑诱因 ⚠</span></div>
+      </div>
+      <div class="theme-row">
+        <div class="tc theme-name">Energy 系统</div>
+        <div class="tc theme-desc">「正确答题也扣 Energy，不合理」「Energy 总是在课中间耗尽」「看广告也换不到 Energy 了」</div>
+        <div class="tc"><div style="font-family:var(--mono);font-size:10px;color:var(--red);margin-bottom:4px">强烈负面</div><div class="sentiment-bar"><div class="sentiment-fill" style="width:85%;background:var(--red)"></div></div></div>
+        <div class="tc"><span class="trend-tag trend-dn">战略转向根因 ⚠</span></div>
+      </div>
+      <div class="theme-row">
+        <div class="tc theme-name">学习效果</div>
+        <div class="tc theme-desc">「语法解释太少」「句子不实用」「用 1 年西班牙语还是说不了话」「对入门有帮助」</div>
+        <div class="tc"><div style="font-family:var(--mono);font-size:10px;color:var(--amber);margin-bottom:4px">褒贬各半</div><div class="sentiment-bar"><div class="sentiment-fill" style="width:50%;background:linear-gradient(90deg,var(--green) 50%,var(--red) 50%)"></div></div></div>
+        <div class="tc"><span class="trend-tag trend-flat">长期弱点</span></div>
+      </div>
+      <div class="theme-row">
+        <div class="tc theme-name">Chess 科目</div>
+        <div class="tc theme-desc">「Chess 真的很好玩」「学下棋比学语言更有趣」「PvP 功能很棒」「期待更多科目」</div>
+        <div class="tc"><div style="font-family:var(--mono);font-size:10px;color:var(--green);margin-bottom:4px">正面为主</div><div class="sentiment-bar"><div class="sentiment-fill" style="width:72%;background:var(--green)"></div></div></div>
+        <div class="tc"><span class="trend-tag trend-up">网络效应新变量 →</span></div>
+      </div>
+      <div class="theme-row">
+        <div class="tc theme-name">AI 功能（Max）</div>
+        <div class="tc theme-desc">「Video Call with Lily 真的有用」「AI 对话练习让口语进步了」「Max 价格太贵」「AI 替代人工不安心」</div>
+        <div class="tc"><div style="font-family:var(--mono);font-size:10px;color:var(--amber);margin-bottom:4px">功能正面 / 定价负面</div><div class="sentiment-bar"><div class="sentiment-fill" style="width:55%;background:var(--amber)"></div></div></div>
+        <div class="tc"><span class="trend-tag trend-up">数据飞轮关键验证</span></div>
+      </div>
+      <div class="theme-row">
+        <div class="tc theme-name">计费 / 订阅争议</div>
+        <div class="tc theme-desc">「取消了还是扣费」「促销价格造假」「退款申请被拒」「没想到会自动续费」</div>
+        <div class="tc"><div style="font-family:var(--mono);font-size:10px;color:var(--red);margin-bottom:4px">强烈负面</div><div class="sentiment-bar"><div class="sentiment-fill" style="width:90%;background:var(--red)"></div></div></div>
+        <div class="tc"><span class="trend-tag trend-dn">Trustpilot 低分主因</span></div>
+      </div>
+    </div>
+    <div class="prose">情绪倾向基于 2025 年 App Store、Google Play 公开评论的人工采样分析，以及 Reddit r/duolingo 热帖的定性观察，非精确量化统计。Energy 系统和广告体验是 2025 年 MAU 环比下滑的直接用户侧原因，与管理层「变现摩擦」表述高度吻合。</div>
+  </div>
+
+  <!-- ======== SENT: TIMELINE ======== -->
+  <div id="sent_timeline" class="panel">
+    <div class="section-title">情绪事件时间线 · 2024 Q4 — 2026 Q1</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:14px;letter-spacing:0.06em">用户情绪事件</div>
+        <div class="snt-timeline">
+          <div class="tl-item green">
+            <div class="tl-date">2024 Q4</div>
+            <div class="tl-title">DAU 突破 4000 万，评分稳定</div>
+            <div class="tl-body">App Store 评分维持 4.7，Google Play 维持 4.5。New Year's Promotion 带动正面情绪。</div>
+            <div class="tl-source">来源：季报 + App Store 公开页面</div>
+          </div>
+          <div class="tl-item green">
+            <div class="tl-date">2025 Q1</div>
+            <div class="tl-title">Dead Duo 活动 · 社交媒体情绪峰值</div>
+            <div class="tl-body">「Dead Duo」营销活动引发病毒传播，Reddit 和 TikTok 情绪整体正面。约 20 亿次曝光。DAU 创历史净增纪录。</div>
+            <div class="tl-source">来源：Q1 2025 股东信 + Reddit r/duolingo</div>
+          </div>
+          <div class="tl-item amber">
+            <div class="tl-date">2025 Q1–Q2</div>
+            <div class="tl-title">「AI-first」声明引发社区反弹</div>
+            <div class="tl-body">CEO 邮件宣布用 AI 替代内容创作者，Reddit 出现大量「准备换 App」帖子。「Language learning is about good content, not mass content」成高赞评论。</div>
+            <div class="tl-source">来源：Reddit r/duolingo · r/languagelearning</div>
+          </div>
+          <div class="tl-item red">
+            <div class="tl-date">2025 Q2–Q3</div>
+            <div class="tl-title">新 Energy 系统上线 · 评论负面激增</div>
+            <div class="tl-body">正确答题也扣 Energy 的新机制引发强烈不满。Google Play 新评论低分比例上升，主要关键词「energy」「ads」「annoying」。MAU 首次环比下滑。</div>
+            <div class="tl-source">来源：Google Play 评论 + Q2 2025 MAU 数据</div>
+          </div>
+          <div class="tl-item green">
+            <div class="tl-date">2025 Q3</div>
+            <div class="tl-title">Chess 上线 · 快速获得正面反馈</div>
+            <div class="tl-body">Chess 成为增长最快科目。App Store 评论出现大量「Chess 让我重新喜欢上 Duolingo」表述。PvP 功能被频繁称赞。</div>
+            <div class="tl-source">来源：App Store 评论 + Q3 2025 股东信</div>
+          </div>
+          <div class="tl-item amber">
+            <div class="tl-date">2025 Q4 — 2026 Q1</div>
+            <div class="tl-title">战略转向宣布 · 社区谨慎观望</div>
+            <div class="tl-body">管理层承认「变现过度摩擦用户体验」，宣布 2026 年向免费用户开放 AI 功能。Reddit 讨论「Duolingo 在变好还是变烂」，情绪分裂。</div>
+            <div class="tl-source">来源：Q4 2025 股东信 + Reddit r/duolingo 近期帖子</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:14px;letter-spacing:0.06em">评分历史快照</div>
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px;">
+          <div style="display:grid;grid-template-columns:90px 70px 70px 1fr;background:var(--bg3);">
+            <div style="padding:8px 12px;font-family:var(--mono);font-size:10px;color:var(--text3)">时间</div>
+            <div style="padding:8px 12px;font-family:var(--mono);font-size:10px;color:var(--text3)">iOS</div>
+            <div style="padding:8px 12px;font-family:var(--mono);font-size:10px;color:var(--text3)">Android</div>
+            <div style="padding:8px 12px;font-family:var(--mono);font-size:10px;color:var(--text3)">主要变化</div>
+          </div>
+          <div style="display:grid;grid-template-columns:90px 70px 70px 1fr;border-top:1px solid var(--border);"><div style="padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--text3)">2024 Q4</div><div style="padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--green)">4.7</div><div style="padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--green)">4.5</div><div style="padding:8px 12px;font-size:11px;color:var(--text2)">稳定基准</div></div>
+          <div style="display:grid;grid-template-columns:90px 70px 70px 1fr;border-top:1px solid var(--border);"><div style="padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--text3)">2025 Q2</div><div style="padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--green)">4.7</div><div style="padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--amber)">4.4*</div><div style="padding:8px 12px;font-size:11px;color:var(--text2)">Android 轻微下滑，Energy 抱怨增多</div></div>
+          <div style="display:grid;grid-template-columns:90px 70px 70px 1fr;border-top:1px solid var(--border);"><div style="padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--text3)">2025 Q4</div><div style="padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--green)">4.7</div><div style="padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--green)">4.5</div><div style="padding:8px 12px;font-size:11px;color:var(--text2)">Chess 正面反馈拉高，整体回稳</div></div>
+          <div style="display:grid;grid-template-columns:90px 70px 70px 1fr;border-top:1px solid var(--border);"><div style="padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--text3)">2026 Q1</div><div style="padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--green)">4.7</div><div style="padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--green)">4.5</div><div style="padding:8px 12px;font-size:11px;color:var(--text2)">AI 免费化效果观察中</div></div>
+          <div style="padding:8px 12px;font-size:10px;color:var(--text3);background:var(--bg3);border-top:1px solid var(--border)">* 估算值，基于当期评论趋势推断，非官方数据</div>
+        </div>
+
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+          <div style="padding:10px 14px;background:var(--bg3);font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.06em">Reddit 情绪快照 · r/duolingo 月度热词</div>
+          <div style="padding:14px;">
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">
+              <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:12px;background:var(--green-dim);color:var(--green)">streak</span>
+              <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:12px;background:var(--green-dim);color:var(--green)">chess</span>
+              <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:12px;background:var(--green-dim);color:var(--green)">AI video call</span>
+              <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:12px;background:var(--red-dim);color:var(--red)">energy</span>
+              <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:12px;background:var(--red-dim);color:var(--red)">ads</span>
+              <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:12px;background:var(--red-dim);color:var(--red)">AI replacing</span>
+              <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:12px;background:var(--amber-dim);color:var(--amber)">super duolingo</span>
+              <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:12px;background:var(--amber-dim);color:var(--amber)">grammar</span>
+              <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:12px;background:var(--amber-dim);color:var(--amber)">switch app</span>
+            </div>
+            <div style="font-size:11px;color:var(--text3);font-family:var(--mono)">绿 = 正面 · 红 = 负面 · 橙 = 中性/争议</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== SENT: PLATFORMS ======== -->
+  <div id="sent_platforms" class="panel">
+    <div class="section-title">三方平台完整目录 · 访问方式 · 采集频率</div>
+    <div class="ref-table">
+      <div class="ref-row ref-header">
+        <div class="rc rc-label">平台</div>
+        <div class="rc rc-label">访问</div>
+        <div class="rc rc-label">可追踪内容</div>
+        <div class="rc rc-label">采集频率建议</div>
+        <div class="rc rc-label">直达链接</div>
+      </div>
+      <div class="ref-row"><div class="rc plat-name">Apple App Store</div><div class="rc"><span class="access-tag type-free">免费</span></div><div class="rc">综合评分、评分数量、近期评论</div><div class="rc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">每季度</div><div class="rc"><a href="https://apps.apple.com/us/app/duolingo-language-lessons/id570060128" target="_blank">App Store ↗</a></div></div>
+      <div class="ref-row"><div class="rc plat-name">Google Play Store</div><div class="rc"><span class="access-tag type-free">免费</span></div><div class="rc">综合评分、评分数量、分布（1–5星）、近期评论</div><div class="rc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">每季度</div><div class="rc"><a href="https://play.google.com/store/apps/details?id=com.duolingo" target="_blank">Google Play ↗</a></div></div>
+      <div class="ref-row"><div class="rc plat-name">Trustpilot</div><div class="rc"><span class="access-tag type-free">免费</span></div><div class="rc">综合评分、评论总数、投诉主题</div><div class="rc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">每季度</div><div class="rc"><a href="https://www.trustpilot.com/review/duolingo.com" target="_blank">Trustpilot ↗</a></div></div>
+      <div class="ref-row"><div class="rc plat-name">Sitejabber</div><div class="rc"><span class="access-tag type-free">免费</span></div><div class="rc">综合评分、计费投诉趋势</div><div class="rc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">每季度</div><div class="rc"><a href="https://www.sitejabber.com/reviews/duolingo.com" target="_blank">Sitejabber ↗</a></div></div>
+      <div class="ref-row"><div class="rc plat-name">Reddit r/duolingo</div><div class="rc"><span class="access-tag type-free">免费</span></div><div class="rc">社区情绪、热帖主题、竞品自发讨论</div><div class="rc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">每月</div><div class="rc"><a href="https://www.reddit.com/r/duolingo/top/?t=month" target="_blank">月度热帖 ↗</a></div></div>
+      <div class="ref-row"><div class="rc plat-name">Google Trends</div><div class="rc"><span class="access-tag type-free">免费</span></div><div class="rc">搜索热度趋势、地区分布、竞品对比</div><div class="rc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">每季度</div><div class="rc"><a href="https://trends.google.com/trends/explore?q=duolingo,babbel,pimsleur" target="_blank">竞品趋势 ↗</a></div></div>
+      <div class="ref-row"><div class="rc plat-name">Sensor Tower</div><div class="rc"><span class="access-tag" style="background:var(--amber-dim);color:var(--amber)">付费</span></div><div class="rc">下载量估算、收入估算、关键词排名</div><div class="rc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">每季度（免费预览）</div><div class="rc"><a href="https://app.sensortower.com/overview/com.duolingo" target="_blank">Sensor Tower ↗</a></div></div>
+      <div class="ref-row"><div class="rc plat-name">AppFollow</div><div class="rc"><span class="access-tag" style="background:var(--blue-dim);color:var(--blue)">Freemium</span></div><div class="rc">评论聚合、情绪评分、主题分类</div><div class="rc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">每季度（试用导出）</div><div class="rc"><a href="https://appfollow.io" target="_blank">AppFollow ↗</a></div></div>
+      <div class="ref-row"><div class="rc plat-name">Kimola</div><div class="rc"><span class="access-tag" style="background:var(--blue-dim);color:var(--blue)">Freemium</span></div><div class="rc">NLP 主题分析、情绪分布、高频短语趋势</div><div class="rc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">每半年</div><div class="rc"><a href="https://kimola.com/reports/comprehensive-duolingo-review-report-insights-feedback-google-play-en-us-142121" target="_blank">Kimola Report ↗</a></div></div>
+      <div class="ref-row"><div class="rc plat-name">Class Central</div><div class="rc"><span class="access-tag type-free">免费</span></div><div class="rc">独立分析文章、季度深度解读</div><div class="rc" style="font-family:var(--mono);font-size:10px;color:var(--text3)">每季度财报后</div><div class="rc"><a href="https://www.classcentral.com/report/duolingo-2025/" target="_blank">Class Central ↗</a></div></div>
+    </div>
+    <div class="prose"><strong>Agent 采集建议</strong>：每季度财报发布后 2 周内，按频率更新上表各平台数据。每月用 web_search 搜索 Reddit r/duolingo 月度热帖主题，作为补充定性信号。Trustpilot 和 Sitejabber 的低分需结合投诉类型解读——计费争议 ≠ 产品质量下降，需区分。</div>
+  </div>
+
   <footer>
     <div class="footer-note">
-      数据来源：Duolingo SEC EDGAR 季报 · Q1–Q4 FY2025<br>
-      Q1 2026 为管理层官方指引，非实际值 · 实际财报预计 2026 年 5 月中旬发布<br>
+      财务数据来源：Duolingo SEC EDGAR 季报 · Q1–Q4 FY2025<br>
+      情绪数据来源：App Store · Google Play · Trustpilot · Reddit · Sensor Tower<br>
       本页面为个人投资研究记录，不构成任何投资建议
     </div>
     <div class="footer-note" style="text-align:right">
-      框架更新：2026 年 3 月<br>
+      页面版本：v2.0 · 2026 年 3 月<br>
+      配套模板：DUOLINGO_AGENT_TEMPLATE.md<br>
       下次更新：2026 年 5 月（Q1 2026 财报后）
     </div>
   </footer>
