@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datadog DDOG · 护城河追踪 FY2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#080b0f; --bg2:#0f1318; --bg3:#161c24;
+    --border:rgba(160,100,255,0.08); --border2:rgba(160,100,255,0.18);
+    --text:#dde0f0; --text2:#8890b0; --text3:#4a5070;
+    --purple:#a78bfa; --purple-dim:rgba(167,139,250,0.1);
+    --teal:#2dd4c0; --teal-dim:rgba(45,212,192,0.1);
+    --amber:#f5b623; --amber-dim:rgba(245,182,35,0.1);
+    --red:#f06060; --red-dim:rgba(240,96,96,0.08);
+    --green:#34d98a; --green-dim:rgba(52,217,138,0.1);
+    --blue:#6eb3f7; --blue-dim:rgba(110,179,247,0.08);
+    --mono:'DM Mono',monospace; --sans:'DM Sans','Noto Sans SC',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(167,139,250,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(167,139,250,0.02) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+  .container{max-width:1160px;margin:0 auto;padding:0 24px 80px;position:relative;z-index:1}
+  header{padding:48px 0 32px;border-bottom:1px solid var(--border);margin-bottom:32px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .eyebrow{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+  h1{font-size:30px;font-weight:300;letter-spacing:-.02em}
+  h1 em{color:var(--purple);font-style:normal;font-weight:500}
+  .header-meta{font-size:11px;color:var(--text3);margin-top:8px;font-family:var(--mono)}
+  .stat-big{font-family:var(--mono);font-size:26px;font-weight:500;color:var(--text);letter-spacing:-.02em}
+  .stat-label{font-size:11px;color:var(--text3);margin-top:3px;font-family:var(--mono)}
+  .tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:28px;overflow-x:auto}
+  .tab-btn{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:9px 16px;color:var(--text3);cursor:pointer;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;transition:color .15s,border-color .15s;white-space:nowrap}
+  .tab-btn:hover{color:var(--text2)}
+  .tab-btn.active{color:var(--purple);border-bottom-color:var(--purple)}
+  .panel{display:none;animation:fadeUp .2s ease}
+  .panel.active{display:block}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:22px}
+  .kpi-card{border:1px solid var(--border);border-radius:8px;padding:12px 14px;background:var(--bg2)}
+  .kpi-card.hi{border-color:rgba(167,139,250,0.3)}
+  .kpi-label{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.08em;margin-bottom:6px}
+  .kpi-val{font-family:var(--mono);font-size:20px;font-weight:500;color:var(--text);line-height:1}
+  .kpi-delta{font-family:var(--mono);font-size:10px;margin-top:3px}
+  .up{color:var(--green)} .warn{color:var(--amber)} .danger{color:var(--red)} .muted{color:var(--text3)} .bold{font-weight:500;color:var(--text)} .tiny{font-size:9px}
+  .dtable{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:22px}
+  .dt-head{padding:9px 16px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+  .dt-lbl{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+  .drow{display:grid;border-top:1px solid var(--border)}
+  .drow.hdr{background:var(--bg3)}
+  .dcell{padding:9px 13px;font-size:11px;color:var(--text2);font-family:var(--mono)}
+  .dcell.lbl{font-family:var(--sans);color:var(--text3);font-size:11px}
+  .dcell.ch{font-size:10px;color:var(--text3);letter-spacing:.05em}
+  .dcell.hl{background:rgba(167,139,250,0.07);color:var(--text)}
+  .bar-wrap{margin-bottom:20px}
+  .bar-ttl{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+  .bar-row{display:flex;align-items:center;gap:12px;margin-bottom:9px}
+  .bar-q{font-family:var(--mono);font-size:10px;color:var(--text3);width:68px;flex-shrink:0}
+  .bar-track{flex:1;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:2px}
+  .bar-val{font-family:var(--mono);font-size:10px;width:60px;text-align:right;flex-shrink:0}
+  .moat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+  .moat-card{border:1px solid var(--border);border-radius:10px;padding:16px 18px;background:var(--bg2)}
+  .moat-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .mdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .d-purple{background:var(--purple);box-shadow:0 0 6px var(--purple)}
+  .d-teal{background:var(--teal);box-shadow:0 0 6px var(--teal)}
+  .d-green{background:var(--green);box-shadow:0 0 6px var(--green)}
+  .d-amber{background:var(--amber);box-shadow:0 0 6px var(--amber)}
+  .d-blue{background:var(--blue);box-shadow:0 0 6px var(--blue)}
+  .moat-title{font-size:13px;font-weight:500;color:var(--text)}
+  .moat-rating{font-family:var(--mono);font-size:10px;color:var(--text3);margin-left:auto}
+  .moat-body{font-size:12px;color:var(--text2);line-height:1.65}
+  .moat-body strong{color:var(--text);font-weight:500}
+  .moat-pills{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px}
+  .pill{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:4px}
+  .wl-block{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:10px}
+  .wl-hdr{display:grid;background:var(--bg3);border-bottom:1px solid var(--border)}
+  .wl-item{display:grid;border-top:1px solid var(--border);background:var(--bg2);transition:background .15s}
+  .wl-item:hover{background:var(--bg3)}
+  .wc{padding:9px 12px;font-size:11px}
+  .wc.wnum{font-family:var(--mono);color:var(--text3);font-size:10px;padding-top:14px}
+  .wc.wmain{border-left:1px solid var(--border);border-right:1px solid var(--border)}
+  .wc.wguide{border-right:1px solid var(--border)}
+  .wc.wlbl{color:var(--text3);font-family:var(--mono);font-size:9px;letter-spacing:.06em}
+  .wm-ttl{font-size:12px;font-weight:500;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .wm-desc{font-size:11px;color:var(--text2);line-height:1.55}
+  .wg-val{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--amber)}
+  .wg-lbl{font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px}
+  .wg-note{font-size:10px;color:var(--text3);margin-top:3px;line-height:1.4}
+  .irow{display:flex;gap:6px;margin-bottom:4px;font-size:11px;line-height:1.4}
+  .irow:last-child{margin-bottom:0}
+  .iarr{font-family:var(--mono);font-size:10px;flex-shrink:0;margin-top:1px}
+  .iarr.up{color:var(--green)} .iarr.dn{color:var(--red)} .iarr.mid{color:var(--amber)}
+  .itxt{color:var(--text2)}
+  .pb{font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:3px}
+  .p1{background:var(--red-dim);color:var(--red)} .p2{background:var(--amber-dim);color:var(--amber)} .p3{background:var(--green-dim);color:var(--green)}
+  .cg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+  .cc{border:1px solid var(--border);border-radius:8px;padding:14px;background:var(--bg2)}
+  .cc.self{border-color:rgba(167,139,250,0.4)}
+  .cc-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+  .cc-sub{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:10px}
+  .cc-row{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);padding:3px 0;border-bottom:1px solid var(--border)}
+  .cc-row:last-child{border-bottom:none}
+  .cc-row .v{font-family:var(--mono);font-size:10px}
+  .alert{border:1px solid;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--text2);line-height:1.65}
+  .alert.amber{border-color:rgba(245,182,35,.3);background:var(--amber-dim)}
+  .alert.purple{border-color:rgba(167,139,250,.3);background:var(--purple-dim)}
+  .alert strong{color:var(--text);font-weight:500}
+  .section-title{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:16px}
+  .prose{font-size:12px;color:var(--text2);line-height:1.75;border:1px solid var(--border);border-radius:8px;padding:14px 16px;background:var(--bg2);margin-top:12px}
+  .prose strong{color:var(--text);font-weight:500}
+  .notice{border:1px dashed rgba(167,139,250,.3);border-radius:8px;padding:10px 14px;background:rgba(167,139,250,.04);font-size:11px;color:var(--text2);margin-bottom:20px;line-height:1.6}
+  .notice strong{color:var(--purple)}
+  .src-table{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px}
+  .src-row{display:grid;grid-template-columns:100px 1fr 90px 1fr;border-top:1px solid var(--border)}
+  .src-row.shdr{background:var(--bg3)}
+  .sc2{padding:8px 12px;font-size:11px;color:var(--text2)}
+  .sc2.slbl{color:var(--text3);font-family:var(--mono);font-size:9px;letter-spacing:.06em}
+  .sc2.sqtr{font-family:var(--mono);font-weight:500;color:var(--text)}
+  .sc2 a{color:var(--blue);text-decoration:none;font-family:var(--mono);font-size:10px}
+  .sc2 a:hover{text-decoration:underline}
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .fn{font-family:var(--mono);font-size:10px;color:var(--text3);line-height:1.7}
+  @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(3,1fr)}.moat-grid{grid-template-columns:1fr}.cg{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div>
+    <div class="eyebrow">DDOG · AI 可观测性与安全平台 · 护城河追踪 · FY2025</div>
+    <h1>Datadog <em>护城河</em> 分析</h1>
+    <div class="header-meta">数据来源：SEC EDGAR · Q1–Q4 FY2025（2025.01–2025.12）· FY2026 管理层指引</div>
+  </div>
+  <div style="text-align:right">
+    <div class="stat-big">$3.43B</div>
+    <div class="stat-label">FY2025 营收 <span class="up">↑ +28% YoY</span></div>
+    <div class="stat-label" style="margin-top:4px">NRR ~120% · FCF $915M · $1M+ 客户 603 家</div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="go('overview')">财务总览</button>
+  <button class="tab-btn" onclick="go('moat')">护城河分析</button>
+  <button class="tab-btn" onclick="go('watchlist')">Q1 2026 观察清单</button>
+  <button class="tab-btn" onclick="go('competitive')">竞争格局</button>
+  <button class="tab-btn" onclick="go('valuation')" style="color:var(--amber)">▸ 估值分析</button>
+  <button class="tab-btn" onclick="go('sources')">数据来源</button>
+</div>
+
+<!-- OVERVIEW -->
+<div id="overview" class="panel active">
+  <div class="notice"><strong>业务模型说明</strong>：Datadog 采用<strong>订阅制 + 消费制混合</strong>定价——基础监控按主机/月订阅，日志、APM 等按数据量计费。ARR 为关键指标，NRR ~120% 说明存量客户消费持续扩张。</div>
+  <div class="kpi-grid">
+    <div class="kpi-card hi"><div class="kpi-label">NRR（净收入留存）</div><div class="kpi-val">~120%</div><div class="kpi-delta up">连续保持 · 毛留存 mid-90s%</div></div>
+    <div class="kpi-card hi"><div class="kpi-label">$1M+ ARR 客户</div><div class="kpi-val">603</div><div class="kpi-delta up">↑ +31% YoY vs 462</div></div>
+    <div class="kpi-card hi"><div class="kpi-label">Q4 Bookings 记录</div><div class="kpi-val">$1.63B</div><div class="kpi-delta up">↑ +37% YoY · 史上最高</div></div>
+    <div class="kpi-card"><div class="kpi-label">FCF（FY2025）</div><div class="kpi-val">$915M</div><div class="kpi-delta up">↑ +18% YoY · 27% margin</div></div>
+    <div class="kpi-card"><div class="kpi-label">多产品采用率</div><div class="kpi-val">84%</div><div class="kpi-delta muted">2+ 产品 · 4+ 产品 54%</div></div>
+  </div>
+  <div class="dtable">
+    <div class="dt-head"><span class="dt-lbl">FY2025 季度核心数据</span><span class="dt-lbl" style="font-size:9px">订阅+消费混合制 · 财年截至 12 月 31 日</span></div>
+    <div class="drow hdr" style="grid-template-columns:200px repeat(4,1fr)">
+      <div class="dcell lbl ch">指标</div>
+      <div class="dcell ch">Q1 2025</div><div class="dcell ch">Q2 2025</div><div class="dcell ch">Q3 2025</div><div class="dcell ch hl">Q4 2025</div>
+    </div>
+    <div class="drow" style="grid-template-columns:200px repeat(4,1fr)"><div class="dcell lbl">营收（$M）</div><div class="dcell">$762 <span class="up tiny">+25%</span></div><div class="dcell">$827 <span class="up tiny">+28%</span></div><div class="dcell">$886 <span class="up tiny">+28%</span></div><div class="dcell hl bold">$953 <span class="up tiny">+29% ↑</span></div></div>
+    <div class="drow" style="grid-template-columns:200px repeat(4,1fr)"><div class="dcell lbl">$100K+ ARR 客户</div><div class="dcell">3,770 <span class="up tiny">+13%</span></div><div class="dcell">3,850 <span class="up tiny">+14%</span></div><div class="dcell">4,060 <span class="up tiny">+16%</span></div><div class="dcell hl bold">4,310 <span class="up tiny">+19% ↑</span></div></div>
+    <div class="drow" style="grid-template-columns:200px repeat(4,1fr)"><div class="dcell lbl">NRR（TTM）</div><div class="dcell">~120%</div><div class="dcell">~120%</div><div class="dcell">~120%</div><div class="dcell hl bold">~120%</div></div>
+    <div class="drow" style="grid-template-columns:200px repeat(4,1fr)"><div class="dcell lbl">Non-GAAP 毛利率</div><div class="dcell">81.0%</div><div class="dcell">81.0%</div><div class="dcell">81.1%</div><div class="dcell hl bold">81.4%</div></div>
+    <div class="drow" style="grid-template-columns:200px repeat(4,1fr)"><div class="dcell lbl">Non-GAAP 运营利润率</div><div class="dcell">22%</div><div class="dcell">20%</div><div class="dcell">23%</div><div class="dcell hl bold">24%</div></div>
+    <div class="drow" style="grid-template-columns:200px repeat(4,1fr)"><div class="dcell lbl">FCF（$M）</div><div class="dcell">$244 <span class="up tiny">32%</span></div><div class="dcell">$165 <span class="muted tiny">20%</span></div><div class="dcell">$214 <span class="up tiny">24%</span></div><div class="dcell hl bold">$291 <span class="up tiny">31%</span></div></div>
+    <div class="drow" style="grid-template-columns:200px repeat(4,1fr)"><div class="dcell lbl">AI 整合账户数</div><div class="dcell muted">~3,000+</div><div class="dcell">~4,000+</div><div class="dcell">~5,000+</div><div class="dcell hl bold">5,500+</div></div>
+    <div class="drow" style="grid-template-columns:200px repeat(4,1fr)"><div class="dcell lbl">季度关键事件</div><div class="dcell muted" style="font-size:10px">收购 Eppo</div><div class="dcell muted" style="font-size:10px">安全 ARR $100M+</div><div class="dcell muted" style="font-size:10px">RPO +53% $2.79B</div><div class="dcell hl muted" style="font-size:10px">史上最大合同 · Bookings +37%</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+    <div class="bar-wrap">
+      <div class="bar-ttl">营收增速 YoY</div>
+      <div class="bar-row"><div class="bar-q">Q1 2025</div><div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--purple)"></div></div><div class="bar-val up">+25%</div></div>
+      <div class="bar-row"><div class="bar-q">Q2 2025</div><div class="bar-track"><div class="bar-fill" style="width:56%;background:var(--purple)"></div></div><div class="bar-val up">+28%</div></div>
+      <div class="bar-row"><div class="bar-q">Q3 2025</div><div class="bar-track"><div class="bar-fill" style="width:56%;background:var(--purple)"></div></div><div class="bar-val up">+28%</div></div>
+      <div class="bar-row"><div class="bar-q">Q4 2025</div><div class="bar-track"><div class="bar-fill" style="width:58%;background:var(--purple)"></div></div><div class="bar-val up">+29% ↑</div></div>
+      <div class="bar-row"><div class="bar-q" style="color:var(--amber)">FY26 指引</div><div class="bar-track"><div class="bar-fill" style="width:38%;background:repeating-linear-gradient(90deg,var(--amber) 0,var(--amber) 6px,transparent 6px,transparent 10px)"></div></div><div class="bar-val warn">+19%</div></div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-ttl">$100K+ ARR 客户增速</div>
+      <div class="bar-row"><div class="bar-q">Q1 2025</div><div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--teal)"></div></div><div class="bar-val" style="color:var(--teal)">+13%</div></div>
+      <div class="bar-row"><div class="bar-q">Q2 2025</div><div class="bar-track"><div class="bar-fill" style="width:28%;background:var(--teal)"></div></div><div class="bar-val" style="color:var(--teal)">+14%</div></div>
+      <div class="bar-row"><div class="bar-q">Q3 2025</div><div class="bar-track"><div class="bar-fill" style="width:32%;background:var(--teal)"></div></div><div class="bar-val" style="color:var(--teal)">+16%</div></div>
+      <div class="bar-row"><div class="bar-q">Q4 2025</div><div class="bar-track"><div class="bar-fill" style="width:38%;background:var(--teal)"></div></div><div class="bar-val" style="color:var(--teal)">+19% ↑</div></div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-ttl">Non-GAAP 运营利润率趋势</div>
+      <div class="bar-row"><div class="bar-q">FY2023</div><div class="bar-track"><div class="bar-fill" style="width:54%;background:var(--green)"></div></div><div class="bar-val up">27%</div></div>
+      <div class="bar-row"><div class="bar-q">FY2024</div><div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--green)"></div></div><div class="bar-val up">25%</div></div>
+      <div class="bar-row"><div class="bar-q">FY2025</div><div class="bar-track"><div class="bar-fill" style="width:44%;background:var(--green)"></div></div><div class="bar-val up">22%</div></div>
+      <div class="bar-row"><div class="bar-q" style="color:var(--amber)">FY26 指引</div><div class="bar-track"><div class="bar-fill" style="width:42%;background:repeating-linear-gradient(90deg,var(--amber) 0,var(--amber) 6px,transparent 6px,transparent 10px)"></div></div><div class="bar-val warn">21%</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MOAT -->
+<div id="moat" class="panel">
+  <div class="prose" style="margin-bottom:20px">
+    Datadog 的护城河本质是<strong>平台广度 × 数据深度 × 迁移成本</strong>的乘积。可观测性数据流入平台后，每增加一个产品模块客户就多接入一套 SDK 和 Agent，迁移成本以工程季度计算。Q4 2025 中 84% 客户使用 2+ 产品、54% 使用 4+ 产品——这是迁移成本加速积累的直接证明。<strong>$1M+ ARR 客户同比 +31% 显著快于总客户增速 +8%</strong>，说明深度客户在用更多产品而非简单扩容。
+  </div>
+  <div class="moat-grid">
+    <div class="moat-card">
+      <div class="moat-top"><div class="mdot d-purple"></div><div class="moat-title">平台广度护城河（核心）</div><div class="moat-rating">★★★★★</div></div>
+      <div class="moat-body"><strong>机制</strong>：从基础设施监控扩展至日志、APM、RUM、安全、产品分析、AI 可观测性……每个产品有独立 Agent，共享同一数据平台。客户产品数越多，迁移到竞品的工程代价呈指数级增长。<br><br><strong>核心证据</strong>：84% 使用 2+ 产品，54% 使用 4+ 产品。APM、DEM 均超 $1B ARR，日志超 $1B。安全 ARR 超 $100M 且以 mid-50s% YoY 增速扩张，证明平台扩展在开辟真实新收入。<br><br><strong>压力测试</strong>：若 OpenTelemetry 标准化降低数据采集的供应商绑定程度，平台护城河会被部分稀释。核心风险是「工具碎片化重现」——新 AI 工作负载可能被独立工具服务。</div>
+      <div class="moat-pills"><span class="pill" style="background:var(--purple-dim);color:var(--purple)">4+ 产品客户 54%</span><span class="pill" style="background:var(--purple-dim);color:var(--purple)">APM ARR >$1B</span><span class="pill" style="background:var(--purple-dim);color:var(--purple)">安全 +mid-50s% YoY</span></div>
+    </div>
+    <div class="moat-card">
+      <div class="moat-top"><div class="mdot d-teal"></div><div class="moat-title">数据引力 + 迁移成本</div><div class="moat-rating">★★★★★</div></div>
+      <div class="moat-body"><strong>机制</strong>：客户在 Datadog 积累的告警规则、Dashboard、检测模型、事件历史越多，迁移时需要重建的内容就越多——这是「时间累积的护城河」。<br><br><strong>核心证据</strong>：NRR ~120% 稳定保持，毛留存率 mid-to-high 90s%（几乎没有客户完全离开）。<strong>$10M+ ARR 大客户的存在证明了极深度的平台依赖</strong>——没有任何理性的 CTO 会在平台正常运行时迁移如此大规模的可观测性基础设施。<br><br><strong>压力测试</strong>：NRR 从历史峰值约 130%+ 已下滑至 120%，扩张速度在放缓。需持续追踪 NRR 是否稳定在 120% 以上，若跌破 115% 需重新评估护城河强度。</div>
+      <div class="moat-pills"><span class="pill" style="background:var(--teal-dim);color:var(--teal)">NRR ~120%</span><span class="pill" style="background:var(--teal-dim);color:var(--teal)">毛留存 mid-90s%</span><span class="pill" style="background:var(--teal-dim);color:var(--teal)">$1M+ 客户 +31%</span></div>
+    </div>
+    <div class="moat-card">
+      <div class="moat-top"><div class="mdot d-blue"></div><div class="moat-title">AI 可观测性新护城河</div><div class="moat-rating">★★★★（演进）</div></div>
+      <div class="moat-body"><strong>机制</strong>：AI 应用兴起对可观测性提出新需求——LLM 成本追踪、模型幻觉检测、AI Agent 行为监控。更重要的是 AI 工作负载本身驱动 Datadog 消费增长：客户 AI 工作负载越多，产生的日志、追踪、指标越多。<br><br><strong>核心证据</strong>：~5,500 账户使用 AI 集成；14 家顶部 20 AI 公司是客户；19 家 AI-native 客户超 $1M ARR；Bits AI SRE GA 后一个月内 2,000+ 试用/付费客户；MCP Server 调用量 Q4 环比增长 11 倍。<br><br><strong>压力测试</strong>：大型 AI 公司可能内部开发专有可观测性工具，减少对 Datadog 依赖。最大客户集中性也是风险。</div>
+      <div class="moat-pills"><span class="pill" style="background:var(--blue-dim);color:var(--blue)">AI 客户 5,500+</span><span class="pill" style="background:var(--blue-dim);color:var(--blue)">AI-native $1M+ 19家</span><span class="pill" style="background:var(--blue-dim);color:var(--blue)">MCP 调用 ×11 QoQ</span></div>
+    </div>
+    <div class="moat-card">
+      <div class="moat-top"><div class="mdot d-green"></div><div class="moat-title">规模经济 + 研发飞轮</div><div class="moat-rating">★★★★</div></div>
+      <div class="moat-body"><strong>机制</strong>：Datadog 的平台性质使每新增一个产品的边际开发成本递减，但每个新产品的 TAM 相互叠加。Non-GAAP 毛利率维持 81% 以上，FCF 4 年增长 5 倍，证明规模化服务的单位经济性持续健康。<br><br><strong>核心证据</strong>：FY2025 400+ 新功能上线；FCF margin 从 FY2022 约 23% 提升至 FY2024 29%，FY2025 维持 27%；Non-GAAP 毛利率连续多季在 81% 以上。<br><br><strong>压力测试</strong>：FY2026 Non-GAAP 运营利润率指引从 25%（FY2024）进一步降至 21%，主动加大研发投入使利润率扩张放缓。这是战略选择还是竞争压力，需结合 R&D/S&M 各自占比变化判断。</div>
+      <div class="moat-pills"><span class="pill" style="background:var(--green-dim);color:var(--green)">毛利率 81%+</span><span class="pill" style="background:var(--green-dim);color:var(--green)">FCF $915M +18%</span><span class="pill" style="background:var(--green-dim);color:var(--green)">年发布 400+ 功能</span></div>
+    </div>
+    <div class="moat-card" style="grid-column:span 2">
+      <div class="moat-top"><div class="mdot d-amber"></div><div class="moat-title">⚠ 最大客户集中性风险：FY2026 的核心变量</div><div class="moat-rating">需持续监控</div></div>
+      <div class="moat-body" style="columns:2;gap:24px">
+        管理层在 FY2026 指引中首次明确将<strong>最大客户单独列为保守假设变量</strong>：全年指引含「不含最大客户」业务增速超过 20%，同时对最大客户采用「非常保守的假设」。这是迄今为止最明确的集中性风险信号。<br><br>
+        <strong>解读</strong>：该客户（市场推测与字节跳动旗下产品相关）受地缘政治或内部成本优化影响，消费路径存在真实不确定性。这解释了为何 FY2026 全年指引 +18–20% 大幅低于 Q4 实际 +29%——差距相当大一部分来自对最大客户的「安全预留」。<br><br>
+        <strong>对护城河评估的影响</strong>：短期（1年）内，该客户风险是真实的财务压力；长期（3年以上），「不含最大客户增速 20%+」说明平台对剩余客户的护城河完整。投资框架需区分这两个时间维度。关键追踪信号：$100K+ ARR 客户增速是否持续回升（Q4 已从 +13% 回升至 +19%，是积极信号）。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WATCHLIST -->
+<div id="watchlist" class="panel">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+    <div>
+      <div class="section-title" style="border:none;margin:0;padding:0">Q1 2026 财报观察清单</div>
+      <div style="font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:4px">财报预计发布：2026 年 5 月初 · Q1 = 2026 年 1–3 月</div>
+    </div>
+    <div style="display:flex;gap:6px"><span class="pb p1">P1 护城河核心</span><span class="pb p2">P2 增长质量</span><span class="pb p3">P3 辅助观察</span></div>
+  </div>
+  <div class="alert purple">Q4 2025 是标志性季度：增速重新加速至 +29%，$100K+ ARR 客户增速从年初 +13% 回升至 +19%，Bookings +37% 远超营收。Q1 2026 核心问题：<strong>这次加速是否可持续，还是仅是 Q4 季节性大合同效应？最大客户「保守假设」是否会拖累全年？</strong></div>
+  <div class="wl-block">
+    <div class="wl-hdr" style="grid-template-columns:28px 1fr 160px 160px">
+      <div class="wc wlbl">#</div><div class="wc wlbl" style="border-left:1px solid var(--border)">指标 · 观察点</div><div class="wc wlbl" style="border-left:1px solid var(--border)">指引 / 基准</div><div class="wc wlbl" style="border-left:1px solid var(--border)">读数解读</div>
+    </div>
+    <div class="wl-item" style="grid-template-columns:28px 1fr 160px 160px">
+      <div class="wc wnum">01</div>
+      <div class="wc wmain"><div class="wm-ttl">营收实际值 vs 指引 <span class="pb p1">P1</span></div><div class="wm-desc">指引 $951–961M（+25–26% YoY）。Datadog 有连续超出指引的历史，管理层以保守著称。超出指引通常意味着核心客户消费扩张超预期（排除最大客户后更有说服力）。</div></div>
+      <div class="wc wguide"><div class="wg-lbl">管理层指引</div><div class="wg-val">$951–961M</div><div class="wg-note">+25–26% YoY · Q1 2025 基准 $762M</div></div>
+      <div class="wc">
+        <div class="irow"><div class="iarr up">↑</div><div class="itxt"><strong style="color:var(--green)">&gt;$970M</strong>：核心业务超预期，NRR 扩张信号</div></div>
+        <div class="irow"><div class="iarr mid">→</div><div class="itxt"><strong style="color:var(--amber)">在指引范围</strong>：在轨，无新信号</div></div>
+        <div class="irow"><div class="iarr dn">↓</div><div class="itxt"><strong style="color:var(--red)">&lt;$945M</strong>：最大客户拖累明显，高优先级警报</div></div>
+      </div>
+    </div>
+    <div class="wl-item" style="grid-template-columns:28px 1fr 160px 160px">
+      <div class="wc wnum">02</div>
+      <div class="wc wmain"><div class="wm-ttl">NRR 方向 <span class="pb p1">P1 最关键</span></div><div class="wm-desc">NRR 已连续多季保持 ~120%。这是平台广度护城河最直接的财务验证。任何下滑都意味着存量客户扩张放缓——可能来自最大客户削减、宏观预算压力、或竞品蚕食部分产品。</div></div>
+      <div class="wc wguide"><div class="wg-lbl">近期基准</div><div class="wg-val">~120%</div><div class="wg-note">连续多季稳定 · 历史峰值 ~130%+</div></div>
+      <div class="wc">
+        <div class="irow"><div class="iarr up">↑</div><div class="itxt"><strong style="color:var(--green)">≥121%</strong>：AI 工作负载驱动扩张加速，护城河加深</div></div>
+        <div class="irow"><div class="iarr mid">→</div><div class="itxt"><strong style="color:var(--amber)">118–121%</strong>：正常波动，可接受</div></div>
+        <div class="irow"><div class="iarr dn">↓</div><div class="itxt"><strong style="color:var(--red)">&lt;118%</strong>：最大客户拖累开始侵蚀整体指标，需追问原因</div></div>
+      </div>
+    </div>
+    <div class="wl-item" style="grid-template-columns:28px 1fr 160px 160px">
+      <div class="wc wnum">03</div>
+      <div class="wc wmain"><div class="wm-ttl">「不含最大客户」增速披露 <span class="pb p1">P1</span></div><div class="wm-desc">管理层 Q4 首次明确拆分「含/不含最大客户」增速，是本季度最重要的新信息点。Q1 是否继续披露、以及「不含最大客户」是否真如指引超过 20%，是评估核心业务健康度的最直接指标。</div></div>
+      <div class="wc wguide"><div class="wg-lbl">FY2026 指引</div><div class="wg-val">&gt;20%（不含）</div><div class="wg-note">含最大客户全年指引 +18–20%</div></div>
+      <div class="wc">
+        <div class="irow"><div class="iarr up">↑</div><div class="itxt"><strong style="color:var(--green)">不含最大客户 >22%</strong>：核心业务超预期，护城河健康</div></div>
+        <div class="irow"><div class="iarr dn">↓</div><div class="itxt"><strong style="color:var(--red)">不再拆分披露</strong>：可能情况好转（正）或数据不利（负），需追问</div></div>
+      </div>
+    </div>
+    <div class="wl-item" style="grid-template-columns:28px 1fr 160px 160px">
+      <div class="wc wnum">04</div>
+      <div class="wc wmain"><div class="wm-ttl">$100K+ ARR 客户净增 <span class="pb p2">P2</span></div><div class="wm-desc">该指标从 Q1 +13% 回升至 Q4 +19%，是全年最强正面信号之一。若增速继续回升（超 20%），说明市场扩张动能在恢复；若重新下滑，Q4 的回升可能只是季节性效应。</div></div>
+      <div class="wc wguide"><div class="wg-lbl">Q4 2025 基准</div><div class="wg-val">4,310 客户</div><div class="wg-note">+19% YoY · 全年从 +13% 回升至 +19%</div></div>
+      <div class="wc">
+        <div class="irow"><div class="iarr up">↑</div><div class="itxt"><strong style="color:var(--green)">净增 &gt;160 家（+20%+）</strong>：市场扩张动能确认</div></div>
+        <div class="irow"><div class="iarr dn">↓</div><div class="itxt"><strong style="color:var(--red)">净增 &lt;120 家</strong>：Q4 反弹不可持续，回落至全年低点</div></div>
+      </div>
+    </div>
+    <div class="wl-item" style="grid-template-columns:28px 1fr 160px 160px">
+      <div class="wc wnum">05</div>
+      <div class="wc wmain"><div class="wm-ttl">Non-GAAP 运营利润率 vs 指引 21% <span class="pb p2">P2</span></div><div class="wm-desc">FY2026 指引 21% 运营利润率低于 FY2024 的 25%，反映公司主动加大研发（AI 可观测性、平台扩展）和销售投入。超出指引说明费用控制强于预期；大幅低于指引则需追问是战略投入还是成本超支。</div></div>
+      <div class="wc wguide"><div class="wg-lbl">Q1 指引</div><div class="wg-val">21%</div><div class="wg-note">$195–205M · FY2026 全年同样 21%</div></div>
+      <div class="wc">
+        <div class="irow"><div class="iarr up">↑</div><div class="itxt"><strong style="color:var(--green)">&gt;22%</strong>：费用控制超预期，运营杠杆显现</div></div>
+        <div class="irow"><div class="iarr dn">↓</div><div class="itxt"><strong style="color:var(--red)">&lt;19%</strong>：费用失控或竞争性销售成本激增</div></div>
+      </div>
+    </div>
+    <div class="wl-item" style="grid-template-columns:28px 1fr 160px 160px">
+      <div class="wc wnum">06</div>
+      <div class="wc wmain"><div class="wm-ttl">Bits AI SRE Agent 商业化 <span class="pb p3">P3</span></div><div class="wm-desc">Q4 2025 GA 后一个月内获得 2,000+ 试用/付费客户——Datadog 历史上采用最快的新产品之一。Q1 将验证是「引爆点」还是「初期新鲜感」，是否出现付费转化加速。此产品代表从「被动监控」向「主动修复」的战略跃升。</div></div>
+      <div class="wc wguide"><div class="wg-lbl">Q4 2025 基准</div><div class="wg-val">&gt;2,000 客户</div><div class="wg-note">GA 一个月数据 · 付费比例未披露</div></div>
+      <div class="wc">
+        <div class="irow"><div class="iarr up">↑</div><div class="itxt"><strong style="color:var(--green)">披露付费客户数/ARR</strong>：AI Agentic 护城河开始货币化</div></div>
+        <div class="irow"><div class="iarr dn">↓</div><div class="itxt"><strong style="color:var(--red)">不再重点提及</strong>：AI Agent 商业化慢于预期</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPETITIVE -->
+<div id="competitive" class="panel">
+  <div class="section-title">竞争格局 · 可观测性与安全平台</div>
+  <div class="cg">
+    <div class="cc self"><div class="cc-name">Datadog</div><div class="cc-sub">可观测性 + 安全 + AI · DDOG</div><div class="cc-row"><span>营收</span><span class="v up">$3.43B +28%</span></div><div class="cc-row"><span>NRR</span><span class="v up">~120%</span></div><div class="cc-row"><span>毛利率</span><span class="v">81%</span></div><div class="cc-row"><span>优势</span><span class="v" style="font-size:10px;color:var(--teal)">平台广度 · 多产品 · AI</span></div><div class="cc-row"><span>弱势</span><span class="v" style="font-size:10px;color:var(--amber)">最大客户集中 · 利润率压缩</span></div></div>
+    <div class="cc"><div class="cc-name">Dynatrace</div><div class="cc-sub">AI-native 可观测性 · DT</div><div class="cc-row"><span>营收</span><span class="v">~$1.6B +14%</span></div><div class="cc-row"><span>NRR</span><span class="v">~115%</span></div><div class="cc-row"><span>毛利率</span><span class="v">83%</span></div><div class="cc-row"><span>优势</span><span class="v" style="font-size:10px;color:var(--teal)">AI 自动化 · 企业级</span></div><div class="cc-row"><span>弱势</span><span class="v" style="font-size:10px;color:var(--amber)">增速慢 · 产品宽度不及 DDOG</span></div></div>
+    <div class="cc"><div class="cc-name">New Relic</div><div class="cc-sub">可观测性平台 · 已私有化</div><div class="cc-row"><span>现状</span><span class="v muted">2023 年 Francisco Partners 收购</span></div><div class="cc-row"><span>定位</span><span class="v">中端市场 All-in-one</span></div><div class="cc-row"><span>优势</span><span class="v" style="font-size:10px;color:var(--teal)">统一定价 · 中端市场性价比</span></div><div class="cc-row"><span>弱势</span><span class="v" style="font-size:10px;color:var(--amber)">私有化后透明度低 · 增速落后</span></div></div>
+    <div class="cc"><div class="cc-name">Elastic / Grafana</div><div class="cc-sub">开源替代 · 自建路线</div><div class="cc-row"><span>模式</span><span class="v muted">开源 + 托管云</span></div><div class="cc-row"><span>定位</span><span class="v">成本敏感型客户</span></div><div class="cc-row"><span>优势</span><span class="v" style="font-size:10px;color:var(--teal)">成本低 · 灵活性高</span></div><div class="cc-row"><span>弱势</span><span class="v" style="font-size:10px;color:var(--amber)">运维复杂 · 缺乏平台整合能力</span></div></div>
+  </div>
+  <div class="prose">
+    <strong>核心竞争判断</strong>：可观测性市场的竞争本质是「平台 vs 最佳单点工具」。Datadog 押注前者，认为客户愿意为统一数据平面付溢价——FY2025 数据强力支持这一判断（4+ 产品客户达 54%）。最大威胁来自云厂商内置化（AWS CloudWatch、Google Cloud Monitoring、Azure Monitor），但 Datadog 的多云中立性在混合多云环境中反而是差异化优势。<br><br>
+    <strong>AI Observability 是新战场</strong>：LLM 成本追踪、AI Agent 行为监控是 2025–2027 的新增量。Datadog 已先发布局（5,500+ AI 账户），但 Arize AI、Weights & Biases 等 AI-native 工具在 ML 团队中影响力更强。若 AI 开发者形成独立决策权，Datadog 可能被绕开。
+  </div>
+</div>
+
+<!-- VALUATION -->
+<div id="valuation" class="panel">
+  <div class="notice"><strong>数据基准（2026 年 3 月 23 日）</strong>：股价约 $131，流通股约 352M，市值约 $44B，现金 $4.47B，可转债约 $1B，EV 约 $40.5B。FY2025：营收 $3.43B，Non-GAAP EPS $2.05，FCF $915M（27% margin），Non-GAAP 运营利润率 22%。<strong>GAAP 运营亏损 -$44M（全被 SBC 抵消），GAAP P/E 无意义，本报告不使用。</strong>FY2026 指引：营收 $4.06–4.10B，Non-GAAP EPS $2.08–2.16。</div>
+
+  <div class="section-title">三情景目标价（EV/Revenue · EV/FCF · DCF 加权）</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px">
+    <div style="border:1px solid rgba(240,96,96,.35);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:10px">▼ 熊市情景</div>
+      <div style="font-family:var(--mono);font-size:28px;font-weight:500;color:var(--red);line-height:1;margin-bottom:4px">$90–110</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--red);margin-bottom:10px">vs 当前 $131 · 下行 -16%~-31%</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;border-bottom:1px solid var(--border);color:var(--text2)">增速降至 +15%（低于指引）</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;border-bottom:1px solid var(--border);color:var(--text2)">最大客户大幅削减消费</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;border-bottom:1px solid var(--border);color:var(--text2)">NRR 跌破 115%</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;border-bottom:1px solid var(--border);color:var(--text2)">FCF margin 压缩至 22–24%</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;color:var(--text2)">EV/Revenue 7–8x FY26E</div>
+    </div>
+    <div style="border:1px solid rgba(110,179,247,.35);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:10px">◆ 基准情景</div>
+      <div style="font-family:var(--mono);font-size:28px;font-weight:500;color:var(--blue);line-height:1;margin-bottom:4px">$180–230</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--blue);margin-bottom:10px">vs 当前 $131 · 上行 +37%~+76%</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;border-bottom:1px solid var(--border);color:var(--text2)">增速符合指引 +18–20%</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;border-bottom:1px solid var(--border);color:var(--text2)">NRR 维持 ~120%</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;border-bottom:1px solid var(--border);color:var(--text2)">FCF margin 维持 26–28%</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;border-bottom:1px solid var(--border);color:var(--text2)">AI Observability 持续贡献</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;color:var(--text2)">EV/Revenue 11–12x FY26E</div>
+    </div>
+    <div style="border:1px solid rgba(52,217,138,.35);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:10px">▲ 牛市情景</div>
+      <div style="font-family:var(--mono);font-size:28px;font-weight:500;color:var(--green);line-height:1;margin-bottom:4px">$310–400</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--green);margin-bottom:10px">vs 当前 $131 · 上行 +137%~+205%</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;border-bottom:1px solid var(--border);color:var(--text2)">最大客户风险消退，增速回 25%+</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;border-bottom:1px solid var(--border);color:var(--text2)">NRR 回升至 125%+</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;border-bottom:1px solid var(--border);color:var(--text2)">Bits AI SRE 商业化超预期</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;border-bottom:1px solid var(--border);color:var(--text2)">FCF margin 扩张至 32–35%</div>
+      <div style="font-size:10px;font-family:var(--mono);padding:3px 0;color:var(--text2)">EV/Revenue 17–21x FY26E</div>
+    </div>
+  </div>
+
+  <!-- Bar visualizer -->
+  <div style="border:1px solid var(--border);border-radius:10px;padding:14px 18px;background:var(--bg2);margin-bottom:20px">
+    <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:10px">综合估值区间（$0–$400 刻度）</div>
+    <div style="position:relative;height:32px;background:var(--bg3);border-radius:6px;margin-bottom:6px;overflow:visible">
+      <div style="position:absolute;left:0;width:27%;height:100%;background:rgba(240,96,96,.18);border-radius:6px 0 0 6px"></div>
+      <div style="position:absolute;left:27%;width:28%;height:100%;background:rgba(110,179,247,.18)"></div>
+      <div style="position:absolute;left:55%;width:45%;height:100%;background:rgba(52,217,138,.15);border-radius:0 6px 6px 0"></div>
+      <div style="position:absolute;left:32.8%;width:3px;background:var(--amber);top:-6px;bottom:-6px;border-radius:2px;z-index:10">
+        <div style="position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;color:var(--amber);white-space:nowrap">现价 $131</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--text3)">
+      <span>$0</span><span style="color:var(--red)">熊 $90–110</span><span style="color:var(--blue)">基准 $180–230</span><span style="color:var(--green)">牛 $310–400</span><span>$400</span>
+    </div>
+    <div style="font-size:11px;color:var(--text2);margin-top:10px;line-height:1.6">当前 $131 处于熊市与基准过渡区（距 52 周高点 $201 下跌约 35%）。Bookings +37% 和 $1M+ 客户 +31% 给出的护城河信号远比当前估值隐含的更健康。市场对最大客户集中风险和利润率压缩给出了明确折扣。</div>
+  </div>
+
+  <!-- EV/Revenue -->
+  <div class="section-title">方法一：EV/Revenue（P/S）</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px">纵向：Datadog 历史 EV/Revenue</div>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px">
+        <div style="display:grid;grid-template-columns:60px 70px 65px 65px 1fr;background:var(--bg3)"><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">年份</div><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">营收</div><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">增速</div><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">EV/Rev</div><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">情绪</div></div>
+        <div style="display:grid;grid-template-columns:60px 70px 65px 65px 1fr;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2021</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$1.03B</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+63%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">~50x</div><div style="padding:7px 10px;font-size:10px;color:var(--text3)">狂热峰值</div></div>
+        <div style="display:grid;grid-template-columns:60px 70px 65px 65px 1fr;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2022</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$1.67B</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+63%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">~20x</div><div style="padding:7px 10px;font-size:10px;color:var(--text3)">利率压缩</div></div>
+        <div style="display:grid;grid-template-columns:60px 70px 65px 65px 1fr;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2023</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$2.13B</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+27%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">~18x</div><div style="padding:7px 10px;font-size:10px;color:var(--text3)">增速放缓</div></div>
+        <div style="display:grid;grid-template-columns:60px 70px 65px 65px 1fr;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2024</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$2.68B</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+26%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">~18x</div><div style="padding:7px 10px;font-size:10px;color:var(--text3)">AI 预期回升</div></div>
+        <div style="display:grid;grid-template-columns:60px 70px 65px 65px 1fr;border-top:1px solid var(--border);background:rgba(167,139,250,.05)"><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--purple)">2025</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text)">$3.43B</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+28%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue)">11.8x ↓</div><div style="padding:7px 10px;font-size:10px;color:var(--text3)">大客户折扣</div></div>
+        <div style="display:grid;grid-template-columns:60px 70px 65px 65px 1fr;border-top:1px dashed rgba(245,182,35,.3)"><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">FY26E</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">$4.08B</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">+19%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">9.9x</div><div style="padding:7px 10px;font-size:10px;color:var(--amber)">当前隐含</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.6">历史 EV/Revenue 均值约 20–25x（排除 2021 泡沫），当前 9.9x FY26E 处于历史低位，折价约 50–60%。若增速维持 20%+，合理中枢应在 12–15x FY26E。</div>
+    </div>
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px">横向：同类公司 EV/Revenue 对比</div>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px">
+        <div style="display:grid;grid-template-columns:110px 55px 55px 60px 1fr;background:var(--bg3)"><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">公司</div><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">增速</div><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">NRR</div><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">EV/Rev</div><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">逻辑</div></div>
+        <div style="display:grid;grid-template-columns:110px 55px 55px 60px 1fr;border-top:1px solid var(--border);background:rgba(167,139,250,.05)"><div style="padding:7px 10px;font-size:11px;font-weight:500;color:var(--green)">Datadog</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">+19%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">~120%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--blue)">9.9x</div><div style="padding:7px 10px;font-size:10px;color:var(--text3)">大客户折扣 · 历史低位</div></div>
+        <div style="display:grid;grid-template-columns:110px 55px 55px 60px 1fr;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-size:11px;color:var(--text2)">CrowdStrike</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+25%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">~118%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">~16x</div><div style="padding:7px 10px;font-size:10px;color:var(--text3)">安全龙头溢价</div></div>
+        <div style="display:grid;grid-template-columns:110px 55px 55px 60px 1fr;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-size:11px;color:var(--text2)">ServiceNow</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">+20%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">~125%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">~13x</div><div style="padding:7px 10px;font-size:10px;color:var(--text3)">成熟盈利 · 相近增速</div></div>
+        <div style="display:grid;grid-template-columns:110px 55px 55px 60px 1fr;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-size:11px;color:var(--text2)">Dynatrace</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">+14%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">~115%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">~8x</div><div style="padding:7px 10px;font-size:10px;color:var(--text3)">直接竞品 · 增速慢折价</div></div>
+        <div style="display:grid;grid-template-columns:110px 55px 55px 60px 1fr;border-top:1px solid var(--border);background:var(--bg3)"><div style="padding:7px 10px;font-size:10px;color:var(--text3)">同类中位</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">~20%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">~118%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">~12x</div><div style="padding:7px 10px;font-size:10px;color:var(--text3)">DDOG 当前折价 ~17%</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.6"><strong style="color:var(--amber)">折价根因：最大客户集中风险 + 利润率指引下调。若 Q1 财报中最大客户风险缓解，这一折价可能快速收窄至同类中位 12x，对应股价约 $165–180。</strong></div>
+    </div>
+  </div>
+
+  <!-- EV/Revenue scenario -->
+  <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
+    <div style="padding:9px 16px;background:var(--bg3);font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase">EV/Revenue 三情景目标价（FY2026E 营收 ~$4.08B · EV→股价：加回净现金 $3.47B ÷ 352M 股）</div>
+    <div style="display:grid;grid-template-columns:140px 1fr 1fr 1fr">
+      <div style="padding:9px 14px;font-size:10px;color:var(--text3);font-family:var(--mono);background:var(--bg3)">倍数假设</div>
+      <div style="padding:9px 14px;font-size:11px;color:var(--red);font-family:var(--mono);border-left:1px solid var(--border)">熊：7–8x<br><span style="font-size:9px;color:var(--text3)">增速 +15%，最大客户大削减</span></div>
+      <div style="padding:9px 14px;font-size:11px;color:var(--blue);font-family:var(--mono);border-left:1px solid var(--border)">基准：11–13x<br><span style="font-size:9px;color:var(--text3)">指引实现，同类折价消除</span></div>
+      <div style="padding:9px 14px;font-size:11px;color:var(--green);font-family:var(--mono);border-left:1px solid var(--border)">牛：17–21x<br><span style="font-size:9px;color:var(--text3)">AI Agentic 溢价 · 增速回 25%+</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:140px 1fr 1fr 1fr;border-top:1px solid var(--border)">
+      <div style="padding:9px 14px;font-size:10px;color:var(--text3)">目标股价</div>
+      <div style="padding:9px 14px;font-size:14px;font-weight:500;color:var(--red);font-family:var(--mono);border-left:1px solid var(--border)">$91–$103</div>
+      <div style="padding:9px 14px;font-size:14px;font-weight:500;color:var(--blue);font-family:var(--mono);border-left:1px solid var(--border)">$138–$161</div>
+      <div style="padding:9px 14px;font-size:14px;font-weight:500;color:var(--green);font-family:var(--mono);border-left:1px solid var(--border)">$207–$253</div>
+    </div>
+  </div>
+
+  <!-- EV/FCF -->
+  <div class="section-title">方法二：EV/FCF · 现金流视角</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px">FCF 历史追踪 <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:3px;background:var(--green-dim);color:var(--green);margin-left:6px">已核验</span></div>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px">
+        <div style="display:grid;grid-template-columns:60px 80px 70px 80px;background:var(--bg3)"><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">年份</div><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">FCF</div><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">Margin</div><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">来源</div></div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 80px;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2022</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$385M</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">23%</div><div style="padding:7px 10px;font-size:9px;color:var(--text3)">年报</div></div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 80px;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2023</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$598M</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">28%</div><div style="padding:7px 10px;font-size:9px;color:var(--text3)">Q4 FY23 ✓</div></div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 80px;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text3)">2024</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text2)">$775M</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">29%</div><div style="padding:7px 10px;font-size:9px;color:var(--text3)">Q4 FY24 ✓</div></div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 80px;border-top:1px solid var(--border);background:rgba(167,139,250,.05)"><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--purple)">2025</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text)">$915M</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">27%</div><div style="padding:7px 10px;font-size:9px;color:var(--text3)">Q4 FY25 ✓</div></div>
+        <div style="display:grid;grid-template-columns:60px 80px 70px 80px;border-top:1px dashed rgba(245,182,35,.3)"><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">2026E</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">~$1.0B</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--amber)">~25%</div><div style="padding:7px 10px;font-size:9px;color:var(--amber)">基于指引估算</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.6">当前 EV/FCF = $40.5B / $915M = <strong style="color:var(--green)">44x</strong>——FCF 3年 CAGR 约 34%，CrowdStrike ~55x，ServiceNow ~42x。Datadog 44x 与 ServiceNow 接近，但增速快于 ServiceNow，理论上应享溢价。</div>
+    </div>
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px;background:var(--bg2)">
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px">EV/FCF 三情景（FY2026E FCF ~$1.0B）</div>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px">
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;background:var(--bg3)"><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--text3)">指标</div><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--red)">熊</div><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--blue)">基准</div><div style="padding:7px 10px;font-family:var(--mono);font-size:9px;color:var(--green)">牛</div></div>
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-size:10px;color:var(--text3)">FCF margin</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">22%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">25%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">30%</div></div>
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-size:10px;color:var(--text3)">FY26E FCF</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">$860M</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">$1,020M</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">$1,224M</div></div>
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-size:10px;color:var(--text3)">EV/FCF 倍数</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">30–35x</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">45–55x</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">65–75x</div></div>
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-size:10px;color:var(--text3)">目标股价</div><div style="padding:7px 10px;font-size:13px;font-weight:500;color:var(--red);font-family:var(--mono)">$83–$95</div><div style="padding:7px 10px;font-size:13px;font-weight:500;color:var(--blue);font-family:var(--mono)">$140–$168</div><div style="padding:7px 10px;font-size:13px;font-weight:500;color:var(--green);font-family:var(--mono)">$235–$269</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--text2)">注：目标股价 = (EV + 净现金 $3.47B) ÷ 352M 股。FCF = 营收 × FCF margin（来自 Non-GAAP 运营利润 ± CapEx 调整）。</div>
+    </div>
+  </div>
+
+  <!-- DCF -->
+  <div class="section-title">方法三：DCF · 5 年 FCF 折现（退出 EV/Revenue 法）</div>
+  <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px">
+    <div style="padding:9px 16px;background:var(--bg3);font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase">三情景假设（FY2026E–FY2030E）</div>
+    <div style="display:grid;grid-template-columns:100px repeat(5,1fr) 130px;background:var(--bg3);border-top:1px solid var(--border)"><div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">假设</div><div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">FY26E</div><div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">FY27E</div><div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">FY28E</div><div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">FY29E</div><div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">FY30E 营收</div><div style="padding:7px 10px;font-size:9px;color:var(--text3);font-family:var(--mono)">WACC · 退出</div></div>
+    <div style="display:grid;grid-template-columns:100px repeat(5,1fr) 130px;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-size:10px;color:var(--red)">熊：增速</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">+15%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">+12%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">+10%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">+8%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">$5.98B</div><div style="padding:7px 10px;font-size:10px;color:var(--red)">10% · 7x → <strong>~$96</strong></div></div>
+    <div style="display:grid;grid-template-columns:100px repeat(5,1fr) 130px;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-size:10px;color:var(--red)">熊：FCF%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">22%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">23%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">24%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">25%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--red)">终端EV $41.9B</div><div></div></div>
+    <div style="display:grid;grid-template-columns:100px repeat(5,1fr) 130px;border-top:1px solid var(--border);background:rgba(110,179,247,.04)"><div style="padding:7px 10px;font-size:10px;color:var(--blue)">基准：增速</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">+19%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">+22%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">+20%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">+18%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">$8.98B</div><div style="padding:7px 10px;font-size:10px;color:var(--blue)">9% · 11x → <strong>~$199</strong></div></div>
+    <div style="display:grid;grid-template-columns:100px repeat(5,1fr) 130px;border-top:1px solid var(--border);background:rgba(110,179,247,.04)"><div style="padding:7px 10px;font-size:10px;color:var(--blue)">基准：FCF%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">25%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">27%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">29%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">31%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--blue)">终端EV $98.8B</div><div></div></div>
+    <div style="display:grid;grid-template-columns:100px repeat(5,1fr) 130px;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-size:10px;color:var(--green)">牛：增速</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+22%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+28%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+28%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">+25%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">$14.27B</div><div style="padding:7px 10px;font-size:10px;color:var(--green)">8% · 16x → <strong>~$371</strong></div></div>
+    <div style="display:grid;grid-template-columns:100px repeat(5,1fr) 130px;border-top:1px solid var(--border)"><div style="padding:7px 10px;font-size:10px;color:var(--green)">牛：FCF%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">30%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">33%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">35%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">36%</div><div style="padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--green)">终端EV $228.3B</div><div></div></div>
+  </div>
+
+  <!-- Summary -->
+  <div class="section-title">综合汇总 · 三方法加权</div>
+  <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px">
+    <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 60px;background:var(--bg3)"><div style="padding:9px 14px;font-family:var(--mono);font-size:10px;color:var(--text3)">估值方法</div><div style="padding:9px 14px;font-family:var(--mono);font-size:10px;color:var(--red)">熊市</div><div style="padding:9px 14px;font-family:var(--mono);font-size:10px;color:var(--blue)">基准</div><div style="padding:9px 14px;font-family:var(--mono);font-size:10px;color:var(--green)">牛市</div><div style="padding:9px 14px;font-family:var(--mono);font-size:10px;color:var(--text3)">权重</div></div>
+    <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 60px;border-top:1px solid var(--border)"><div style="padding:9px 14px;font-size:11px;color:var(--text2)">EV/Revenue</div><div style="padding:9px 14px;font-size:12px;color:var(--red);font-family:var(--mono)">$91–$103</div><div style="padding:9px 14px;font-size:12px;color:var(--blue);font-family:var(--mono)">$138–$161</div><div style="padding:9px 14px;font-size:12px;color:var(--green);font-family:var(--mono)">$207–$253</div><div style="padding:9px 14px;font-size:11px;color:var(--text3)">40%</div></div>
+    <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 60px;border-top:1px solid var(--border)"><div style="padding:9px 14px;font-size:11px;color:var(--text2)">EV/FCF</div><div style="padding:9px 14px;font-size:12px;color:var(--red);font-family:var(--mono)">$83–$95</div><div style="padding:9px 14px;font-size:12px;color:var(--blue);font-family:var(--mono)">$140–$168</div><div style="padding:9px 14px;font-size:12px;color:var(--green);font-family:var(--mono)">$235–$269</div><div style="padding:9px 14px;font-size:11px;color:var(--text3)">35%</div></div>
+    <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 60px;border-top:1px solid var(--border)"><div style="padding:9px 14px;font-size:11px;color:var(--text2)">DCF（5年）</div><div style="padding:9px 14px;font-size:12px;color:var(--red);font-family:var(--mono)">~$96</div><div style="padding:9px 14px;font-size:12px;color:var(--blue);font-family:var(--mono)">~$199</div><div style="padding:9px 14px;font-size:12px;color:var(--green);font-family:var(--mono)">~$371</div><div style="padding:9px 14px;font-size:11px;color:var(--text3)">25%</div></div>
+    <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr 60px;border-top:2px solid var(--border2);background:var(--bg2)"><div style="padding:10px 14px;font-size:11px;font-weight:500;color:var(--text)">加权综合</div><div style="padding:10px 14px;font-size:15px;font-weight:500;color:var(--red);font-family:var(--mono)">~$91</div><div style="padding:10px 14px;font-size:15px;font-weight:500;color:var(--blue);font-family:var(--mono)">~$163</div><div style="padding:10px 14px;font-size:15px;font-weight:500;color:var(--green);font-family:var(--mono)">~$279</div><div style="padding:10px 14px;font-size:11px;color:var(--text3)">现价 $131</div></div>
+  </div>
+
+  <div style="border:1px solid rgba(245,182,35,.3);border-radius:8px;padding:14px 16px;background:rgba(245,182,35,.04);font-size:12px;color:var(--text2);line-height:1.75">
+    <strong style="color:var(--amber)">⚠ 核心估值风险与局限性</strong><br><br>
+    <strong style="color:var(--text)">1. 最大客户集中性是 FY2026 最大的单一变量。</strong>管理层已将「最大客户」单独列为指引变量。若该客户（推测与字节跳动旗下产品相关）受地缘政治或成本控制影响大幅削减用量，可能在单季内造成营收增速显著低于指引。这几乎无法通过企业基本面分析预测。<br><br>
+    <strong style="color:var(--text)">2. GAAP P/E 为负，本报告不使用。</strong>FY2025 GAAP 运营亏损 -$44M（全被 SBC 抵消），GAAP EPS $0.31（含投资收益）。Non-GAAP EPS $2.05，Non-GAAP P/E 约 64x，需注意 SBC 对股东回报的稀释（FY2025 SBC 约占营收 20%+）。<br><br>
+    <strong style="color:var(--text)">3. 利润率压缩是战略选择还是竞争压力？</strong>Non-GAAP 运营利润率从 FY2024 25% 降至 FY2026 指引 21%。若这是主动投入 AI/安全以扩展 TAM，3–5 年后可回升；若是竞争性销售成本上升，则是护城河损耗信号。需关注每季度 R&D 和 S&M 各自占比变化。<br><br>
+    <strong style="color:var(--text)">4. Bookings +37% vs 指引 +18–20% 的时间差需关注。</strong>Q4 Bookings $1.63B 大幅领先当期营收，说明新签和续签在加速。若 Q1 2026 营收符合或超出指引，证明 Bookings 加速已向营收传导；若增速回落，则 Q4 Bookings 可能含大量多年远期合同，短期营收影响有限。
+  </div>
+</div>
+
+<!-- SOURCES -->
+<div id="sources" class="panel">
+  <div class="section-title">数据来源 · SEC 季报原始链接</div>
+  <div class="src-table">
+    <div class="src-row shdr"><div class="sc2 slbl">季度</div><div class="sc2 slbl">核心数据</div><div class="sc2 slbl">发布日期</div><div class="sc2 slbl">SEC EDGAR 链接</div></div>
+    <div class="src-row"><div class="sc2 sqtr">Q1 2025</div><div class="sc2">营收 $762M +25% · $100K+ 3,770 · FCF $244M</div><div class="sc2" style="font-family:var(--mono);font-size:10px;color:var(--text3)">2025-05-06</div><div class="sc2"><a href="https://www.sec.gov/Archives/edgar/data/0001561550/000156155025000118/ex-991x20250331x8k.htm" target="_blank">ex-991x20250331x8k.htm ↗</a></div></div>
+    <div class="src-row"><div class="sc2 sqtr">Q2 2025</div><div class="sc2">营收 $827M +28% · $100K+ 3,850 · FCF $165M</div><div class="sc2" style="font-family:var(--mono);font-size:10px;color:var(--text3)">2025-08-05</div><div class="sc2"><a href="https://www.sec.gov/Archives/edgar/data/0001561550/000156155025000216/ex-991x20250630x8k.htm" target="_blank">ex-991x20250630x8k.htm ↗</a></div></div>
+    <div class="src-row"><div class="sc2 sqtr">Q3 2025</div><div class="sc2">营收 $886M +28% · $100K+ 4,060 · NRR ~120% · FCF $214M</div><div class="sc2" style="font-family:var(--mono);font-size:10px;color:var(--text3)">2025-11-06</div><div class="sc2"><a href="https://www.sec.gov/Archives/edgar/data/0001561550/000156155025000310/ex-991x20250930x8k.htm" target="_blank">ex-991x20250930x8k.htm ↗</a></div></div>
+    <div class="src-row"><div class="sc2 sqtr">Q4 2025</div><div class="sc2">营收 $953M +29% · $1M+ 603 · Bookings $1.63B +37% · FCF $291M · FY2026 指引</div><div class="sc2" style="font-family:var(--mono);font-size:10px;color:var(--text3)">2026-02-10</div><div class="sc2"><a href="https://www.sec.gov/Archives/edgar/data/0001561550/000162828026006645/ex-991x20251231x8k.htm" target="_blank">ex-991x20251231x8k.htm ↗</a></div></div>
+    <div class="src-row"><div class="sc2 sqtr">EDGAR 归档</div><div class="sc2">Datadog 所有 SEC 公开文件（CIK: 0001561550）</div><div class="sc2"></div><div class="sc2"><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001561550&type=8-K&count=10" target="_blank">DDOG SEC Filing Index ↗</a></div></div>
+    <div class="src-row"><div class="sc2 sqtr">IR 主页</div><div class="sc2">Datadog 官方投资者关系</div><div class="sc2"></div><div class="sc2"><a href="https://investors.datadoghq.com" target="_blank">investors.datadoghq.com ↗</a></div></div>
+  </div>
+  <div class="section-title" style="margin-top:20px">FY2026 管理层指引（Q4 2025 财报 · 2026-02-10）</div>
+  <div style="border:1px solid var(--border);border-radius:8px;padding:14px 16px;background:var(--bg2)">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;font-size:11px">
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">Q1 2026 营收</div><div style="font-family:var(--mono);color:var(--amber)">$951–961M（+25–26%）</div></div>
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">Q1 2026 Non-GAAP 运营利润</div><div style="font-family:var(--mono);color:var(--amber)">$195–205M（21%）</div></div>
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">Q1 2026 Non-GAAP EPS</div><div style="font-family:var(--mono);color:var(--amber)">$0.49–0.51（~367M 股）</div></div>
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">FY2026 营收</div><div style="font-family:var(--mono);color:var(--amber)">$4.06–4.10B（+18–20%）</div></div>
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">FY2026 Non-GAAP 运营利润率</div><div style="font-family:var(--mono);color:var(--amber)">21%（$840–880M）</div></div>
+      <div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">不含最大客户增速</div><div style="font-family:var(--mono);color:var(--green)">&gt;20% 全年</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fn">数据来源：Datadog SEC EDGAR 季报 · Q1–Q4 FY2025（截至 2025 年 12 月 31 日）<br>FY2026 指引来自 Q4 FY2025 财报电话会议（2026 年 2 月 10 日）<br>本页面为个人投资研究记录，不构成任何投资建议</div>
+  <div class="fn" style="text-align:right">页面版本：v2.0 · 2026 年 3 月<br>配套模板：ENTERPRISE_SAAS_AGENT_TEMPLATE.md<br>下次更新：2026 年 5 月（Q1 2026 财报后）</div>
+</footer>
+
+</div>
+<script>
+function go(id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('[onclick="go(\''+id+'\')"]').classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MongoDB (MDB) · 护城河分析报告 · Q4 FY2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500;600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --bg: #0a0d0f;
+    --bg2: #111518;
+    --bg3: #161b20;
+    --bg4: #1c2228;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e8e4dc;
+    --text2: #9a9690;
+    --text3: #5c5a56;
+    --green: #00ed64;
+    --green-dim: rgba(0,237,100,0.12);
+    --red: #ff4d4d;
+    --red-dim: rgba(255,77,77,0.1);
+    --amber: #f5a623;
+    --amber-dim: rgba(245,166,35,0.1);
+    --blue: #4a9eff;
+    --blue-dim: rgba(74,158,255,0.1);
+    --mono: 'IBM Plex Mono', monospace;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── SCANLINES TEXTURE ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* ─── HEADER ─── */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,13,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .ticker {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green);
+    letter-spacing: .08em;
+  }
+
+  .header-nav {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .header-nav a {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text3);
+    text-decoration: none;
+    letter-spacing: .05em;
+    transition: color .2s;
+  }
+
+  .header-nav a:hover { color: var(--text2); }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .live-price {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .price-change {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--red);
+  }
+
+  .header-date {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: .04em;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    padding: 5rem 2rem 3.5rem;
+    max-width: 1160px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 3rem;
+    align-items: end;
+  }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: .75rem;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: 52px;
+    line-height: 1.08;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-title em {
+    color: var(--green);
+    font-style: italic;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.75;
+    max-width: 540px;
+  }
+
+  .hero-meta {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: .5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .meta-row:last-child { border-bottom: none; }
+
+  .meta-key {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding-top: 2px;
+  }
+
+  .meta-val {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+    text-align: right;
+  }
+
+  .meta-val.green { color: var(--green); }
+  .meta-val.red { color: var(--red); }
+  .meta-val.amber { color: var(--amber); }
+
+  /* ─── ALERT BANNER ─── */
+  .alert-banner {
+    max-width: 1160px;
+    margin: 0 auto 2rem;
+    padding: 0 2rem;
+  }
+
+  .alert-inner {
+    background: rgba(245,166,35,0.06);
+    border: 1px solid rgba(245,166,35,0.2);
+    border-radius: 8px;
+    padding: .65rem 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--amber);
+    line-height: 1.6;
+  }
+
+  .alert-icon { flex-shrink: 0; margin-top: 1px; }
+
+  /* ─── SECTIONS ─── */
+  section {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+  }
+
+  section + section {
+    border-top: 1px solid var(--border);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: .08em;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--text);
+  }
+
+  .section-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: .06em;
+  }
+  .badge-green { background: var(--green-dim); color: var(--green); }
+  .badge-red { background: var(--red-dim); color: var(--red); }
+  .badge-amber { background: var(--amber-dim); color: var(--amber); }
+  .badge-blue { background: var(--blue-dim); color: var(--blue); }
+
+  /* ─── KPI GRID ─── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .kpi-cell {
+    background: var(--bg2);
+    padding: 1.25rem 1.5rem;
+    transition: background .2s;
+  }
+
+  .kpi-cell:hover { background: var(--bg3); }
+
+  .kpi-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: .5rem;
+  }
+
+  .kpi-value {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: .35rem;
+  }
+
+  .kpi-delta {
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+
+  .kpi-delta.up { color: var(--green); }
+  .kpi-delta.down { color: var(--red); }
+  .kpi-delta.neutral { color: var(--text3); }
+
+  .kpi-highlight { border-top: 2px solid var(--green); }
+  .kpi-warning { border-top: 2px solid var(--amber); }
+
+  /* ─── CHART SECTION ─── */
+  .chart-container {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .chart-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ─── MOAT CARDS ─── */
+  .moat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .moat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color .25s, background .25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .moat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .moat-card.strength-5::before { background: var(--green); }
+  .moat-card.strength-4::before { background: var(--green); opacity: .65; }
+  .moat-card.strength-3::before { background: var(--amber); }
+  .moat-card.strength-2::before { background: var(--red); opacity: .7; }
+
+  .moat-card:hover {
+    border-color: var(--border2);
+    background: var(--bg3);
+  }
+
+  .moat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: .75rem;
+  }
+
+  .moat-card-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+  }
+
+  .moat-card-title {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-top: .25rem;
+  }
+
+  .stars-row {
+    display: flex;
+    gap: 3px;
+  }
+
+  .star {
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .star.on { color: var(--amber); }
+  .star.off { color: var(--text3); }
+
+  .moat-body {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-bottom: .9rem;
+  }
+
+  .moat-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .pill {
+    background: var(--bg4);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: .03em;
+  }
+
+  .pill.highlight {
+    background: var(--green-dim);
+    border-color: rgba(0,237,100,0.2);
+    color: var(--green);
+  }
+
+  /* ─── VALUATION SCENARIOS ─── */
+  .scenarios {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .scenario {
+    background: var(--bg2);
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .scenario.base { background: var(--bg3); }
+
+  .scenario-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: .6rem;
+  }
+
+  .scenario.bear .scenario-tag { color: var(--red); }
+  .scenario.base .scenario-tag { color: var(--blue); }
+  .scenario.bull .scenario-tag { color: var(--green); }
+
+  .scenario-price {
+    font-family: var(--mono);
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.1;
+    margin-bottom: .25rem;
+  }
+
+  .scenario-upside {
+    font-family: var(--mono);
+    font-size: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .scenario.bear .scenario-upside { color: var(--red); }
+  .scenario.base .scenario-upside { color: var(--blue); }
+  .scenario.bull .scenario-upside { color: var(--green); }
+
+  .scenario-divider {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 1rem;
+  }
+
+  .scenario-item {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: .4rem;
+    font-size: 12px;
+    color: var(--text3);
+    line-height: 1.5;
+  }
+
+  .scenario-item::before {
+    content: '→';
+    font-family: var(--mono);
+    flex-shrink: 0;
+    color: var(--text3);
+  }
+
+  .scenario.base .scenario-item::before { color: var(--blue); }
+
+  /* ─── VALUATION TABLE ─── */
+  .val-table-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead th {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    padding: .75rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg3);
+  }
+
+  tbody td {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text2);
+    padding: .7rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  tbody tr.current-row td {
+    color: var(--text);
+    background: var(--bg4);
+    font-weight: 500;
+  }
+
+  tbody tr.current-row td:first-child {
+    border-left: 2px solid var(--amber);
+    padding-left: calc(1.25rem - 2px);
+  }
+
+  /* ─── RISK & CATALYST ─── */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .risk-col-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  .risk-col-title.down { color: var(--red); }
+  .risk-col-title.up { color: var(--green); }
+
+  .risk-item {
+    padding: .85rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: .75rem;
+    align-items: flex-start;
+  }
+
+  .risk-item:last-child { border-bottom: none; }
+
+  .risk-icon {
+    font-size: 13px;
+    flex-shrink: 0;
+    line-height: 1.5;
+  }
+
+  .risk-text {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  /* ─── RADAR CHART ─── */
+  .radar-section {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .radar-labels {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+  }
+
+  .radar-label-row {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+  }
+
+  .radar-label-bar-wrap {
+    flex: 1;
+    height: 4px;
+    background: var(--bg4);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .radar-label-bar {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1s ease;
+  }
+
+  .radar-label-name {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text2);
+    width: 72px;
+    flex-shrink: 0;
+  }
+
+  .radar-label-score {
+    font-family: var(--mono);
+    font-size: 11px;
+    width: 20px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* ─── CONCLUSION ─── */
+  .conclusion-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--green);
+    border-radius: 0 12px 12px 0;
+    padding: 2rem 2rem 2rem 1.75rem;
+  }
+
+  .conclusion-header {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  .conclusion-body {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.85;
+  }
+
+  .conclusion-highlight {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .conclusion-green { color: var(--green); }
+  .conclusion-amber { color: var(--amber); }
+  .conclusion-red { color: var(--red); }
+
+  .conclusion-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 1.25rem;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 2rem 2rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-text {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    line-height: 1.8;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .5s ease, transform .5s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-title { font-size: 36px; }
+    .kpi-grid { grid-template-columns: repeat(2,1fr); }
+    .moat-grid { grid-template-columns: 1fr; }
+    .scenarios { grid-template-columns: 1fr; }
+    .radar-section { grid-template-columns: 1fr; }
+    .risk-grid { grid-template-columns: 1fr; }
+    .header-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── STICKY HEADER ─── -->
+<header class="site-header">
+  <div class="header-left">
+    <span class="ticker">NASDAQ: MDB</span>
+    <nav>
+      <ul class="header-nav">
+        <li><a href="#financials">财务指标</a></li>
+        <li><a href="#moat">护城河</a></li>
+        <li><a href="#valuation">估值</a></li>
+        <li><a href="#risks">风险</a></li>
+        <li><a href="#conclusion">结论</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="header-right">
+    <div>
+      <div class="live-price">$253.76</div>
+      <div class="price-change">▼ 22.2% (财报后)</div>
+    </div>
+    <div class="header-date">2026-03-25 · Q4 FY2026</div>
+  </div>
+</header>
+
+<!-- ─── HERO ─── -->
+<div class="hero">
+  <div class="fade-up">
+    <div class="hero-label">企业级 B2B SaaS · 护城河分析报告</div>
+    <h1 class="hero-title">MongoDB<br><em>护城河深处</em><br>还是价值陷阱？</h1>
+    <p class="hero-desc">
+      Q4 FY2026 财报后股价暴跌 22%，但 RPO 同比暴增 97% 至 $1.47B，Rule of 40 首次达到 50。
+      本报告基于企业级 B2B SaaS 护城河框架，系统评估 MongoDB 五类护城河强度、估值三情景与核心风险。
+    </p>
+  </div>
+  <div class="hero-meta fade-up" style="transition-delay:.1s">
+    <div class="meta-row">
+      <span class="meta-key">公司</span>
+      <span class="meta-val">MongoDB, Inc.</span>
+    </div>
+    <div class="meta-row">
+      <span class="meta-key">财季</span>
+      <span class="meta-val">Q4 FY2026（截止 2026-01-31）</span>
+    </div>
+    <div class="meta-row">
+      <span class="meta-key">收入模式</span>
+      <span class="meta-val">消费制 + 订阅混合</span>
+    </div>
+    <div class="meta-row">
+      <span class="meta-key">全年营收</span>
+      <span class="meta-val green">$2.46B &nbsp;+23% YoY</span>
+    </div>
+    <div class="meta-row">
+      <span class="meta-key">当前股价</span>
+      <span class="meta-val red">$253.76（历史分位 ~18%）</span>
+    </div>
+    <div class="meta-row">
+      <span class="meta-key">市值 / EV</span>
+      <span class="meta-val">$20.4B / ~$18B</span>
+    </div>
+    <div class="meta-row">
+      <span class="meta-key">下次财报</span>
+      <span class="meta-val amber">2026-06-02（Q1 FY2027）</span>
+    </div>
+    <div class="meta-row">
+      <span class="meta-key">数据来源</span>
+      <span class="meta-val" style="font-size:10px">SEC 8-K · Press Release (P1)</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── ALERT ─── -->
+<div class="alert-banner fade-up">
+  <div class="alert-inner">
+    <span class="alert-icon">⚠</span>
+    <span>前置检查：Q4 FY2026 于 2026-03-02 发布；所有核心数据来自 SEC 官方 8-K Press Release（P1 一级来源，GAAP/Non-GAAP 已标注）。Q1 FY2027 下次财报预计 2026-06-02。注意：RPO +97% YoY 已回源验证为真实大合同加速，非口径变化。</span>
+  </div>
+</div>
+
+<!-- ─── FINANCIALS ─── -->
+<section id="financials">
+  <div class="section-header fade-up">
+    <span class="section-num">01</span>
+    <h2 class="section-title">核心财务指标</h2>
+    <span class="section-badge badge-green">Q4 FY2026</span>
+  </div>
+
+  <div class="kpi-grid fade-up">
+    <div class="kpi-cell kpi-highlight">
+      <div class="kpi-label">Q4 总营收</div>
+      <div class="kpi-value" data-count="695">$0M</div>
+      <div class="kpi-delta up">↑ +27% YoY · 超预期 $25M</div>
+    </div>
+    <div class="kpi-cell kpi-highlight">
+      <div class="kpi-label">Atlas 营收（Q4）</div>
+      <div class="kpi-value" data-count="503">$0M</div>
+      <div class="kpi-delta up">↑ +29% YoY · 占总营收 72%</div>
+    </div>
+    <div class="kpi-cell kpi-highlight">
+      <div class="kpi-label">RPO 剩余履约义务</div>
+      <div class="kpi-value">$1.47B</div>
+      <div class="kpi-delta up" style="color:var(--green)">↑ +97% YoY ⚡ 异常强劲</div>
+    </div>
+    <div class="kpi-cell kpi-highlight">
+      <div class="kpi-label">Q4 FCF</div>
+      <div class="kpi-value" data-count="177">$0M</div>
+      <div class="kpi-delta up">FCF Margin 25.4%</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Non-GAAP 毛利率</div>
+      <div class="kpi-value">75%</div>
+      <div class="kpi-delta neutral">YoY 持平 · GAAP 73%</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Non-GAAP 运营利润率</div>
+      <div class="kpi-value">22.8%</div>
+      <div class="kpi-delta up">↑ 超指引上限 &gt;100 bps</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">全年 FCF（FY2026）</div>
+      <div class="kpi-value">$493M</div>
+      <div class="kpi-delta up">↑ FCF Margin ~20%</div>
+    </div>
+    <div class="kpi-cell kpi-warning">
+      <div class="kpi-label">Q1 FY27 营收指引</div>
+      <div class="kpi-value">$661M</div>
+      <div class="kpi-delta down">↓ 低于市场预期 · 触发抛售</div>
+    </div>
+  </div>
+
+  <div class="chart-container fade-up" style="transition-delay:.1s">
+    <div class="chart-header">
+      <span class="chart-title">季度营收分解（$M） · FY2025–FY2027E</span>
+      <div class="chart-legend">
+        <div class="legend-item"><span class="legend-dot" style="background:#4a9eff"></span>Atlas</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#2a3540"></span>其他</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#f5a623;border-radius:0;height:2px;width:16px;margin:3px 0"></span>指引中点</div>
+      </div>
+    </div>
+    <div style="position:relative;width:100%;height:220px">
+      <canvas id="revChart"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-container fade-up" style="transition-delay:.2s;margin-top:1rem">
+    <div class="chart-header">
+      <span class="chart-title">FCF Margin 趋势（%）</span>
+    </div>
+    <div style="position:relative;width:100%;height:140px">
+      <canvas id="fcfChart"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MOAT ─── -->
+<section id="moat">
+  <div class="section-header fade-up">
+    <span class="section-num">02</span>
+    <h2 class="section-title">五类护城河评估</h2>
+    <span class="section-badge badge-green">综合较强</span>
+  </div>
+
+  <div class="radar-section fade-up" style="margin-bottom:2rem">
+    <div class="radar-labels">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.75rem">护城河强度评分（/5）</div>
+      <div class="radar-label-row">
+        <span class="radar-label-name">迁移成本</span>
+        <div class="radar-label-bar-wrap"><div class="radar-label-bar" style="width:0%;background:var(--green)" data-width="100%"></div></div>
+        <span class="radar-label-score" style="color:var(--green)">5</span>
+      </div>
+      <div class="radar-label-row">
+        <span class="radar-label-name">平台生态</span>
+        <div class="radar-label-bar-wrap"><div class="radar-label-bar" style="width:0%;background:var(--green)" data-width="80%"></div></div>
+        <span class="radar-label-score" style="color:var(--green)">4</span>
+      </div>
+      <div class="radar-label-row">
+        <span class="radar-label-name">品牌信任</span>
+        <div class="radar-label-bar-wrap"><div class="radar-label-bar" style="width:0%;background:var(--green)" data-width="80%"></div></div>
+        <span class="radar-label-score" style="color:var(--green)">4</span>
+      </div>
+      <div class="radar-label-row">
+        <span class="radar-label-name">规模经济</span>
+        <div class="radar-label-bar-wrap"><div class="radar-label-bar" style="width:0%;background:var(--amber)" data-width="60%"></div></div>
+        <span class="radar-label-score" style="color:var(--amber)">3</span>
+      </div>
+      <div class="radar-label-row">
+        <span class="radar-label-name">网络效应</span>
+        <div class="radar-label-bar-wrap"><div class="radar-label-bar" style="width:0%;background:var(--red)" data-width="40%"></div></div>
+        <span class="radar-label-score" style="color:var(--red)">2</span>
+      </div>
+    </div>
+    <div style="position:relative;height:240px">
+      <canvas id="radarChart"></canvas>
+    </div>
+  </div>
+
+  <div class="moat-grid">
+
+    <div class="moat-card strength-5 fade-up">
+      <div class="moat-card-header">
+        <div>
+          <div class="moat-card-num">01 — 迁移成本</div>
+          <div class="moat-card-title">Switching Costs</div>
+        </div>
+        <div>
+          <div class="stars-row">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span>
+          </div>
+          <div style="text-align:right;margin-top:4px"><span class="section-badge badge-green">强</span></div>
+        </div>
+      </div>
+      <p class="moat-body">MongoDB 的文档模型将应用逻辑与数据结构深度绑合——迁移不只是数据搬运，而是要重写应用层代码，涉及查询模式、索引策略与开发者认知的全面重构。RPO 同比暴增 97% 至 $1.47B，显示企业客户正签下更长期大合同，锁定深度在加速。单笔 $90M+ 与 $100M+ 的 Atlas 大单表明头部客户依赖程度进入新量级。</p>
+      <div class="moat-pills">
+        <span class="pill highlight">RPO +97% YoY = $1.47B</span>
+        <span class="pill highlight">单笔 $100M+ Atlas 合同</span>
+        <span class="pill">Fortune 100 覆盖率 ~75%</span>
+        <span class="pill">Atlas 占营收比 72%</span>
+      </div>
+    </div>
+
+    <div class="moat-card strength-2 fade-up" style="transition-delay:.05s">
+      <div class="moat-card-header">
+        <div>
+          <div class="moat-card-num">02 — 网络效应</div>
+          <div class="moat-card-title">Network Effects</div>
+        </div>
+        <div>
+          <div class="stars-row">
+            <span class="star on">★</span><span class="star on">★</span><span class="star off">★</span><span class="star off">★</span><span class="star off">★</span>
+          </div>
+          <div style="text-align:right;margin-top:4px"><span class="section-badge badge-red">弱</span></div>
+        </div>
+      </div>
+      <p class="moat-body">MongoDB 不具备强直接网络效应（非市场平台、非通信工具）。数据网络效应较弱——数据库本质是工具，不因用户增多而显著提升单个用户价值。间接生态效应存在但有限：开发者社区、MongoDB for Startups（成员估值 &gt;$2000 亿）形成一定群体共识。这是相对 Snowflake（数据共享网络效应）的结构性弱点。</p>
+      <div class="moat-pills">
+        <span class="pill">Startups 成员估值 &gt;$2000亿</span>
+        <span class="pill">Stack Overflow 开发者首选</span>
+        <span class="pill">GitHub Stars 26k+</span>
+      </div>
+    </div>
+
+    <div class="moat-card strength-4 fade-up" style="transition-delay:.1s">
+      <div class="moat-card-header">
+        <div>
+          <div class="moat-card-num">03 — 平台生态</div>
+          <div class="moat-card-title">Ecosystem Lock-in</div>
+        </div>
+        <div>
+          <div class="stars-row">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span>
+          </div>
+          <div style="text-align:right;margin-top:4px"><span class="section-badge badge-green">较强</span></div>
+        </div>
+      </div>
+      <p class="moat-body">MongoDB 平台已从单一数据库演进为集 Operational DB / Search / Vector Search / Time Series / AI Agent 于一体的"数据智能层"。Voyage AI 嵌入模型整合（Q4 公告）将 AI 工作负载直接锚定在 Atlas，形成新的生态锁定。AWS 全球年度技术合作伙伴强化了 ISV 生态绑定。</p>
+      <div class="moat-pills">
+        <span class="pill highlight">Voyage AI 嵌入模型整合（Q4 新增）</span>
+        <span class="pill">Atlas = DB + Search + Vector + AI</span>
+        <span class="pill">AWS 全球年度技术合作伙伴</span>
+        <span class="pill">Atlas Data Explorer AI 助手</span>
+      </div>
+    </div>
+
+    <div class="moat-card strength-3 fade-up" style="transition-delay:.15s">
+      <div class="moat-card-header">
+        <div>
+          <div class="moat-card-num">04 — 规模经济</div>
+          <div class="moat-card-title">Scale Economics</div>
+        </div>
+        <div>
+          <div class="stars-row">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span><span class="star off">★</span>
+          </div>
+          <div style="text-align:right;margin-top:4px"><span class="section-badge badge-amber">改善中</span></div>
+        </div>
+      </div>
+      <p class="moat-body">毛利率 75%（Non-GAAP）稳定且无压缩迹象。运营杠杆显著释放：FY2026 FCF Margin 达 20%，Q4 单季达 25%，相比两年前接近零有飞跃性改善。Q4 Rule of 40 = 50（27% 增速 + ~23% Non-GAAP 运营利润率），为 CEO 亲口确认的历史性节点。</p>
+      <div class="moat-pills">
+        <span class="pill highlight">Rule of 40 = 50（Q4 首次）</span>
+        <span class="pill">Non-GAAP GM 75%</span>
+        <span class="pill">FCF Margin Q4 25.4%</span>
+        <span class="pill">现金储备 $2.4B</span>
+      </div>
+    </div>
+
+    <div class="moat-card strength-4 fade-up" style="transition-delay:.2s;grid-column:1/-1">
+      <div class="moat-card-header">
+        <div>
+          <div class="moat-card-num">05 — 品牌与信任</div>
+          <div class="moat-card-title">Brand / Trust</div>
+        </div>
+        <div>
+          <div class="stars-row">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star off">★</span>
+          </div>
+          <div style="text-align:right;margin-top:4px"><span class="section-badge badge-green">强</span></div>
+        </div>
+      </div>
+      <p class="moat-body" style="max-width:720px">在开发者心智中，MongoDB 是"文档数据库"的品类代名词——这是最稳固的品牌护城河。Fortune 100 渗透率 ~75% 意味着 CTO/CDO 层面形成了高度决策共识。MongoDB for Startups 成员估值超 $2000 亿，提前锁定下一代高增长客户群。风险点：新兴 AI-native 数据平台（Pinecone、Weaviate）在特定用例下冲击品牌心智，需持续追踪 Gartner MQ 位置变化。</p>
+      <div class="moat-pills">
+        <span class="pill highlight">开发者品类默认认知（Stack Overflow 排名第一）</span>
+        <span class="pill">Fortune 100 覆盖率 ~75%</span>
+        <span class="pill">SOC2 / ISO27001 / FedRAMP 认证</span>
+        <span class="pill">Startups 成员估值 &gt;$2000亿</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── VALUATION ─── -->
+<section id="valuation">
+  <div class="section-header fade-up">
+    <span class="section-num">03</span>
+    <h2 class="section-title">估值分析</h2>
+    <span class="section-badge badge-amber">历史低位</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem" class="fade-up">
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.75rem">当前估值锚点</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text3)">股价</div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:600;color:var(--text)">$253.76</div>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text3)">市值</div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:600;color:var(--text)">$20.4B</div>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text3)">EV/TTM Rev</div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:600;color:var(--amber)">7.3x</div>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text3)">EV/NTM Rev</div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:600;color:var(--amber)">6.3x</div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.75rem">FY2027 官方指引</div>
+      <div style="font-family:var(--mono);font-size:15px;font-weight:500;color:var(--text);margin-bottom:.5rem">$2.86–2.90B 营收</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text2);margin-bottom:.35rem">+17% YoY 增速（指引中点）</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text2);margin-bottom:.35rem">Non-GAAP 运营利润 $545–565M (~19%)</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--red);margin-top:.5rem">↓ Q1 FY27 指引低于预期 → 触发 -22% 单日暴跌</div>
+    </div>
+  </div>
+
+  <div class="scenarios fade-up" style="transition-delay:.1s">
+    <div class="scenario bear">
+      <div class="scenario-tag">🔴 Bear 情景</div>
+      <div class="scenario-price">$160–185</div>
+      <div class="scenario-upside">当前 −27% ~ −37%</div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-item">NTM 增速降至 12–14%</div>
+      <div class="scenario-item">EV/NTM Rev 压缩至 5–6x</div>
+      <div class="scenario-item">CRO 离职导致大客户签约停滞</div>
+      <div class="scenario-item">NRR 滑至 108–110% 区间</div>
+      <div class="scenario-item">AI 工作负载被向量 DB 专项竞品分流</div>
+    </div>
+    <div class="scenario base">
+      <div class="scenario-tag">🟡 Base 情景</div>
+      <div class="scenario-price">$280–330</div>
+      <div class="scenario-upside">当前 +10% ~ +30%</div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-item">NTM 增速维持 ~17%（指引中点）</div>
+      <div class="scenario-item">EV/NTM Rev 回归至 8–9x</div>
+      <div class="scenario-item">新 CRO 稳定 GTM 执行节奏</div>
+      <div class="scenario-item">Atlas 消费扩张延续，无异常波动</div>
+      <div class="scenario-item">RPO 大增逐步兑现为 H2 营收</div>
+    </div>
+    <div class="scenario bull">
+      <div class="scenario-tag">🟢 Bull 情景</div>
+      <div class="scenario-price">$380–450</div>
+      <div class="scenario-upside">当前 +50% ~ +77%</div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-item">NTM 增速重回 22–25%</div>
+      <div class="scenario-item">EV/NTM Rev 扩张至 11–13x</div>
+      <div class="scenario-item">AI Agent 工作负载加速消费</div>
+      <div class="scenario-item">Voyage AI 整合推动 ARPU 扩张</div>
+      <div class="scenario-item">$1.47B RPO 在 H2 超预期兑现</div>
+    </div>
+  </div>
+
+  <div class="val-table-wrap fade-up" style="transition-delay:.15s">
+    <table>
+      <thead>
+        <tr>
+          <th>时间节点</th>
+          <th>EV/NTM Rev</th>
+          <th>对应增速</th>
+          <th>FCF Margin</th>
+          <th>市场背景</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>历史最高（2021-11）</td>
+          <td>~40x</td>
+          <td>~50%+</td>
+          <td>~0%</td>
+          <td>零利率 + 高成长溢价</td>
+        </tr>
+        <tr>
+          <td>2023 年均值</td>
+          <td>~14x</td>
+          <td>~20%</td>
+          <td>~5%</td>
+          <td>加息周期，估值压缩</td>
+        </tr>
+        <tr>
+          <td>2024–25 年均值</td>
+          <td>~12x</td>
+          <td>~20%</td>
+          <td>~12%</td>
+          <td>利率高位，AI 转型期</td>
+        </tr>
+        <tr class="current-row">
+          <td>⬛ 当前（2026-03-25）</td>
+          <td style="color:var(--amber)">~6.3x</td>
+          <td>~17%</td>
+          <td>~20%</td>
+          <td>估值重置 + 领导层变动</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:.5rem;padding:0 .25rem" class="fade-up">
+    历史分位：当前 EV/NTM Rev 约处于近 3 年历史 15–20 百分位（极低位），悲观预期已充分 price-in。
+    PS 估值法合理性校验：EV/NTM Rev ÷ NTM 增速 = 6.3x ÷ 17% ≈ 0.37，处于历史低估区间（&lt;0.8 = 低估参考值）。
+  </div>
+</section>
+
+<!-- ─── RISKS ─── -->
+<section id="risks">
+  <div class="section-header fade-up">
+    <span class="section-num">04</span>
+    <h2 class="section-title">风险与催化剂</h2>
+  </div>
+
+  <div class="risk-grid">
+    <div class="fade-up">
+      <div class="risk-col-title down">↓ 下行风险</div>
+      <div class="risk-item">
+        <span class="risk-icon">🔴</span>
+        <span class="risk-text">CRO 离职 + 新任 CRO（Ryan Mac Ban）4月27日上任，Q1/Q2 FY27 过渡期内大客户管道存在扰动风险</span>
+      </div>
+      <div class="risk-item">
+        <span class="risk-icon">🔴</span>
+        <span class="risk-text">Q1 FY2027 指引 $659–664M 低于市场预期且环比下降，消费节奏放缓信号值得关注</span>
+      </div>
+      <div class="risk-item">
+        <span class="risk-icon">🟠</span>
+        <span class="risk-text">AWS DocumentDB / Azure Cosmos DB / GCP Firestore 持续以低价策略侵蚀中小客户群体</span>
+      </div>
+      <div class="risk-item">
+        <span class="risk-icon">🟠</span>
+        <span class="risk-text">AI 原生向量数据库（Pinecone、Weaviate、Qdrant）分流 AI 工作负载预算，削弱 Atlas 差异化</span>
+      </div>
+      <div class="risk-item">
+        <span class="risk-icon">🟡</span>
+        <span class="risk-text">MongoDB 停止明确披露 NRR，关键指标透明度下降引发市场对客户健康度的猜测</span>
+      </div>
+    </div>
+
+    <div class="fade-up" style="transition-delay:.1s">
+      <div class="risk-col-title up">↑ 上行催化剂</div>
+      <div class="risk-item">
+        <span class="risk-icon">🟢</span>
+        <span class="risk-text">RPO +97% YoY = $1.47B，合同锁定加速是最强护城河信号，预期 H2 FY2027 营收重新加速</span>
+      </div>
+      <div class="risk-item">
+        <span class="risk-icon">🟢</span>
+        <span class="risk-text">Voyage AI 整合（向量 + 嵌入）将 AI Agent 工作负载锁定在 Atlas 平台内，ARPU 扩张空间打开</span>
+      </div>
+      <div class="risk-item">
+        <span class="risk-icon">🟢</span>
+        <span class="risk-text">头部大单加速：Q4 单笔 $90M+ Atlas 合同 + $100M+ 大单，说明头部客户依赖进入新量级</span>
+      </div>
+      <div class="risk-item">
+        <span class="risk-icon">🟢</span>
+        <span class="risk-text">新 CRO Ryan Mac Ban 带来 ServiceNow 规模化 GTM 经验，有望重建销售执行信心</span>
+      </div>
+      <div class="risk-item">
+        <span class="risk-icon">🟢</span>
+        <span class="risk-text">Rule of 40 = 50 历史首次，FCF Margin 扩张轨迹清晰，公司进入"盈利增长双驱动"新阶段</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONCLUSION ─── -->
+<section id="conclusion">
+  <div class="section-header fade-up">
+    <span class="section-num">05</span>
+    <h2 class="section-title">估值综合结论</h2>
+  </div>
+
+  <div class="conclusion-box fade-up">
+    <div class="conclusion-header">护城河深处，估值陷阱还是入场机会？</div>
+    <p class="conclusion-body">
+      Q4 FY2026 呈现出 MongoDB 护城河最强劲的几个信号同时出现：
+      <span class="conclusion-green">RPO 从 $748M 暴增至 $1.47B（+97% YoY）</span>是迁移成本护城河加深的最直接佐证，
+      说明头部企业客户正以多年期大合同加注；
+      <span class="conclusion-green">FCF Margin 从接近零扩张至 20–25%</span>证明规模经济正在真实释放；
+      <span class="conclusion-green">Rule of 40 = 50</span> 表明公司已进入"盈利增长双驱动"的新阶段。
+    </p>
+    <p class="conclusion-body" style="margin-top:.75rem">
+      然而市场的关注点已切换至执行风险：
+      <span class="conclusion-amber">Q1 FY2027 指引低于预期</span>（环比下滑）叠加
+      <span class="conclusion-red">CRO 团队双双离职</span>，
+      触发了 -22% 的暴跌。这一利空组合是真实的，尤其在大客户签约需要强 GTM 执行的消费制模型下，
+      领导层过渡期的不确定性不可低估。
+    </p>
+    <p class="conclusion-body" style="margin-top:.75rem">
+      <span class="conclusion-highlight">估值层面：EV/NTM Revenue ~6.3x 处于近三年约 15–20 百分位历史极低位</span>，
+      隐含的悲观预期已大幅 price-in。
+      Base 情景目标价 <span class="conclusion-green">$280–330</span>（+10–30%），
+      Bull 情景目标价 <span class="conclusion-green">$380–450</span>（+50–77%），
+      核心解锁变量为 $1.47B RPO 在 H2 FY2027 兑现为超预期营收加速。
+      <span class="conclusion-highlight">关键验证节点：2026-06-02 的 Q1 FY2027 财报</span>，
+      重点观察消费节奏是否回归正轨，以及新 CRO 上任后管道建设的早期信号。
+    </p>
+    <div class="conclusion-tags">
+      <span class="section-badge badge-blue">成熟期数据平台</span>
+      <span class="section-badge badge-amber">消费制 + 订阅混合</span>
+      <span class="section-badge badge-green">历史估值低位</span>
+      <span class="section-badge badge-amber">GTM 过渡执行风险</span>
+      <span class="section-badge badge-green">护城河信号强劲</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer">
+  <p class="footer-text">
+    数据来源：MongoDB, Inc. SEC 8-K Press Release（2026-03-02）· EDGAR · Yahoo Finance<br>
+    分析框架：企业级 B2B SaaS 护城河分析框架 v2.2（ENTERPRISE_SAAS_AGENT_TEMPLATE）<br>
+    免责声明：本报告仅供学术研究与信息参考之用，不构成任何投资建议或买卖要约。<br>
+    生成时间：2026-03-25 · MongoDB (NASDAQ: MDB)
+  </p>
+</footer>
+
+<script>
+// ─── COUNTER ANIMATION ───
+function animateCount(el, target) {
+  const duration = 1200;
+  const start = performance.now();
+  const update = (now) => {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(ease * target);
+    el.textContent = '$' + current + 'M';
+    if (progress < 1) requestAnimationFrame(update);
+  };
+  requestAnimationFrame(update);
+}
+
+// ─── INTERSECTION OBSERVER ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+
+      // Counters (all within this fade-up block)
+      entry.target.querySelectorAll('[data-count]').forEach(countEl => {
+        if (!countEl.dataset.animated) {
+          countEl.dataset.animated = 'true';
+          animateCount(countEl, parseInt(countEl.dataset.count));
+        }
+      });
+
+      // Bar widths
+      entry.target.querySelectorAll('.radar-label-bar[data-width]').forEach(bar => {
+        if (!bar.dataset.animated) {
+          bar.dataset.animated = 'true';
+          setTimeout(() => { bar.style.width = bar.dataset.width; }, 300);
+        }
+      });
+
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// ─── CHARTS ───
+const gridColor = 'rgba(255,255,255,0.05)';
+const textColor = '#5c5a56';
+const font = { family: "'IBM Plex Mono', monospace", size: 10 };
+
+// Revenue Chart
+new Chart(document.getElementById('revChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Q1 FY25','Q2 FY25','Q3 FY25','Q4 FY25','Q1 FY26','Q2 FY26','Q3 FY26','Q4 FY26','Q1 FY27E'],
+    datasets: [
+      {
+        label: 'Atlas',
+        data: [335, 360, 380, 404, 431, 456, 479, 503, null],
+        backgroundColor: '#4a9eff',
+        borderRadius: 2,
+        stack: 'rev'
+      },
+      {
+        label: '其他',
+        data: [143, 150, 154, 145, 142, 144, 143, 192, null],
+        backgroundColor: '#2a3540',
+        borderRadius: 2,
+        stack: 'rev'
+      },
+      {
+        label: '指引中点',
+        type: 'line',
+        data: [null,null,null,null,null,null,null,null,661.5],
+        borderColor: '#f5a623',
+        borderWidth: 2,
+        borderDash: [4,4],
+        pointBackgroundColor: '#f5a623',
+        pointRadius: 5,
+        fill: false,
+        order: 0
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: {
+      backgroundColor: '#161b20',
+      borderColor: 'rgba(255,255,255,0.1)',
+      borderWidth: 1,
+      titleFont: font,
+      bodyFont: font,
+      callbacks: { label: ctx => ' ' + ctx.dataset.label + ': $' + Math.round(ctx.raw || 0) + 'M' }
+    }},
+    scales: {
+      x: { stacked: true, grid: { color: gridColor }, ticks: { color: textColor, font } },
+      y: { stacked: true, grid: { color: gridColor }, ticks: { color: textColor, font, callback: v => '$' + v + 'M' } }
+    }
+  }
+});
+
+// FCF Margin Chart
+new Chart(document.getElementById('fcfChart'), {
+  type: 'line',
+  data: {
+    labels: ['Q1 FY25','Q2 FY25','Q3 FY25','Q4 FY25','Q1 FY26','Q2 FY26','Q3 FY26','Q4 FY26'],
+    datasets: [{
+      label: 'FCF Margin',
+      data: [3.6, 7.2, 4.1, 4.2, 8.5, 17.2, 21.3, 25.4],
+      borderColor: '#00ed64',
+      borderWidth: 2,
+      pointBackgroundColor: '#00ed64',
+      pointRadius: 4,
+      fill: true,
+      backgroundColor: 'rgba(0,237,100,0.06)',
+      tension: 0.35
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: {
+      backgroundColor: '#161b20',
+      borderColor: 'rgba(255,255,255,0.1)',
+      borderWidth: 1,
+      titleFont: font, bodyFont: font,
+      callbacks: { label: ctx => ' FCF Margin: ' + ctx.raw + '%' }
+    }},
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: textColor, font } },
+      y: { grid: { color: gridColor }, ticks: { color: textColor, font, callback: v => v + '%' } }
+    }
+  }
+});
+
+// Radar Chart
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['迁移成本','网络效应','平台生态','规模经济','品牌信任'],
+    datasets: [{
+      label: 'MongoDB',
+      data: [5, 2, 4, 3, 4],
+      backgroundColor: 'rgba(0,237,100,0.08)',
+      borderColor: '#00ed64',
+      borderWidth: 1.5,
+      pointBackgroundColor: '#00ed64',
+      pointRadius: 5,
+      pointHoverRadius: 7
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 5,
+        ticks: { stepSize: 1, display: false, backdropColor: 'transparent' },
+        grid: { color: 'rgba(255,255,255,0.06)' },
+        angleLines: { color: 'rgba(255,255,255,0.06)' },
+        pointLabels: {
+          color: '#9a9690',
+          font: { family: "'IBM Plex Mono', monospace", size: 11 }
+        }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
