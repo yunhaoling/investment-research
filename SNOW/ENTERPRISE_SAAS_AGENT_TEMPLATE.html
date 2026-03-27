@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENTERPRISE_SAAS_AGENT_TEMPLATE.md</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #0b0d12;
+  --bg2:    #10131a;
+  --bg3:    #161923;
+  --bg4:    #1d2130;
+  --border: #222638;
+  --border2:#2a2f45;
+  --text:   #dde3f0;
+  --text2:  #8a93b0;
+  --text3:  #505878;
+  --accent: #5b6af0;
+  --green:  #2ed380;
+  --amber:  #f5c542;
+  --red:    #ff5566;
+  --mono:   'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ── Header ── */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex; align-items: center; gap: 16px; height: 52px;
+}
+.back-link {
+  color: var(--text3); text-decoration: none; font-size: 13px;
+  font-family: var(--mono); transition: color .2s;
+}
+.back-link:hover { color: var(--text2); }
+.header-sep { color: var(--border2); }
+.header-title { font-size: 13px; color: var(--text2); }
+
+/* ── Layout ── */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+/* ── TOC Sidebar ── */
+.toc {
+  position: sticky; top: 52px; align-self: start;
+  height: calc(100vh - 52px); overflow-y: auto;
+  padding: 28px 0;
+  border-right: 1px solid var(--border);
+  background: var(--bg2);
+}
+.toc-title {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--text3); font-family: var(--mono);
+  padding: 0 20px 12px;
+}
+.toc ul { list-style: none; }
+.toc a {
+  display: block; padding: 5px 20px;
+  font-size: 12.5px; color: var(--text3);
+  text-decoration: none; transition: color .15s, background .15s;
+  border-left: 2px solid transparent;
+}
+.toc a:hover { color: var(--text2); background: var(--bg3); }
+.toc a.active { color: var(--accent); border-left-color: var(--accent); }
+.toc .toc-h2 { padding-left: 20px; }
+.toc .toc-h3 { padding-left: 34px; font-size: 11.5px; }
+
+/* ── Article ── */
+.article {
+  max-width: 860px;
+  padding: 48px 60px 80px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Headings */
+.article h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.article h2 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px; font-weight: 600;
+  color: var(--text);
+  margin: 40px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.article h2::before {
+  content: ''; display: block;
+  width: 3px; height: 18px; border-radius: 2px;
+  background: var(--accent); flex-shrink: 0;
+}
+.article h3 {
+  font-size: 15px; font-weight: 500;
+  color: var(--text2);
+  margin: 28px 0 12px;
+}
+.article h4 {
+  font-size: 13px; font-weight: 500;
+  color: var(--text3); text-transform: uppercase; letter-spacing: .06em;
+  margin: 20px 0 8px;
+}
+
+/* Body text */
+.article p { margin-bottom: 14px; color: var(--text2); }
+.article strong { color: var(--text); font-weight: 500; }
+.article em { color: var(--amber); font-style: normal; }
+.article hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+/* Blockquote */
+.article blockquote {
+  margin: 20px 0;
+  padding: 14px 20px;
+  background: var(--bg3);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+}
+.article blockquote p {
+  color: var(--text2); margin: 0;
+  font-size: 13.5px; line-height: 1.8;
+}
+
+/* Tables */
+.article table {
+  width: 100%; border-collapse: collapse;
+  margin: 20px 0 28px; font-size: 13px;
+}
+.article thead th {
+  padding: 8px 12px;
+  text-align: right;
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .07em;
+  color: var(--text3);
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border2);
+  font-family: var(--mono);
+}
+.article thead th:first-child { text-align: left; }
+.article tbody td {
+  padding: 8px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+.article tbody td:first-child {
+  text-align: left;
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.article tbody tr:hover td { background: var(--bg3); }
+
+/* Lists */
+.article ul, .article ol {
+  padding-left: 20px; margin-bottom: 14px;
+}
+.article li { color: var(--text2); margin-bottom: 4px; }
+.article li strong { color: var(--text); }
+
+/* Inline code */
+.article code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 1px 5px; border-radius: 4px;
+  color: var(--amber);
+}
+.article pre {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+.article pre code {
+  background: none; border: none; padding: 0;
+  color: var(--text2); font-size: 13px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { display: none; }
+  .article { padding: 32px 20px 60px; }
+  .site-header { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../" class="back-link">← index</a>
+  <span class="header-sep">/</span>
+  <span class="header-title">SNOW</span>
+</header>
+
+<div class="layout">
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ul id="toc-list"></ul>
+  </nav>
+
+  <main>
+    <article class="article" id="article">
+      <h1 id="enterprise_saas_agent_templatemd">ENTERPRISE_SAAS_AGENT_TEMPLATE.md</h1>
+<h1 id="b2b-saas-agent-v10">企业级 B2B SaaS · 护城河分析框架 · 通用 Agent 模板 v1.0</h1>
+<h1 id="_1">适用范围：数据平台 / 云基础设施 / 企业软件</h1>
+<h1 id="snowflake-snow-snowflake_moat_trackerhtml">当前实例：Snowflake (SNOW) — 适配文件：snowflake_moat_tracker.html</h1>
+<hr />
+<h2 id="b2b-saas-b2c">一、B2B SaaS 与 B2C 产品的根本性差异</h2>
+<p>在使用本模板前，必须理解为什么 B2B SaaS 护城河的分析逻辑与 B2C 产品（如多邻国）完全不同：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>B2C 产品（多邻国）</th>
+<th>企业级 B2B SaaS（Snowflake）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>核心护城河</strong></td>
+<td>行为习惯 / 情感锁定</td>
+<td>数据引力 / 迁移成本</td>
+</tr>
+<tr>
+<td><strong>关键用户指标</strong></td>
+<td>DAU / MAU / DAU/MAU</td>
+<td>NRR / RPO / $1M+ 客户数</td>
+</tr>
+<tr>
+<td><strong>收入模式</strong></td>
+<td>订阅制（固定费用）</td>
+<td>消费制（用多少付多少）</td>
+</tr>
+<tr>
+<td><strong>竞争转换成本</strong></td>
+<td>低（换 App 只需几秒）</td>
+<td>极高（数据迁移以工程月计）</td>
+</tr>
+<tr>
+<td><strong>增长信号</strong></td>
+<td>新用户获取 + 留存</td>
+<td>存量客户消费扩张（NRR &gt; 100%）</td>
+</tr>
+<tr>
+<td><strong>风险来源</strong></td>
+<td>用户习惯改变 / 竞品获客</td>
+<td>云厂商内置化 / 竞品分流特定工作负载</td>
+</tr>
+<tr>
+<td><strong>情绪信号</strong></td>
+<td>App Store 评分 / Reddit</td>
+<td>G2 / Gartner Peer Insights / 开发者社区</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="b2b-saas">二、企业级 B2B SaaS 护城河通用框架</h2>
+<h3 id="_2">框架一：五类护城河强度评估</h3>
+<p>每次分析时，对以下五类护城河逐一评估，填写强度（★★★★★ 到 ★）和信号颜色（green/amber/red）：</p>
+<h4 id="21-switching-costs">2.1 迁移成本护城河（Switching Costs）</h4>
+<p><strong>适用场景</strong>：数据平台、ERP、CRM、安全工具、工作流平台</p>
+<p><strong>强度驱动因素</strong>：<br />
+- 数据量（TB/PB 级 → 迁移成本呈超线性增长）<br />
+- 工作流深度（ETL 管道数、下游依赖应用数）<br />
+- 团队技能绑定（员工培训成本）<br />
+- API 和集成数量</p>
+<p><strong>核心可观测指标</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">nrr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">                    </span><span class="c1"># 净收入留存率，直接体现迁移成本</span>
+<span class="nt">rpq_growth_vs_rev_growth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w"> </span><span class="c1"># RPO 增速 &gt; 产品营收增速 = 客户在锁定更长期合同</span>
+<span class="nt">churn_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">             </span><span class="c1"># 客户流失率（消费额口径，非客户数口径）</span>
+<span class="nt">large_customer_growth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">  </span><span class="c1"># $1M+ 客户增速（深度依赖的代理指标）</span>
+<span class="nt">contract_length_trend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">  </span><span class="c1"># 平均合同期限是否在延长</span>
+</code></pre></div>
+
+<p><strong>健康基准</strong>（以 Snowflake 为参考）：<br />
+- NRR ≥ 120% → 强护城河<br />
+- NRR 110–120% → 正常<br />
+- NRR &lt; 110% 连续两季度 → 警报</p>
+<h4 id="22-network-effects">2.2 网络效应护城河（Network Effects）</h4>
+<p><strong>适用场景</strong>：数据市场、协作平台、支付网络、API 平台</p>
+<p><strong>两种形态</strong>：<br />
+- <strong>直接网络效应</strong>：用户越多，产品对每个用户价值越高（如 Slack、LinkedIn）<br />
+- <strong>数据网络效应</strong>：更多数据/用户 → 更好的模型/匹配 → 吸引更多用户（如 Snowflake Data Marketplace）</p>
+<p><strong>核心可观测指标</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">marketplace_listings</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">       </span><span class="c1"># 数据集/产品数量</span>
+<span class="nt">cross_company_shares</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">       </span><span class="c1"># 跨企业数据共享关系数</span>
+<span class="nt">platform_customer_coverage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w"> </span><span class="c1"># 如 Forbes G2000 覆盖率（作为市场渗透代理）</span>
+<span class="nt">partner_ecosystem_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">     </span><span class="c1"># 合作伙伴和集成数量</span>
+</code></pre></div>
+
+<p><strong>盲区警告</strong>：网络效应类指标往往是公司最不愿意披露的。若财报中完全缺失，需在电话会议中主动追问。</p>
+<h4 id="23-ecosystem-lock-in">2.3 平台生态锁定（Ecosystem Lock-in）</h4>
+<p><strong>适用场景</strong>：云平台、开发者工具、数据平台、低代码平台</p>
+<p><strong>强度驱动因素</strong>：<br />
+- 工作负载类别多样性（每增加一个工作负载，锁定成本乘数增加）<br />
+- 应用/ISV 生态（第三方在平台上构建了多少产品）<br />
+- 开发者技能绑定（特有 API / SDK / 专有语言）</p>
+<p><strong>核心可观测指标</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">workload_categories_per_customer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w"> </span><span class="c1"># 每客户工作负载类别（越多越难迁移）</span>
+<span class="nt">native_apps_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">                </span><span class="c1"># 平台上的原生应用数</span>
+<span class="nt">isv_partner_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">                </span><span class="c1"># 集成伙伴数量</span>
+<span class="nt">developer_community_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">         </span><span class="c1"># GitHub Stars / Stack Overflow 讨论量</span>
+</code></pre></div>
+
+<h4 id="24-scale-economics">2.4 规模经济（Scale Economics）</h4>
+<p><strong>适用场景</strong>：云基础设施、数据平台、AI 训练平台</p>
+<p><strong>与 B2C 规模效应的区别</strong>：B2B 规模经济更多体现在单位基础设施成本递减，而非用户边际成本递减。</p>
+<p><strong>核心可观测指标</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">product_gross_margin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">        </span><span class="c1"># 产品毛利率（排除服务）</span>
+<span class="nt">infrastructure_cost_per_unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w"> </span><span class="c1"># 单位计算成本趋势</span>
+<span class="nt">fcf_margin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">                  </span><span class="c1"># 自由现金流利润率（规模杠杆的综合体现）</span>
+<span class="nt">r_and_d_as_pct_revenue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">      </span><span class="c1"># R&amp;D 占收入比（是否在递减）</span>
+</code></pre></div>
+
+<p><strong>健康基准</strong>（Snowflake 参考）：<br />
+- 产品毛利率 ≥ 72% → 健康<br />
+- FCF Margin ≥ 20% → 达到规模效应<br />
+- 若毛利率下降 &gt; 2ppt YoY → 需追问原因</p>
+<h4 id="25-brand-trust">2.5 品牌 + 信任护城河（Brand / Trust）</h4>
+<p><strong>特殊性</strong>：B2B 品牌护城河的核心不是消费者认知，而是企业 CTO / CDO 心目中的「默认选择」地位（category leader），以及安全/合规信任。</p>
+<p><strong>核心可观测指标</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">gartner_magic_quadrant_position</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w"> </span><span class="c1"># Gartner 魔力象限位置（Leader/Visionary）</span>
+<span class="nt">g2_category_ranking</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">             </span><span class="c1"># G2 企业评分排名</span>
+<span class="nt">analyst_citations</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">               </span><span class="c1"># 分析师报告引用频率</span>
+<span class="nt">enterprise_security_certs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">       </span><span class="c1"># SOC2 / ISO 认证状态</span>
+<span class="nt">logo_win_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">                    </span><span class="c1"># 竞争性 RFP 赢单率</span>
+</code></pre></div>
+
+<hr />
+<h2 id="module-1b2b-saas">三、MODULE 1：财务数据采集（B2B SaaS 版本）</h2>
+<p><strong>目标</strong>：从 SEC EDGAR 获取最新季度的所有核心指标。</p>
+<h3 id="11">1.1 定位最新季报</h3>
+<div class="highlight"><pre><span></span><code>web_search: &quot;[公司名] quarterly earnings [季度] site:sec.gov&quot;
+</code></pre></div>
+
+<p>Snowflake 特定：<br />
+- 财年截止 1 月 31 日（FY = 上一年2月–当年1月）<br />
+- EDGAR CIK：0001640147<br />
+- 文件命名规律：<code>fy[年]q[季度]earnings.htm</code></p>
+<h3 id="12-vs">1.2 消费制 vs 订阅制的采集差异</h3>
+<p><strong>消费制（Snowflake 类型）采集重点</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">product_revenue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">            </span><span class="c1"># 产品营收（非总营收）</span>
+<span class="nt">product_revenue_yoy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">        </span><span class="c1"># YoY 增速</span>
+<span class="nt">professional_services_rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">  </span><span class="c1"># 专业服务（通常低毛利，单独追踪）</span>
+</code></pre></div>
+
+<p><strong>订阅制（传统 SaaS）采集重点</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">arr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">                    </span><span class="c1"># 年化经常性收入</span>
+<span class="nt">arr_growth_yoy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">new_arr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">                </span><span class="c1"># 新增 ARR</span>
+<span class="nt">expansion_arr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">          </span><span class="c1"># 扩张 ARR（现有客户增加）</span>
+<span class="nt">churn_arr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">              </span><span class="c1"># 流失 ARR</span>
+</code></pre></div>
+
+<h3 id="13-b2b-saas">1.3 B2B SaaS 必须采集的字段</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 留存与扩张（最重要）</span>
+<span class="nt">nrr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">                    </span><span class="c1"># 净收入留存率</span>
+<span class="nt">gross_retention_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">   </span><span class="c1"># 毛留存率（不含扩张）</span>
+
+<span class="c1"># 前瞻性指标</span>
+<span class="nt">rpo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">                    </span><span class="c1"># 剩余履约义务（已签未确认）</span>
+<span class="nt">rpo_growth_yoy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">current_rpo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">            </span><span class="c1"># 12个月内将确认的 RPO</span>
+<span class="nt">crpo_growth_yoy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+
+<span class="c1"># 客户质量指标</span>
+<span class="nt">customers_1m_plus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">      </span><span class="c1"># $1M+ TTM 产品营收客户数</span>
+<span class="nt">customers_1m_yoy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">customers_10m_plus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">     </span><span class="c1"># $10M+ 客户数（战略依赖）</span>
+<span class="nt">total_customers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">net_new_customers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">enterprise_penetration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w"> </span><span class="c1"># 如 Forbes G2000 / Fortune 500 覆盖率</span>
+
+<span class="c1"># 财务质量</span>
+<span class="nt">product_gross_margin_non_gaap</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">operating_margin_non_gaap</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">fcf_margin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">             </span><span class="c1"># 自由现金流利润率</span>
+<span class="nt">cash_and_investments</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+
+<span class="c1"># AI / 新产品（如适用）</span>
+<span class="nt">ai_accounts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">ai_revenue_run_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">new_product_adoption</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">   </span><span class="c1"># 新功能采用率</span>
+</code></pre></div>
+
+<h3 id="14">1.4 消费制特殊注意事项</h3>
+<p>消费制收入的核心特点是<strong>实时可见性低于订阅制</strong>。管理层使用消费预测模型，但季度内客户消费行为变化可能导致超出或低于指引。</p>
+<p><strong>关键解读规则</strong>：<br />
+- 产品营收<strong>超出指引</strong> = 存量客户消费加速（护城河加深信号）<br />
+- 产品营收<strong>低于指引</strong> = 消费放缓，追问原因：宏观环境？竞品分流？新功能导致效率提升（同样工作更少消耗）？<br />
+- RPO 增速 <strong>持续 &gt; 产品营收增速</strong> = 客户在签更长期合同，护城河加深的领先指标</p>
+<hr />
+<h2 id="module-2b2b-saas">四、MODULE 2：护城河信号判断（B2B SaaS 版本）</h2>
+<h3 id="21">2.1 迁移成本护城河判断矩阵</h3>
+<table>
+<thead>
+<tr>
+<th>指标组合</th>
+<th>判断</th>
+<th>颜色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NRR ≥ 120% + $1M+ 客户增速 &gt; 25%</td>
+<td>强化中</td>
+<td>green</td>
+</tr>
+<tr>
+<td>NRR 110–120% + $1M+ 客户稳定</td>
+<td>稳定</td>
+<td>amber</td>
+</tr>
+<tr>
+<td>NRR &lt; 110% 连续两季 / $1M+ 客户增速放缓</td>
+<td>受损</td>
+<td>red</td>
+</tr>
+<tr>
+<td>RPO 增速 &gt; 产品营收增速（持续）</td>
+<td>锁定加深（正向领先信号）</td>
+<td>green</td>
+</tr>
+<tr>
+<td>产品营收增速加速 + NRR 上升</td>
+<td>双重验证</td>
+<td>green（加权）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22">2.2 平台生态护城河判断</h3>
+<p><strong>B2B 特有问题</strong>：客户是在「深化」还是「分散化」使用？<br />
+- <strong>深化</strong>：每客户使用工作负载类别数增加，$1M+ 增速快于总客户增速<br />
+- <strong>分散化</strong>：客户把部分工作负载迁移到其他平台（AI 去 Databricks，查询留 Snowflake）</p>
+<p>关注信号：管理层是否提及某类工作负载的使用增速明显快于其他类型？这是平台生态扩展的早期信号。</p>
+<h3 id="23-ai">2.3 AI 对护城河的影响（通用框架）</h3>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>对现有护城河的影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI 需要企业数据 → 平台内训练</td>
+<td>加深数据引力（正向）</td>
+</tr>
+<tr>
+<td>AI 减少人工查询工作量 → 消费减少</td>
+<td>短期消费下滑（但如果是因为效率提升，长期正向）</td>
+</tr>
+<tr>
+<td>AI 原生竞争者更有吸引力</td>
+<td>分流特定工作负载（威胁）</td>
+</tr>
+<tr>
+<td>AI 功能货币化 = 新收入来源</td>
+<td>扩展 NRR 基础（正向）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="module-3b2b">五、MODULE 3：B2B 情绪与市场信号采集</h2>
+<p><strong>注意</strong>：B2B 企业没有 App Store 评分，需要替代渠道。</p>
+<h3 id="31">3.1 企业用户评价平台</h3>
+<table>
+<thead>
+<tr>
+<th>平台</th>
+<th>采集内容</th>
+<th>URL 格式</th>
+<th>频率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G2</td>
+<td>综合评分、功能评分、竞品比较</td>
+<td><code>g2.com/products/[公司名]/reviews</code></td>
+<td>每季度</td>
+</tr>
+<tr>
+<td>Gartner Peer Insights</td>
+<td>企业级评分、Gartner 象限</td>
+<td><code>gartner.com/reviews/market/[类别]</code></td>
+<td>每半年</td>
+</tr>
+<tr>
+<td>TrustRadius</td>
+<td>详细功能评价</td>
+<td><code>trustradius.com/products/[公司名]/reviews</code></td>
+<td>每半年</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Snowflake 特定链接</strong>：<br />
+- G2: <code>https://www.g2.com/products/snowflake/reviews</code><br />
+- Gartner: <code>https://www.gartner.com/reviews/market/cloud-database-management-systems/vendor/snowflake</code></p>
+<h3 id="32">3.2 开发者社区信号</h3>
+<div class="highlight"><pre><span></span><code>web_search: &quot;snowflake vs databricks 2026 site:reddit.com&quot;
+web_search: &quot;snowflake data cloud review stackoverflow&quot;
+web_search: &quot;leaving snowflake switching databricks engineer&quot;
+</code></pre></div>
+
+<p><strong>关键词监控</strong>（以 Snowflake 为例）：<br />
+- 正面：<code>snowflake performance</code> / <code>snowflake data sharing</code> / <code>cortex ai great</code><br />
+- 负面：<code>snowflake cost expensive</code> / <code>migrating from snowflake</code> / <code>databricks better</code><br />
+- 警报：<code>snowflake outage</code> / <code>snowflake security breach</code> / <code>snowflake pricing increase</code></p>
+<h3 id="33">3.3 分析师生态信号</h3>
+<div class="highlight"><pre><span></span><code>web_search: &quot;Gartner Magic Quadrant cloud data warehouse 2026&quot;
+web_search: &quot;Forrester wave data platform 2026&quot;
+web_search: &quot;IDC market share cloud data warehouse 2025&quot;
+</code></pre></div>
+
+<p>对 B2B 企业，Gartner 魔力象限的位置变化（Leader → Visionary）是护城河受损的早期公开信号。</p>
+<h3 id="34">3.4 招聘信号（另类指标）</h3>
+<p>企业招聘 Snowflake 技能的岗位数量，是客户采用深度的代理指标：</p>
+<div class="highlight"><pre><span></span><code>web_search: &quot;snowflake DBA engineer jobs 2026&quot;
+web_search: site:linkedin.com/jobs snowflake data engineer
+</code></pre></div>
+
+<p>若主要客户大规模招募 Databricks 工程师而非 Snowflake 工程师，是迁移意图的早期信号。</p>
+<hr />
+<h2 id="module-4html">六、MODULE 4：HTML 文件更新规范</h2>
+<p>目标文件：<code>snowflake_moat_tracker.html</code>（或对应公司的 HTML 文件）</p>
+<h3 id="41">4.1 新增季度数据列</h3>
+<p>在 <code>.data-row</code> 表格中新增列，同时：<br />
+- 保持 <code>grid-template-columns</code> 与列数一致<br />
+- 更新右上角 KPI 卡片中的关键数字（NRR、RPO、$1M+、FCF）</p>
+<h3 id="42">4.2 护城河卡片更新规则</h3>
+<p><strong>只有以下情况触发卡片内容更新</strong>：<br />
+- NRR 变化超过 2ppt<br />
+- $1M+ 客户增速明显加速或放缓（相较近 3 季度均值）<br />
+- AI 采用数据出现量级变化<br />
+- 竞争格局发生重大变化（主要竞争对手新产品发布、大客户公开迁移案例）<br />
+- 管理层在电话会议中明确表达战略转变</p>
+<p>护城河★评级仅在上述条件满足时更新。</p>
+<h3 id="43">4.3 观察清单更新逻辑</h3>
+<p>每季度财报后：<br />
+1. 将上季度观察清单中的指标标记为「已验证」或「待观察」<br />
+2. 更新指引值（FY2027 Q1 → Q2 等）<br />
+3. 重新评估 P1/P2/P3 优先级（有时上季度 P3 在新季度变为 P1）<br />
+4. 如果某个指标连续两季度低于预期，升级为 P1 + 红色警报</p>
+<hr />
+<h2 id="b2b-saas_1">七、企业级 B2B SaaS 关键指标阈值参考</h2>
+<p>以下阈值基于 2024–2026 年云数据平台行业基准：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>优秀</th>
+<th>正常</th>
+<th>警报</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NRR</td>
+<td>≥ 125%</td>
+<td>110–125%</td>
+<td>&lt; 110%</td>
+</tr>
+<tr>
+<td>毛留存率</td>
+<td>≥ 95%</td>
+<td>90–95%</td>
+<td>&lt; 90%</td>
+</tr>
+<tr>
+<td>产品毛利率</td>
+<td>≥ 75%</td>
+<td>70–75%</td>
+<td>&lt; 70%</td>
+</tr>
+<tr>
+<td>FCF Margin</td>
+<td>≥ 25%</td>
+<td>15–25%</td>
+<td>&lt; 15%</td>
+</tr>
+<tr>
+<td>RPO / TTM 营收比</td>
+<td>≥ 2.0x</td>
+<td>1.5–2.0x</td>
+<td>&lt; 1.5x</td>
+</tr>
+<tr>
+<td>$1M+ 客户占总营收</td>
+<td>≥ 70%</td>
+<td>60–70%</td>
+<td>&lt; 60%</td>
+</tr>
+<tr>
+<td>Non-GAAP 运营利润率</td>
+<td>≥ 20%</td>
+<td>10–20%</td>
+<td>&lt; 5%（成熟期）</td>
+</tr>
+<tr>
+<td>产品营收增速</td>
+<td>≥ 25%</td>
+<td>15–25%</td>
+<td>&lt; 15%（成熟期）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注意</strong>：这些阈值会随公司成熟度变化——早期增长公司（ARR &lt; $1B）和成熟公司（ARR &gt; $3B）的基准不同。</p>
+<hr />
+<h2 id="snowflake">八、Snowflake 专用数据源速查</h2>
+<h3 id="_3">财务数据（一级来源）</h3>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q1 FY26</td>
+<td>https://www.sec.gov/Archives/edgar/data/0001640147/000164014725000094/fy2026q1earnings.htm</td>
+</tr>
+<tr>
+<td>Q2 FY26</td>
+<td>https://www.sec.gov/Archives/edgar/data/0001640147/000164014725000177/fy2026q2earnings.htm</td>
+</tr>
+<tr>
+<td>Q3 FY26</td>
+<td>https://www.sec.gov/Archives/edgar/data/0001640147/000164014725000207/fy2026q3earnings.htm</td>
+</tr>
+<tr>
+<td>Q4 FY26</td>
+<td>https://www.sec.gov/Archives/edgar/data/0001640147/000162828026011631/fy2026q4earnings.htm</td>
+</tr>
+<tr>
+<td>EDGAR 归档</td>
+<td>https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001640147&amp;type=8-K&amp;count=10</td>
+</tr>
+<tr>
+<td>IR 主页</td>
+<td>https://investors.snowflake.com</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_4">情绪与市场数据</h3>
+<table>
+<thead>
+<tr>
+<th>渠道</th>
+<th>URL</th>
+<th>频率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G2 评分</td>
+<td>https://www.g2.com/products/snowflake/reviews</td>
+<td>每季度</td>
+</tr>
+<tr>
+<td>Gartner Peer Insights</td>
+<td>https://www.gartner.com/reviews/market/cloud-database-management-systems/vendor/snowflake</td>
+<td>每半年</td>
+</tr>
+<tr>
+<td>Reddit r/dataengineering</td>
+<td>https://www.reddit.com/r/dataengineering/search/?q=snowflake&amp;sort=top&amp;t=month</td>
+<td>每月</td>
+</tr>
+<tr>
+<td>HN Snowflake 讨论</td>
+<td>https://hn.algolia.com/?q=snowflake&amp;dateRange=pastMonth</td>
+<td>每月</td>
+</tr>
+<tr>
+<td>Gartner MQ</td>
+<td>web_search: Gartner Magic Quadrant cloud data warehouse [年份]</td>
+<td>每半年</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_5">九、版本历史</h2>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>日期</th>
+<th>变更说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1.0</td>
+<td>2026-03</td>
+<td>初始版本，基于 Snowflake FY2026 分析建立通用 B2B SaaS 框架</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_6">附录：如何适配到其他公司</h2>
+<p>将此模板适配到其他 B2B SaaS 公司时，需要调整：</p>
+<ol>
+<li><strong>财年日期</strong>：Snowflake = 1 月 31 日；Salesforce = 1 月 31 日；ServiceNow = 12 月 31 日</li>
+<li><strong>收入模式</strong>：消费制 vs 订阅制 → 调整采集字段（ARR vs 产品营收）</li>
+<li><strong>护城河权重</strong>：不同行业主导护城河不同（ERP = 迁移成本极高；协作工具 = 网络效应）</li>
+<li><strong>行业基准</strong>：阈值因行业而异（安全软件 NRR 通常高于数据平台）</li>
+<li><strong>竞争对手</strong>：替换竞争格局 Tab 中的对手</li>
+</ol>
+<p><strong>适配成功的标志</strong>：五类护城河中，每条都能找到至少一个可以从财报中直接提取的可观测指标。</p>
+<hr />
+<p><em>本模板适用范围：数据平台 / 云基础设施 / 企业数据工具</em><br />
+<em>最后更新：2026 年 3 月</em><br />
+<em>实例文件：snowflake_moat_tracker.html</em><br />
+<em>通用原则参考：DUOLINGO_AGENT_TEMPLATE.md（消费者产品对照版本）</em></p>
+    </article>
+  </main>
+</div>
+
+<script>
+// Build TOC from headings
+const tocList = document.getElementById('toc-list');
+const headings = document.querySelectorAll('.article h2, .article h3');
+headings.forEach((h, i) => {
+  if (!h.id) h.id = 'h-' + i;
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  a.href = '#' + h.id;
+  a.textContent = h.textContent.replace(/^[#\s]+/, '');
+  a.className = 'toc-' + h.tagName.toLowerCase();
+  li.appendChild(a);
+  tocList.appendChild(li);
+});
+
+// Highlight active TOC item on scroll
+const tocLinks = tocList.querySelectorAll('a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(a => a.classList.remove('active'));
+      const active = tocList.querySelector(`a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+headings.forEach(h => observer.observe(h));
+</script>
+</body>
+</html>

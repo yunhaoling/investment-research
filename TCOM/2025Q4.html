@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>携程集团（TCOM / 09961.HK）深度投资研究报告</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #0b0d12;
+  --bg2:    #10131a;
+  --bg3:    #161923;
+  --bg4:    #1d2130;
+  --border: #222638;
+  --border2:#2a2f45;
+  --text:   #dde3f0;
+  --text2:  #8a93b0;
+  --text3:  #505878;
+  --accent: #5b6af0;
+  --green:  #2ed380;
+  --amber:  #f5c542;
+  --red:    #ff5566;
+  --mono:   'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ── Header ── */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex; align-items: center; gap: 16px; height: 52px;
+}
+.back-link {
+  color: var(--text3); text-decoration: none; font-size: 13px;
+  font-family: var(--mono); transition: color .2s;
+}
+.back-link:hover { color: var(--text2); }
+.header-sep { color: var(--border2); }
+.header-title { font-size: 13px; color: var(--text2); }
+
+/* ── Layout ── */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+/* ── TOC Sidebar ── */
+.toc {
+  position: sticky; top: 52px; align-self: start;
+  height: calc(100vh - 52px); overflow-y: auto;
+  padding: 28px 0;
+  border-right: 1px solid var(--border);
+  background: var(--bg2);
+}
+.toc-title {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--text3); font-family: var(--mono);
+  padding: 0 20px 12px;
+}
+.toc ul { list-style: none; }
+.toc a {
+  display: block; padding: 5px 20px;
+  font-size: 12.5px; color: var(--text3);
+  text-decoration: none; transition: color .15s, background .15s;
+  border-left: 2px solid transparent;
+}
+.toc a:hover { color: var(--text2); background: var(--bg3); }
+.toc a.active { color: var(--accent); border-left-color: var(--accent); }
+.toc .toc-h2 { padding-left: 20px; }
+.toc .toc-h3 { padding-left: 34px; font-size: 11.5px; }
+
+/* ── Article ── */
+.article {
+  max-width: 860px;
+  padding: 48px 60px 80px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Headings */
+.article h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.article h2 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px; font-weight: 600;
+  color: var(--text);
+  margin: 40px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.article h2::before {
+  content: ''; display: block;
+  width: 3px; height: 18px; border-radius: 2px;
+  background: var(--accent); flex-shrink: 0;
+}
+.article h3 {
+  font-size: 15px; font-weight: 500;
+  color: var(--text2);
+  margin: 28px 0 12px;
+}
+.article h4 {
+  font-size: 13px; font-weight: 500;
+  color: var(--text3); text-transform: uppercase; letter-spacing: .06em;
+  margin: 20px 0 8px;
+}
+
+/* Body text */
+.article p { margin-bottom: 14px; color: var(--text2); }
+.article strong { color: var(--text); font-weight: 500; }
+.article em { color: var(--amber); font-style: normal; }
+.article hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+/* Blockquote */
+.article blockquote {
+  margin: 20px 0;
+  padding: 14px 20px;
+  background: var(--bg3);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+}
+.article blockquote p {
+  color: var(--text2); margin: 0;
+  font-size: 13.5px; line-height: 1.8;
+}
+
+/* Tables */
+.article table {
+  width: 100%; border-collapse: collapse;
+  margin: 20px 0 28px; font-size: 13px;
+}
+.article thead th {
+  padding: 8px 12px;
+  text-align: right;
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .07em;
+  color: var(--text3);
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border2);
+  font-family: var(--mono);
+}
+.article thead th:first-child { text-align: left; }
+.article tbody td {
+  padding: 8px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+.article tbody td:first-child {
+  text-align: left;
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.article tbody tr:hover td { background: var(--bg3); }
+
+/* Lists */
+.article ul, .article ol {
+  padding-left: 20px; margin-bottom: 14px;
+}
+.article li { color: var(--text2); margin-bottom: 4px; }
+.article li strong { color: var(--text); }
+
+/* Inline code */
+.article code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 1px 5px; border-radius: 4px;
+  color: var(--amber);
+}
+.article pre {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+.article pre code {
+  background: none; border: none; padding: 0;
+  color: var(--text2); font-size: 13px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { display: none; }
+  .article { padding: 32px 20px 60px; }
+  .site-header { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../" class="back-link">← index</a>
+  <span class="header-sep">/</span>
+  <span class="header-title">TCOM</span>
+</header>
+
+<div class="layout">
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ul id="toc-list"></ul>
+  </nav>
+
+  <main>
+    <article class="article" id="article">
+      <h1 id="tcom-09961hk">携程集团（TCOM / 09961.HK）深度投资研究报告</h1>
+<p><strong>报告日期：</strong> 2026年3月26日<br />
+<strong>数据基准：</strong> 截至2025年第四季度财报（2026年2月26日发布）<br />
+<strong>报告类型：</strong> 买方深度研究<br />
+<strong>货币单位：</strong> 人民币（RMB）；美元数据另行标注</p>
+<hr />
+<blockquote>
+<p><strong>免责声明：</strong> 本报告仅供参考，不构成投资建议。所有预测值均已标注，实际结果可能与预测存在重大差异。</p>
+</blockquote>
+<hr />
+<h2 id="_1">目录</h2>
+<ol>
+<li>护城河分析（Moat Analysis）</li>
+<li>估值分析（Valuation）</li>
+<li>纵向比较（历史对比）</li>
+<li>横向比较（行业对标）</li>
+<li>风险提示</li>
+<li>数据来源</li>
+</ol>
+<hr />
+<h2 id="moat-analysis">一、护城河分析（Moat Analysis）</h2>
+<h3 id="11">1.1 行业核心护城河类型概述</h3>
+<p>OTA（在线旅游平台）行业护城河主要来自四个维度：<strong>供给侧规模优势</strong>（酒店/机票库存宽度与议价能力）、<strong>网络效应</strong>（买卖双边市场正循环）、<strong>转换成本</strong>（会员体系与行程数据积累）、<strong>无形资产</strong>（品牌认知度与技术研发投入）。携程在这四个维度均构建了显著优势，但正受到反垄断调查的影响。</p>
+<hr />
+<h3 id="12">1.2 护城河一：规模优势与供给侧话语权</h3>
+<p><strong>核心逻辑：</strong> 携程是中国GMV最大的OTA平台，2025年核心OTA业务成交额约1.1万亿元，佣金率约5%~6%。规模带来更低的分摊成本，也赋予其对航司、酒店的议价权。</p>
+<p><strong>可量化指标——毛利率</strong></p>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>毛利率</th>
+<th>同比变化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025Q1</td>
+<td>80%</td>
+<td>持平</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>81%</td>
+<td>+1 ppt</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>82%</td>
+<td>+1 ppt</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>79%</td>
+<td>-1 ppt（季节性）</td>
+</tr>
+<tr>
+<td><strong>2025 FY</strong></td>
+<td><strong>~81%</strong></td>
+<td><strong>与2024年持平</strong></td>
+</tr>
+</tbody>
+</table>
+<p>历史参照：2022年毛利率77.5%，2023年82%，2024年82%，2025年81%。</p>
+<p><strong>强弱判断：</strong> 强。80%+的毛利率远超行业上游（华住约40%，国航约30%），证明平台对供应链的价值提取能力持续强劲。Q4 79%轻微下滑系季节性，非趋势性恶化。</p>
+<p><strong>判断：</strong> 护城河<strong>稳定</strong>，但反垄断调查若触发佣金费率强制下调，将构成威胁。</p>
+<hr />
+<h3 id="13">1.3 护城河二：网络效应——双边市场正循环</h3>
+<p><strong>核心逻辑：</strong> 更多用户→更多商家入驻→更丰富的库存→更低价格→吸引更多用户。</p>
+<p><strong>可量化指标——国内OTA市占率</strong></p>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>携程市占率</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2019年</td>
+<td>67%</td>
+<td>历史峰值</td>
+</tr>
+<tr>
+<td>2022年</td>
+<td>54%</td>
+<td>疫情冲击</td>
+</tr>
+<tr>
+<td>2024年（预估）</td>
+<td>57%</td>
+<td>回升</td>
+</tr>
+<tr>
+<td>2025年（国际端）</td>
+<td>国际OTA预订+60% YoY</td>
+<td>来源：2025年报</td>
+</tr>
+</tbody>
+</table>
+<p><strong>可量化指标——国际平台总预订量同比增速</strong></p>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>国际OTA平台预订增速</th>
+<th>入境游预订增速</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025Q1</td>
+<td>+60%</td>
+<td>+100%</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>+60%</td>
+<td>+100%（东南亚/韩国为主）</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>+60%</td>
+<td>+100%（出境酒店+机票达2019年的140%）</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>全年合计+60%，入境服务2000万人次</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>强弱判断：</strong> 中等偏强。国内市占率从历史最高67%下滑至约57%，受到美团、抖音、飞猪冲击；但国际端高速扩张是新增量引擎，Trip.com在印尼市占率高达71%，东南亚超越Booking。</p>
+<p><strong>判断：</strong> 国内市场护城河<strong>略有收窄</strong>，国际市场护城河<strong>正在拓宽</strong>。</p>
+<hr />
+<h3 id="14">1.4 护城河三：转换成本——会员体系与行程数据</h3>
+<p><strong>核心逻辑：</strong> 用户在携程积累的行程历史、偏好数据、会员积分构成转换成本。商务旅客因企业差旅协议，转换成本更高。</p>
+<p><strong>可量化指标——商旅管理业务营收（换手率低、黏性强）</strong></p>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>商旅管理营收（亿元）</th>
+<th>同比增速</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025Q1</td>
+<td>5.73</td>
+<td>+12%</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>7.52</td>
+<td>+12%</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>7.56</td>
+<td>+15%</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>8.08</td>
+<td>+15%</td>
+</tr>
+<tr>
+<td><strong>2025 FY</strong></td>
+<td><strong>28亿</strong></td>
+<td><strong>+13%</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>AI 赋能指标（2025年年报披露）：</strong></p>
+<ul>
+<li>AI客服已解决80%咨询问题，售后自动化率超70%</li>
+<li>AI内容生产将商家制作时间从8.5分钟降至15秒，合格率超98.9%</li>
+<li>自研AI翻译引擎年产出60亿词（支撑入境游多语种产品）</li>
+<li>Trip.Planner（AI规划工具）独立访客同比+180%（2025Q3）</li>
+</ul>
+<p><strong>强弱判断：</strong> 中等。商旅管理保持持续双位数增长，高端用户复购率高；但消费者端（尤其低线城市）转换至美团、同程的门槛较低。</p>
+<p><strong>判断：</strong> 护城河<strong>稳定</strong>（商务端），消费者端存在被侵蚀风险。</p>
+<hr />
+<h3 id="15">1.5 护城河四：无形资产——品牌与技术研发</h3>
+<p><strong>核心逻辑：</strong> 携程品牌在中高端旅客中有强认知，尤其商务出行领域；持续高强度研发投入构筑技术壁垒。</p>
+<p><strong>可量化指标——研发投入</strong></p>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>研发费用（亿元）</th>
+<th>占营收比例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025Q1</td>
+<td>35</td>
+<td>25%</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>35</td>
+<td>24%</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>41</td>
+<td>22%</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>40</td>
+<td>26%</td>
+</tr>
+<tr>
+<td><strong>2025 FY</strong></td>
+<td><strong>151亿</strong></td>
+<td><strong>约24%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>2024年研发费用约131亿，同比增长15%。研发占收入比约24%，显著高于Booking（约8%）和Expedia（约12%），体现了其在国际化和AI领域的大力投入。</p>
+<p><strong>强弱判断：</strong> 中等偏强。品牌在中国高净值旅客中认知度高，研发大力度投入构筑技术壁垒；但反垄断调查下品牌声誉面临阶段性压力。</p>
+<p><strong>判断：</strong> 护城河<strong>稳定</strong>，需持续观察反垄断处置结果对品牌的影响。</p>
+<hr />
+<h3 id="16">1.6 护城河综合评分</h3>
+<table>
+<thead>
+<tr>
+<th>护城河类型</th>
+<th>当前强度</th>
+<th>趋势判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>规模优势（毛利率）</td>
+<td>★★★★★</td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>网络效应（市占率）</td>
+<td>★★★★☆</td>
+<td>国内收窄 / 国际拓宽</td>
+</tr>
+<tr>
+<td>转换成本（商旅黏性）</td>
+<td>★★★☆☆</td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>无形资产（品牌/研发）</td>
+<td>★★★★☆</td>
+<td>短期承压</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="valuation">二、估值分析（Valuation）</h2>
+<h3 id="_2">前置说明：关键财务数据口径</h3>
+<p>携程2025年GAAP净利润为332.94亿元，其中包含出售印度在线旅游平台MakeMyTrip股份所获的约199亿元一次性投资收益（Q3 2025体现）。剔除该项后，<strong>经营层面可持续净利润约134亿元</strong>（广州日报数据，已与澎湃新闻交叉验证）。公司Non-GAAP净利润（仅剔除SBC及公允价值调整）为约318亿元。</p>
+<p><strong>本估值分析对PE部分采用Non-GAAP可持续EPS，对DCF采用经营FCF，以反映真实盈利能力。</strong></p>
+<hr />
+<h3 id="21">2.1 关键财务数据汇总（逐季列示）</h3>
+<p><strong>净营业收入（亿元 RMB）</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>2024Q1</th>
+<th>2024Q2</th>
+<th>2024Q3</th>
+<th>2024Q4</th>
+<th>2024FY</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>2025FY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>净营业收入</td>
+<td>~119</td>
+<td>~128</td>
+<td>~158</td>
+<td>~127</td>
+<td><strong>533</strong></td>
+<td><strong>138</strong></td>
+<td><strong>148</strong></td>
+<td><strong>183</strong></td>
+<td><strong>154</strong></td>
+<td><strong>624</strong></td>
+</tr>
+<tr>
+<td>YoY增速</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>+20%</td>
+<td>+16%</td>
+<td>+16%</td>
+<td>+16%</td>
+<td>+21%</td>
+<td><strong>+17%</strong></td>
+</tr>
+</tbody>
+</table>
+<p><em>2024各季度由年度总收入及YoY增速倒推，与Q4 2024=127亿官方披露交叉验证。</em></p>
+<p><strong>净利润（亿元，GAAP）及经营口径</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>2025FY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GAAP净利润</td>
+<td>43</td>
+<td>48</td>
+<td>199</td>
+<td>43</td>
+<td><strong>333</strong></td>
+</tr>
+<tr>
+<td>含一次性收益</td>
+<td>无</td>
+<td>无</td>
+<td>~170（MakeMyTrip出售）</td>
+<td>无</td>
+<td>~199</td>
+</tr>
+<tr>
+<td>经营利润（营业利润口径）</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>25.3</td>
+<td><strong>157.7</strong></td>
+</tr>
+<tr>
+<td>调整后EBITDA</td>
+<td>42</td>
+<td>~45</td>
+<td>63</td>
+<td>~34</td>
+<td><strong>~184</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>EPS（美元，ADS口径）</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>2025TTM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GAAP EPS（USD，估算）</td>
+<td>~$0.95</td>
+<td>~$1.04</td>
+<td>~$4.45</td>
+<td>~$0.97</td>
+<td><strong>~$6.82</strong></td>
+</tr>
+</tbody>
+</table>
+<p><em>TTM GAAP EPS约$6.82（来源：StockAnalysis，2026年3月），含Q3大额一次性收益。</em></p>
+<hr />
+<h3 id="22-pe">2.2 PE估值（市盈率法）</h3>
+<p><strong>当前股价（2026年3月初）：</strong> ~$51.44 USD（NASDAQ TCOM）</p>
+<p><strong>TTM GAAP PE：</strong> ~7.55x（含一次性收益，存在失真）</p>
+<p><strong>以经营层面可持续EPS为基础估算：</strong></p>
+<p>2025全年经营净利润约134亿 RMB ÷ 7.24（汇率）÷ 约673M股 ≈ <strong>$2.75/股（经营EPS）</strong></p>
+<p>Non-GAAP净利润318亿 ÷ 7.24 ÷ 673M ≈ <strong>$6.52/股（Non-GAAP EPS）</strong></p>
+<p>市场一般以Non-GAAP EPS定价，<strong>基准取2025 Non-GAAP EPS = $6.52</strong>。</p>
+<p><strong>EPS预测（预测值，仅供参考）</strong></p>
+<table>
+<thead>
+<tr>
+<th>年度</th>
+<th>EPS（USD，Non-GAAP）</th>
+<th>增速</th>
+<th>关键假设</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025实际</td>
+<td>$6.52</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2026E</td>
+<td>$4.80~$5.50</td>
+<td>-15%~-16%（预测值，剔除一次性归一化）</td>
+<td>无重大一次性收益，反垄断不确定性</td>
+</tr>
+<tr>
+<td>2027E</td>
+<td>$5.50~$6.80</td>
+<td>+15%~+24%（预测值）</td>
+<td>收入增速12~15%，营销费用率逐步优化</td>
+</tr>
+<tr>
+<td>2028E</td>
+<td>$6.20~$8.00</td>
+<td>+13%~+18%（预测值）</td>
+<td>国际化开始贡献利润</td>
+</tr>
+</tbody>
+</table>
+<p><strong>合理PE区间讨论：</strong></p>
+<p>携程过去3年平均PE约19.4x（含疫情复苏期溢价）；当前约7.5x，受反垄断压制明显处于历史低位。对标全球OTA（Booking ~25x，Expedia ~25x），携程给予一定监管折价，合理PE区间：</p>
+<ul>
+<li><strong>熊市（Bear）：</strong> 10x（重罚+佣金强制下调）</li>
+<li><strong>基础（Base）：</strong> 15x（处罚可控，双位数稳增长延续）</li>
+<li><strong>牛市（Bull）：</strong> 20x（国际化突破，AI赋能利润超预期）</li>
+</ul>
+<p><strong>目标价（基于2026E Non-GAAP EPS $5.10均值，预测值）</strong></p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>PE倍数</th>
+<th>目标价（USD）</th>
+<th>较当前涨跌幅</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bear</td>
+<td>10x</td>
+<td><strong>$51</strong></td>
+<td>-1%</td>
+</tr>
+<tr>
+<td>Base</td>
+<td>15x</td>
+<td><strong>$77</strong></td>
+<td>+50%</td>
+</tr>
+<tr>
+<td>Bull</td>
+<td>20x</td>
+<td><strong>$102</strong></td>
+<td>+98%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="23-ps">2.3 PS估值（市销率法）</h3>
+<p><strong>TTM营收（2025 FY）：</strong> 624亿 RMB ≈ <strong>$8.62B USD</strong>（汇率7.24）</p>
+<p><strong>当前市值：</strong> ~$33.96B USD</p>
+<p><strong>当前PS：</strong> ~3.9x</p>
+<p><strong>历史PS区间（参考）：</strong></p>
+<p>2020~2021年疫情期间：PS 4x~8x（亏损期PE失真，PS为主要定价锚）；2023~2024年复苏期：PS约3x~5x；对标Booking：PS约9x（规模更大、更成熟、监管风险低）；Expedia：PS约1.8x（利润率低，转型压力大）。</p>
+<p><strong>营收预测（预测值）</strong></p>
+<table>
+<thead>
+<tr>
+<th>年度</th>
+<th>收入预测（亿RMB）</th>
+<th>增速假设</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025实际</td>
+<td>624</td>
+<td>+17%</td>
+</tr>
+<tr>
+<td>2026E</td>
+<td>712</td>
+<td>+14%（预测值，监管不确定性压制增速）</td>
+</tr>
+<tr>
+<td>2027E</td>
+<td>811</td>
+<td>+14%（预测值）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>合理PS区间讨论：</strong></p>
+<ul>
+<li>Bear：2.5x（监管重压，增速放缓至&lt;10%，供给侧被迫降佣）</li>
+<li>Base：4.0x（增速维持15%，监管靴子落地，折价收窄）</li>
+<li>Bull：5.5x（国际化大幅提升估值锚，接近Booking一半PS）</li>
+</ul>
+<p><strong>目标价（基于2026E营收$9.83B，预测值）</strong></p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>PS倍数</th>
+<th>目标价（USD）</th>
+<th>较当前涨跌幅</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bear</td>
+<td>2.5x</td>
+<td><strong>$37</strong></td>
+<td>-28%</td>
+</tr>
+<tr>
+<td>Base</td>
+<td>4.0x</td>
+<td><strong>$59</strong></td>
+<td>+15%</td>
+</tr>
+<tr>
+<td>Bull</td>
+<td>5.5x</td>
+<td><strong>$82</strong></td>
+<td>+59%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="24-dcf">2.4 DCF估值（现金流折现）</h3>
+<p><strong>基本假设框架：</strong></p>
+<p>携程FCF Margin估算：以经营营业利润率约25%、资本支出约占收入2%，FCF Margin约23%。</p>
+<p><strong>2025基准：</strong></p>
+<ul>
+<li>收入：624亿 RMB</li>
+<li>FCF估算：624 × 23% ≈ <strong>143亿 RMB</strong> ≈ $19.7亿 USD</li>
+</ul>
+<p><strong>情景假设（预测值）</strong></p>
+<table>
+<thead>
+<tr>
+<th>假设项</th>
+<th>Bear</th>
+<th>Base</th>
+<th>Bull</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第1~3年收入增速（CAGR）</td>
+<td>8%</td>
+<td>14%</td>
+<td>18%</td>
+</tr>
+<tr>
+<td>第4~7年收入增速</td>
+<td>5%</td>
+<td>10%</td>
+<td>14%</td>
+</tr>
+<tr>
+<td>长期FCF Margin</td>
+<td>20%</td>
+<td>25%</td>
+<td>28%</td>
+</tr>
+<tr>
+<td>WACC</td>
+<td>11%</td>
+<td>10%</td>
+<td>9%</td>
+</tr>
+<tr>
+<td>永续增长率</td>
+<td>2%</td>
+<td>3%</td>
+<td>4%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DCF内在价值（预测值）</strong></p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>内在价值（亿RMB）</th>
+<th>内在价值（美元/股）</th>
+<th>较当前涨跌幅</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bear</td>
+<td>~1,700</td>
+<td><strong>$37</strong></td>
+<td>-28%</td>
+</tr>
+<tr>
+<td>Base</td>
+<td>~2,900</td>
+<td><strong>$64</strong></td>
+<td>+24%</td>
+</tr>
+<tr>
+<td>Bull</td>
+<td>~4,500</td>
+<td><strong>$99</strong></td>
+<td>+92%</td>
+</tr>
+</tbody>
+</table>
+<p><em>以当前汇率7.25、约673M股计算每股价值。</em></p>
+<hr />
+<h3 id="25">2.5 综合估值汇总（预测值）</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>Bear</th>
+<th>Base</th>
+<th>Bull</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PE估值</td>
+<td>$51</td>
+<td>$77</td>
+<td>$102</td>
+</tr>
+<tr>
+<td>PS估值</td>
+<td>$37</td>
+<td>$59</td>
+<td>$82</td>
+</tr>
+<tr>
+<td>DCF估值</td>
+<td>$37</td>
+<td>$64</td>
+<td>$99</td>
+</tr>
+<tr>
+<td><strong>综合加权（1:1:1）</strong></td>
+<td><strong>$42</strong></td>
+<td><strong>$67</strong></td>
+<td><strong>$94</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>综合估值判断：</strong></p>
+<p>当前股价约$51.44，处于Bear~Base区间内，反映了反垄断调查高度不确定性下的折价。Base情景隐含约+30%上行空间；若反垄断处罚结果可控，估值修复空间显著。Bull情景（约$94）需要监管落地+国际业务超预期双重驱动。</p>
+<p><strong>本报告基础情景判断：当前价位偏低估，安全边际尚可，但反垄断结果落地前短期催化剂缺失，建议阶段性布局。</strong></p>
+<hr />
+<h2 id="_3">三、纵向比较（历史对比）</h2>
+<h3 id="31">3.1 核心财务指标——过去四个季度逐季趋势</h3>
+<p><strong>营业收入与利润（亿元 RMB）</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>2025FY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>净营业收入</td>
+<td>138</td>
+<td>148</td>
+<td>183</td>
+<td>154</td>
+<td><strong>624</strong></td>
+</tr>
+<tr>
+<td>YoY增速</td>
+<td>+16%</td>
+<td>+16%</td>
+<td>+16%</td>
+<td>+21%</td>
+<td>+17%</td>
+</tr>
+<tr>
+<td>GAAP净利润</td>
+<td>43</td>
+<td>48</td>
+<td>199*</td>
+<td>43</td>
+<td><strong>333</strong></td>
+</tr>
+<tr>
+<td>营业利润</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>25.3</td>
+<td><strong>157.7</strong></td>
+</tr>
+<tr>
+<td>调整后EBITDA</td>
+<td>42</td>
+<td>~45</td>
+<td>63</td>
+<td>~34</td>
+<td><strong>~184</strong></td>
+</tr>
+</tbody>
+</table>
+<p>*Q3 GAAP净利润含约170亿一次性MakeMyTrip出售收益，失真。</p>
+<p><strong>毛利率与净利率</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>2025FY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>毛利率</td>
+<td>80%</td>
+<td>81%</td>
+<td>82%</td>
+<td>79%</td>
+<td><strong>~81%</strong></td>
+</tr>
+<tr>
+<td>GAAP净利率</td>
+<td>31%</td>
+<td>32%</td>
+<td>109%*</td>
+<td>28%</td>
+<td><strong>53%</strong></td>
+</tr>
+<tr>
+<td>营业利润率</td>
+<td>~22%</td>
+<td>~25%</td>
+<td>~19%</td>
+<td>~16%</td>
+<td><strong>~25%</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>各业务分部营收（亿元）</strong></p>
+<table>
+<thead>
+<tr>
+<th>业务线</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>2025FY</th>
+<th>YoY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>住宿预订</td>
+<td>55</td>
+<td>62</td>
+<td>80</td>
+<td>63</td>
+<td><strong>261</strong></td>
+<td>+21%</td>
+</tr>
+<tr>
+<td>交通票务</td>
+<td>54</td>
+<td>54</td>
+<td>63</td>
+<td>54</td>
+<td><strong>225</strong></td>
+<td>+11%</td>
+</tr>
+<tr>
+<td>旅游度假</td>
+<td>9.47</td>
+<td>11.9</td>
+<td>16</td>
+<td>11</td>
+<td><strong>47</strong></td>
+<td>+8%</td>
+</tr>
+<tr>
+<td>商旅管理</td>
+<td>5.73</td>
+<td>7.52</td>
+<td>7.56</td>
+<td>8.08</td>
+<td><strong>28</strong></td>
+<td>+13%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ROE与现金流</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2024FY</th>
+<th>2025FY</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ROE（GAAP）</td>
+<td>~20%</td>
+<td>~21%</td>
+<td>含一次性收益，失真</td>
+</tr>
+<tr>
+<td>期末现金储备</td>
+<td>~530亿</td>
+<td><strong>1,058亿</strong></td>
+<td>Q3出售MMT后大幅提升</td>
+</tr>
+<tr>
+<td>FCF（经营口径估算）</td>
+<td>~130亿</td>
+<td><strong>~143亿</strong></td>
+<td>资产轻、capex低</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="32">3.2 历史估值倍数与百分位</h3>
+<table>
+<thead>
+<tr>
+<th>估值倍数</th>
+<th>当前值</th>
+<th>12个月均值</th>
+<th>3年均值</th>
+<th>历史百分位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TTM PE（GAAP）</td>
+<td>7.55x</td>
+<td>15.88x</td>
+<td>19.37x</td>
+<td><strong>历史低位（~10%分位）</strong></td>
+</tr>
+<tr>
+<td>PS</td>
+<td>~3.9x</td>
+<td>~4.5x</td>
+<td>~4.2x</td>
+<td><strong>历史中低位（~30%分位）</strong></td>
+</tr>
+<tr>
+<td>PB</td>
+<td>~1.6x</td>
+<td>~2.0x</td>
+<td>~2.5x</td>
+<td><strong>历史低位</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>当前估值处于历史低位的原因：</strong></p>
+<p>反垄断调查（2026年1月立案）引发市场对监管重罚的系统性折价。自1月14日立案消息公布至2月26日财报发布，携程港股市值从3,980亿港元跌至约2,760亿港元，累计跌幅约30.6%，这一幅度已将大量负面预期提前消化。</p>
+<hr />
+<h3 id="33">3.3 历史年度趋势对比</h3>
+<table>
+<thead>
+<tr>
+<th>年度</th>
+<th>营收（亿RMB）</th>
+<th>YoY</th>
+<th>GAAP净利润（亿RMB）</th>
+<th>毛利率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2019</td>
+<td>357</td>
+<td>—</td>
+<td>65</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2020</td>
+<td>183</td>
+<td>-49%</td>
+<td>-28</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2021</td>
+<td>200</td>
+<td>+9%</td>
+<td>-49</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2022</td>
+<td>200</td>
+<td>0%</td>
+<td>14</td>
+<td>77.5%</td>
+</tr>
+<tr>
+<td>2023</td>
+<td>445</td>
+<td>+123%</td>
+<td>~99</td>
+<td>82%</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>533</td>
+<td>+20%</td>
+<td>172</td>
+<td>82%</td>
+</tr>
+<tr>
+<td><strong>2025</strong></td>
+<td><strong>624</strong></td>
+<td><strong>+17%</strong></td>
+<td><strong>333（含一次性）</strong></td>
+<td><strong>81%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>2025年营收已达2019年的1.75倍，可持续净利润约为2019年的2.1倍。</p>
+<hr />
+<h2 id="_4">四、横向比较（行业对标）</h2>
+<h3 id="41">4.1 核心可比公司选取</h3>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>代码</th>
+<th>定位</th>
+<th>市值（约，2026年3月）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Booking Holdings</td>
+<td>BKNG</td>
+<td>全球OTA龙头</td>
+<td>~$1,600亿 USD</td>
+</tr>
+<tr>
+<td>Expedia Group</td>
+<td>EXPE</td>
+<td>全球OTA #2</td>
+<td>~$190亿 USD</td>
+</tr>
+<tr>
+<td>Airbnb</td>
+<td>ABNB</td>
+<td>民宿/短租平台</td>
+<td>~$850亿 USD</td>
+</tr>
+<tr>
+<td>同程旅行</td>
+<td>00780.HK</td>
+<td>中国大众OTA</td>
+<td>~$30亿 USD</td>
+</tr>
+<tr>
+<td>美团（酒旅分部参考）</td>
+<td>03690.HK</td>
+<td>本地生活/酒旅</td>
+<td>整体市值约$800亿 USD</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="42-2025">4.2 核心财务指标横向对比（2025年度）</h3>
+<p><strong>成长性对比</strong></p>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>2025年营收增速</th>
+<th>近期盈利增速</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>携程 TCOM</strong></td>
+<td><strong>+17%（全年）</strong></td>
+<td><strong>Non-GAAP +77%（全年，剔除一次性后）</strong></td>
+</tr>
+<tr>
+<td>Booking BKNG</td>
+<td>+16%（Q4 YoY）</td>
+<td>超预期，EPS $48.80（Q4）</td>
+</tr>
+<tr>
+<td>Expedia EXPE</td>
+<td>+11%（Q4）</td>
+<td>利润率承压，投资者担忧margin前景</td>
+</tr>
+<tr>
+<td>Airbnb ABNB</td>
+<td>GBV +16%</td>
+<td>成熟期，增速放缓</td>
+</tr>
+<tr>
+<td>同程旅行</td>
+<td>+11.5%（H1）</td>
+<td>经调整净利润+28.6%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>盈利能力对比</strong></p>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>毛利率（2025）</th>
+<th>调整EBITDA Margin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>携程 TCOM</strong></td>
+<td><strong>~81%</strong></td>
+<td><strong>~29%（经营口径）</strong></td>
+</tr>
+<tr>
+<td>Booking BKNG</td>
+<td>~95%（纯代理模式）</td>
+<td>~46%</td>
+</tr>
+<tr>
+<td>Expedia EXPE</td>
+<td>~85%</td>
+<td>~35%</td>
+</tr>
+<tr>
+<td>Airbnb ABNB</td>
+<td>~83%</td>
+<td>~35%</td>
+</tr>
+<tr>
+<td>同程旅行</td>
+<td>~75%</td>
+<td>~23.5%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>效率指标对比</strong></p>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>研发/营收</th>
+<th>营销/营收</th>
+<th>ROE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>携程 TCOM</td>
+<td>24%</td>
+<td>~24%</td>
+<td>~21%（含一次性，GAAP）</td>
+</tr>
+<tr>
+<td>Booking BKNG</td>
+<td>~8%</td>
+<td>~33%</td>
+<td>&gt;50%</td>
+</tr>
+<tr>
+<td>Expedia EXPE</td>
+<td>~12%</td>
+<td>~40%</td>
+<td>偏低</td>
+</tr>
+<tr>
+<td>同程旅行</td>
+<td>—</td>
+<td>—</td>
+<td>~15%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>估值倍数横向对比（2026年3月）</strong></p>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>TTM PE</th>
+<th>PS</th>
+<th>核心折溢价驱动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>携程 TCOM</strong></td>
+<td><strong>~7.5x</strong></td>
+<td><strong>~3.9x</strong></td>
+<td>反垄断调查折价</td>
+</tr>
+<tr>
+<td>Booking BKNG</td>
+<td>~25x</td>
+<td>~9x</td>
+<td>全球龙头稳增长溢价</td>
+</tr>
+<tr>
+<td>Expedia EXPE</td>
+<td>~25x</td>
+<td>~1.8x</td>
+<td>转型期投资，PS低</td>
+</tr>
+<tr>
+<td>Airbnb ABNB</td>
+<td>~35x</td>
+<td>~7x</td>
+<td>高成长溢价</td>
+</tr>
+<tr>
+<td>同程旅行</td>
+<td>~15x</td>
+<td>~2.5x</td>
+<td>规模小，折价合理</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="43">4.3 相对溢价/折价合理性分析</h3>
+<p><strong>携程 vs Booking：</strong></p>
+<p>Booking的PS约9x，是携程3.9x的2.3倍。差异来自：(1) Booking无监管风险；(2) Booking更高的FCF转化率（~46% EBITDA Margin vs 携程~29%）；(3) 中国资产的流动性折价。但携程增速（+17%）与Booking（+16%）接近，且国际化增速（+60%）远超Booking，理论上<strong>携程部分折价不合理</strong>——反垄断落地后有修复空间。</p>
+<p><strong>携程 vs 同程旅行：</strong></p>
+<p>携程在规模（624亿 vs 同程年化约180亿）、盈利能力（EBITDA Margin 29% vs 23.5%）、国际化（国际预订+60% vs 同程国际化收入占比&lt;15%）均明显领先，但PE（7.5x）低于同程（~15x），显示市场对反垄断的定价极为保守。</p>
+<p><strong>综合判断：</strong> 携程相对同业存在明显折价，主因是反垄断调查的"未知定价"。一旦调查结果明朗，折价有望快速收窄。</p>
+<hr />
+<h2 id="_5">五、风险提示</h2>
+<h3 id="_6">风险一：反垄断调查重罚（高概率、高影响）</h3>
+<p>2026年1月，SAMR依据《反垄断法》对携程涉嫌滥用市场支配地位立案调查，结果尚不明朗。若处以上一年度营收的3%~10%罚款（参考阿里2021年案例），携程面临19亿~62亿元一次性罚款；若被要求降低佣金费率，毛利率可能下降2~5 ppt，EPS下滑幅度约15%~30%，对应目标价下调至$42~$51（Bear）。</p>
+<h3 id="ai">风险二：AI驱动的去中介化（中期、不确定）</h3>
+<p>Google、ChatGPT等AI Travel Agent崛起，用户或绕过OTA直接完成旅行规划与预订。Booking CEO已将"AI代理旅行"列为核心威胁。若AI代理渗透率在3年内达到10%，携程GMV增速将从当前15%降至个位数，PS估值压缩至2x~3x，极端情景目标价可能低至$30以下。</p>
+<h3 id="_7">风险三：国际化拓展执行风险（中等概率、中等影响）</h3>
+<p>Trip.com在东南亚、欧洲持续扩张，但营销费用增速（2025年+25%）持续快于营收增速（+17%），东南亚市场利润率仅约国内一半。若国际化亏损扩大，Non-GAAP利润率将从25%压缩至20%以下，对应EPS下调约20%~25%，Base情景目标价下调约$10~$15。</p>
+<h3 id="_8">风险四：国内旅游消费低迷（宏观风险，中等概率）</h3>
+<p>若中国消费复苏放缓（如房地产持续低迷、居民收入增长放缓），OTA整体订单量增速可能从当前15%~20%降至个位数。历史参考：2020年疫情冲击导致收入下降49%。增速放缓至5%则PS估值压缩至2.5x，对应目标价约$37。</p>
+<h3 id="_9">风险五：汇率与地缘政治风险（中等概率，中等影响）</h3>
+<p>携程以人民币计价营收为主，但股票在NASDAQ以美元交易。人民币贬值10%将压缩以美元计量EPS约10%。此外，中美关系紧张可能导致ADR流动性风险（参考滴滴被迫退市先例），极端情况估值冲击可达20%~30%。</p>
+<hr />
+<h2 id="_10">六、数据来源</h2>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>来源</th>
+<th>主要引用内容</th>
+<th>获取时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>携程集团官方2025Q4及全年财报（2026年2月26日）</td>
+<td>营收、利润、各业务分部数据、国际化数据</td>
+<td>2026年3月</td>
+</tr>
+<tr>
+<td>2</td>
+<td>澎湃新闻：《携程去年净营收增长17%》</td>
+<td>Q4及全年核心财务数字，人事变动</td>
+<td>2026年3月</td>
+</tr>
+<tr>
+<td>3</td>
+<td>36氪：《携程，一年净赚334亿》</td>
+<td>利润构成分析、毛利率数据、季度对比</td>
+<td>2026年3月</td>
+</tr>
+<tr>
+<td>4</td>
+<td>财华智库：《携程2025年财报，Q4业绩承压》</td>
+<td>Q4各业务分部营收，股价分析</td>
+<td>2026年3月</td>
+</tr>
+<tr>
+<td>5</td>
+<td>新浪科技：《携程Q3季报图解》</td>
+<td>2025Q3季报详细数据、国际业务增速</td>
+<td>2025年11月</td>
+</tr>
+<tr>
+<td>6</td>
+<td>环球旅讯：《携程发布2025年Q4财报》</td>
+<td>Q4数据、战略表述、治理变动</td>
+<td>2026年2月</td>
+</tr>
+<tr>
+<td>7</td>
+<td>环球旅讯：《携程Q1财报，国际平台预订增60%》</td>
+<td>2025Q1详细财务及运营数据</td>
+<td>2025年5月</td>
+</tr>
+<tr>
+<td>8</td>
+<td>21世纪经济报道：《每天挣5054万》</td>
+<td>H1数据、竞争对手Booking/Expedia比较</td>
+<td>2025年8月</td>
+</tr>
+<tr>
+<td>9</td>
+<td>新浪：《反垄断及调查股价分析》</td>
+<td>股价跌幅、事件时间线、Q4亮点分析</td>
+<td>2026年2月</td>
+</tr>
+<tr>
+<td>10</td>
+<td>StockAnalysis.com：TCOM Statistics</td>
+<td>TTM PE 7.55x、PS、EPS $6.82、ROE 21%、市值</td>
+<td>2026年3月</td>
+</tr>
+<tr>
+<td>11</td>
+<td>public.com：TCOM PE Ratio历史</td>
+<td>历史PE区间：当前8.27x、12个月均值15.88x、3年均值19.37x</td>
+<td>2026年3月</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Investing.com：TCOM Q4 Earnings Transcript</td>
+<td>EPS beat $4.97、Q1/Q2 2026前瞻指引</td>
+<td>2026年2月</td>
+</tr>
+<tr>
+<td>13</td>
+<td>FinancialContent/MarketMinute：Booking Q4 2025</td>
+<td>横向对标BKNG/EXPE/ABNB数据</td>
+<td>2026年3月</td>
+</tr>
+<tr>
+<td>14</td>
+<td>广州日报（大洋网）：《携程发布2025年财报》</td>
+<td>剔除投资收益后净利润134亿、佣金率5%~6%</td>
+<td>2026年2月</td>
+</tr>
+<tr>
+<td>15</td>
+<td>36氪：《风暴眼中的携程》</td>
+<td>Non-GAAP净利润318亿、治理变动分析</td>
+<td>2026年3月</td>
+</tr>
+<tr>
+<td>16</td>
+<td>交银国际报告（via多家媒体引用）</td>
+<td>国内OTA市占率：携程57%（2024E）</td>
+<td>2024年</td>
+</tr>
+<tr>
+<td>17</td>
+<td>壹览商业：《出境游变天，飞猪胜算》</td>
+<td>Booking市值、飞猪/同程/携程格局对比</td>
+<td>2024年</td>
+</tr>
+</tbody>
+</table>
+<p><strong>数据获取时间：</strong> 2026年3月26日</p>
+<p><strong>交叉验证说明：</strong></p>
+<ul>
+<li>2025年全年净营收624亿：澎湃新闻 + 36氪 + 环球旅讯三源一致</li>
+<li>Q4净营收154亿：财华智库 + 环球旅讯 + 澎湃新闻三源一致</li>
+<li>Q1净营收138亿：环球旅讯 + 凤凰财经 + 品橙旅游三源一致</li>
+<li>Non-GAAP净利润318亿（全年）：36氪 + 知乎转载双源一致</li>
+<li>剔除投资收益后净利润134亿：广州日报（来源官方财报原文）+ 澎湃新闻交叉验证</li>
+</ul>
+<hr />
+<p><em>本报告中所有标注「预测值」的数据均为分析师基于公开信息的估算，不代表公司官方指引，亦不构成投资建议。投资决策请结合多方信息，审慎判断。</em></p>
+    </article>
+  </main>
+</div>
+
+<script>
+// Build TOC from headings
+const tocList = document.getElementById('toc-list');
+const headings = document.querySelectorAll('.article h2, .article h3');
+headings.forEach((h, i) => {
+  if (!h.id) h.id = 'h-' + i;
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  a.href = '#' + h.id;
+  a.textContent = h.textContent.replace(/^[#\s]+/, '');
+  a.className = 'toc-' + h.tagName.toLowerCase();
+  li.appendChild(a);
+  tocList.appendChild(li);
+});
+
+// Highlight active TOC item on scroll
+const tocLinks = tocList.querySelectorAll('a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(a => a.classList.remove('active'));
+      const active = tocList.querySelector(`a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+headings.forEach(h => observer.observe(h));
+</script>
+</body>
+</html>

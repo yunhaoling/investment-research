@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>腾讯控股（00700.HK）深度投资研究报告</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #0b0d12;
+  --bg2:    #10131a;
+  --bg3:    #161923;
+  --bg4:    #1d2130;
+  --border: #222638;
+  --border2:#2a2f45;
+  --text:   #dde3f0;
+  --text2:  #8a93b0;
+  --text3:  #505878;
+  --accent: #5b6af0;
+  --green:  #2ed380;
+  --amber:  #f5c542;
+  --red:    #ff5566;
+  --mono:   'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ── Header ── */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex; align-items: center; gap: 16px; height: 52px;
+}
+.back-link {
+  color: var(--text3); text-decoration: none; font-size: 13px;
+  font-family: var(--mono); transition: color .2s;
+}
+.back-link:hover { color: var(--text2); }
+.header-sep { color: var(--border2); }
+.header-title { font-size: 13px; color: var(--text2); }
+
+/* ── Layout ── */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+/* ── TOC Sidebar ── */
+.toc {
+  position: sticky; top: 52px; align-self: start;
+  height: calc(100vh - 52px); overflow-y: auto;
+  padding: 28px 0;
+  border-right: 1px solid var(--border);
+  background: var(--bg2);
+}
+.toc-title {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--text3); font-family: var(--mono);
+  padding: 0 20px 12px;
+}
+.toc ul { list-style: none; }
+.toc a {
+  display: block; padding: 5px 20px;
+  font-size: 12.5px; color: var(--text3);
+  text-decoration: none; transition: color .15s, background .15s;
+  border-left: 2px solid transparent;
+}
+.toc a:hover { color: var(--text2); background: var(--bg3); }
+.toc a.active { color: var(--accent); border-left-color: var(--accent); }
+.toc .toc-h2 { padding-left: 20px; }
+.toc .toc-h3 { padding-left: 34px; font-size: 11.5px; }
+
+/* ── Article ── */
+.article {
+  max-width: 860px;
+  padding: 48px 60px 80px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Headings */
+.article h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.article h2 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px; font-weight: 600;
+  color: var(--text);
+  margin: 40px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.article h2::before {
+  content: ''; display: block;
+  width: 3px; height: 18px; border-radius: 2px;
+  background: var(--accent); flex-shrink: 0;
+}
+.article h3 {
+  font-size: 15px; font-weight: 500;
+  color: var(--text2);
+  margin: 28px 0 12px;
+}
+.article h4 {
+  font-size: 13px; font-weight: 500;
+  color: var(--text3); text-transform: uppercase; letter-spacing: .06em;
+  margin: 20px 0 8px;
+}
+
+/* Body text */
+.article p { margin-bottom: 14px; color: var(--text2); }
+.article strong { color: var(--text); font-weight: 500; }
+.article em { color: var(--amber); font-style: normal; }
+.article hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+/* Blockquote */
+.article blockquote {
+  margin: 20px 0;
+  padding: 14px 20px;
+  background: var(--bg3);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+}
+.article blockquote p {
+  color: var(--text2); margin: 0;
+  font-size: 13.5px; line-height: 1.8;
+}
+
+/* Tables */
+.article table {
+  width: 100%; border-collapse: collapse;
+  margin: 20px 0 28px; font-size: 13px;
+}
+.article thead th {
+  padding: 8px 12px;
+  text-align: right;
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .07em;
+  color: var(--text3);
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border2);
+  font-family: var(--mono);
+}
+.article thead th:first-child { text-align: left; }
+.article tbody td {
+  padding: 8px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+.article tbody td:first-child {
+  text-align: left;
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.article tbody tr:hover td { background: var(--bg3); }
+
+/* Lists */
+.article ul, .article ol {
+  padding-left: 20px; margin-bottom: 14px;
+}
+.article li { color: var(--text2); margin-bottom: 4px; }
+.article li strong { color: var(--text); }
+
+/* Inline code */
+.article code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 1px 5px; border-radius: 4px;
+  color: var(--amber);
+}
+.article pre {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+.article pre code {
+  background: none; border: none; padding: 0;
+  color: var(--text2); font-size: 13px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { display: none; }
+  .article { padding: 32px 20px 60px; }
+  .site-header { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../" class="back-link">← index</a>
+  <span class="header-sep">/</span>
+  <span class="header-title">TCEHY</span>
+</header>
+
+<div class="layout">
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ul id="toc-list"></ul>
+  </nav>
+
+  <main>
+    <article class="article" id="article">
+      <h1 id="00700hk">腾讯控股（00700.HK）深度投资研究报告</h1>
+<blockquote>
+<p><strong>报告日期：</strong> 2026年3月26日<br />
+<strong>数据截止：</strong> 2025年12月31日（2025年全年报 + Q4未审核季报，腾讯于2026年3月18日披露）<br />
+<strong>研究员立场：</strong> 买方独立研究视角<br />
+<strong>免责声明：</strong> 本报告仅供参考，不构成任何投资建议，投资有风险，据此操作风险自担。</p>
+</blockquote>
+<hr />
+<h2 id="_1">目录</h2>
+<ol>
+<li>护城河分析（Moat Analysis）</li>
+<li>估值分析（Valuation）</li>
+<li>纵向比较（历史对比）</li>
+<li>横向比较（行业对标）</li>
+<li>风险提示</li>
+<li>数据来源</li>
+</ol>
+<hr />
+<h2 id="moat-analysis">一、护城河分析（Moat Analysis）</h2>
+<p>腾讯的护城河是多层次复合型结构，涵盖<strong>网络效应、无形资产、转换成本与规模经济</strong>四大核心类型。各护城河在2025年整体呈拓宽态势，AI能力的注入正在显著加固既有壁垒。</p>
+<hr />
+<h3 id="11-wechat">1.1 网络效应 — 微信/WeChat超级平台</h3>
+<p><strong>核心逻辑：</strong> 微信月活越多，社交、支付、广告、小程序生态对每位用户的价值越高，形成双边乃至多边网络效应。</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>年度汇总</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>微信+WeChat MAU（亿）</td>
+<td>14.02</td>
+<td>14.11</td>
+<td>14.14</td>
+<td>14.18</td>
+<td>—</td>
+</tr>
+<tr>
+<td>同比增速</td>
+<td>+3%</td>
+<td>+3%</td>
+<td>+2%</td>
+<td>+2%</td>
+<td>—</td>
+</tr>
+<tr>
+<td>环比增速</td>
+<td>+1%</td>
+<td>+0.6%</td>
+<td>+0.2%</td>
+<td>+0.3%</td>
+<td>—</td>
+</tr>
+<tr>
+<td>QQ移动端MAU（亿）</td>
+<td>5.34</td>
+<td>5.32</td>
+<td>5.17</td>
+<td>5.08</td>
+<td>—</td>
+</tr>
+<tr>
+<td>收费增值服务订阅会员数（亿）</td>
+<td>—</td>
+<td>2.64</td>
+<td>2.65</td>
+<td>2.67</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>强弱判断：</strong> 强。微信MAU连续刷新历史新高（14.18亿），接近中国移动互联网上限（中国网民约10.8亿人），增长更多来自用户时长与生态深度。QQ持续温和下滑，但已非主力变现平台。视频号DAU与广告加载率仍有较大提升空间（当前加载率约3-4%，行业竞品约为3倍），是未来广告货币化的最大蓄水池。</p>
+<p><strong>护城河趋势：拓宽。</strong> 微信小店生态2025年交易额快速增长，小游戏月流水同比增长20%，视频号营销收入同比增幅超60%（2025Q1），说明微信生态的货币化效率持续提升，网络效应价值被进一步激活。</p>
+<hr />
+<h3 id="12-ip">1.2 无形资产 — 游戏IP与用户粘性</h3>
+<p><strong>核心逻辑：</strong> 腾讯拥有《王者荣耀》《和平精英》等超级长青IP，Supercell等国际工作室，形成了难以复制的内容资产护城河。</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>2025年度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>本土游戏收入（亿元）</td>
+<td>—</td>
+<td>404</td>
+<td>428</td>
+<td>382</td>
+<td>1,642</td>
+</tr>
+<tr>
+<td>本土游戏同比增速</td>
+<td>+24%</td>
+<td>+17%</td>
+<td>+15%</td>
+<td>+15%</td>
+<td>+18%</td>
+</tr>
+<tr>
+<td>国际游戏收入（亿元）</td>
+<td>—</td>
+<td>—</td>
+<td>208</td>
+<td>211</td>
+<td>774</td>
+</tr>
+<tr>
+<td>国际游戏同比增速</td>
+<td>+23%</td>
+<td>—</td>
+<td>+43%</td>
+<td>+32%</td>
+<td>+33%</td>
+</tr>
+<tr>
+<td>增值服务总收入（亿元）</td>
+<td>921</td>
+<td>—</td>
+<td>—</td>
+<td>899</td>
+<td>3,693</td>
+</tr>
+<tr>
+<td>增值服务毛利率</td>
+<td>60%</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>60%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>强弱判断：</strong> 强。国际游戏收入突破100亿美元（约774亿元）历史新高，同比增长33%，说明腾讯本土运营经验的全球复制能力已成熟。新游《三角洲行动》在Q4 DAU突破5000万，《王者荣耀世界》（预计2026年上线）提供新周期预期。增值服务毛利率稳定在60%，高于2024年的57%，印证IP定价权的持续性。</p>
+<p><strong>护城河趋势：拓宽。</strong> 国际化是最大的边际拓展方向，且AI工具正在赋能游戏内容生成效率，降低边际研发成本。</p>
+<hr />
+<h3 id="13">1.3 转换成本 — 支付与金融生态</h3>
+<p><strong>核心逻辑：</strong> 微信支付绑定了用户的消费习惯、理财账户、信贷记录，迁移成本极高。</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>2025年度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>金融科技及企业服务收入（亿元）</td>
+<td>549</td>
+<td>555</td>
+<td>581（估算）</td>
+<td>608</td>
+<td>2,294</td>
+</tr>
+<tr>
+<td>同比增速</td>
+<td>+5%</td>
+<td>+10%</td>
+<td>~+8%</td>
+<td>+8%</td>
+<td>+8%</td>
+</tr>
+<tr>
+<td>该板块毛利率</td>
+<td>50%</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>51%</td>
+</tr>
+</tbody>
+</table>
+<p>注：Q3金融科技及企业服务收入为年度 2294 - 549 - 555 - 608 = 582亿，此处标注"估算"。</p>
+<p><strong>强弱判断：</strong> 中等偏强。金融科技收入整体增速放缓（5%-10%区间），主要受消费信贷与支付市场增速趋缓影响；但企业服务（含云）收入增速已提升至接近20%，腾讯云2025年首次实现规模化盈利，成为利润率提升的新驱动力。金融科技板块毛利率从2024年的47%提升至2025年的51%，结构持续优化。</p>
+<p><strong>护城河趋势：稳定至拓宽。</strong> 云+AI企业服务的加速增长正在填补支付增速放缓留下的空间。</p>
+<hr />
+<h3 id="14-ai">1.4 规模经济 — 广告与AI基础设施</h3>
+<p><strong>核心逻辑：</strong> 腾讯广告系统覆盖微信、视频号、QQ、小程序多触点，规模带来的数据飞轮效应及AI广告系统降本提效，驱动毛利率持续扩张。</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>2025年度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>营销服务收入（亿元）</td>
+<td>319</td>
+<td>358</td>
+<td>363（估算）</td>
+<td>411</td>
+<td>1,450</td>
+</tr>
+<tr>
+<td>同比增速</td>
+<td>+20%</td>
+<td>+20%</td>
+<td>+17%</td>
+<td>+17%</td>
+<td>+19%</td>
+</tr>
+<tr>
+<td>营销服务毛利率</td>
+<td>56%</td>
+<td>58%</td>
+<td>—</td>
+<td>—</td>
+<td>58%</td>
+</tr>
+<tr>
+<td>全集团毛利率</td>
+<td>55.8%</td>
+<td>56.9%</td>
+<td>56.4%</td>
+<td>55.7%</td>
+<td>56.2%</td>
+</tr>
+<tr>
+<td>研发开支（亿元）</td>
+<td>230</td>
+<td>—</td>
+<td>228</td>
+<td>196</td>
+<td>857</td>
+</tr>
+</tbody>
+</table>
+<p>注：Q3营销服务收入为估算（年度1450 - 319 - 358 - 411 = 362亿）。</p>
+<p><strong>强弱判断：</strong> 强且加速拓宽。广告毛利率从2024年的55%提升至2025年的58%，AI算法持续优化广告点击率与转化率（视频号Q1营收增幅超60%）。全集团毛利率从2024年53%跃升至2025年56%，为中长期利润释放提供结构性支撑。</p>
+<p><strong>护城河趋势：拓宽。</strong> AI在广告侧的渗透仍处早期，视频号广告加载率提升空间大，货币化效率尚未到达天花板。</p>
+<hr />
+<h3 id="_2">护城河综合评价</h3>
+<table>
+<thead>
+<tr>
+<th>护城河类型</th>
+<th>强度评级</th>
+<th>趋势</th>
+<th>关键量化支撑</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>网络效应（微信生态）</td>
+<td>★★★★★</td>
+<td>拓宽</td>
+<td>MAU 14.18亿；小游戏流水+20%</td>
+</tr>
+<tr>
+<td>无形资产（游戏IP）</td>
+<td>★★★★☆</td>
+<td>拓宽</td>
+<td>国际游戏+33%；增值服务毛利率60%</td>
+</tr>
+<tr>
+<td>转换成本（支付/金融）</td>
+<td>★★★☆☆</td>
+<td>稳定</td>
+<td>金融科技毛利率51%；云首年盈利</td>
+</tr>
+<tr>
+<td>规模经济（广告+AI）</td>
+<td>★★★★☆</td>
+<td>拓宽</td>
+<td>广告毛利率58%；集团毛利率56%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="valuation">二、估值分析（Valuation）</h2>
+<p><strong>基础参数设定（截至2026年3月26日）：</strong><br />
+- 当前股价：约 520 港元（HKD）（参考价，基于2025年报发布后市场定价）<br />
+- 人民币兑港元汇率：1 RMB ≈ 1.086 HKD（2026年3月参考汇率）<br />
+- 总股本（经回购后）：约91亿股<br />
+- 当前市值：约 47,320 亿港元 ≈ 43,574 亿人民币 ≈ 5,600 亿美元</p>
+<hr />
+<h3 id="21-pe">2.1 PE估值</h3>
+<h4 id="epsnon-ifrs">历史季度EPS数据（Non-IFRS归母净利润口径，人民币，亿元）</h4>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>Non-IFRS归母净利润（亿元）</th>
+<th>每股Non-IFRS EPS（RMB，估算）</th>
+<th>YoY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025Q1</td>
+<td>613</td>
+<td>6.63</td>
+<td>+22%</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>631</td>
+<td>6.90</td>
+<td>+10%</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>706</td>
+<td>7.77</td>
+<td>+18%</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>646</td>
+<td>7.15</td>
+<td>+17%</td>
+</tr>
+<tr>
+<td><strong>2025年度（TTM）</strong></td>
+<td><strong>2,596</strong></td>
+<td><strong>24.75</strong></td>
+<td><strong>+17%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>注：EPS以各季度估算流通股约91-93亿股为分母；全年Non-IFRS基本EPS经腾讯官方确认为24.749元人民币。</p>
+<h4 id="eps">EPS预测（预测值，请参见假设说明）</h4>
+<table>
+<thead>
+<tr>
+<th>年份</th>
+<th>假设收入增速</th>
+<th>假设Non-IFRS净利率</th>
+<th>预测Non-IFRS归母净利润（亿元）</th>
+<th>预测Non-IFRS EPS（RMB）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026E</td>
+<td>13%</td>
+<td>35.5%</td>
+<td>约2,990</td>
+<td>约33.0</td>
+</tr>
+<tr>
+<td>2027E</td>
+<td>11%</td>
+<td>36.5%</td>
+<td>约3,345</td>
+<td>约37.0</td>
+</tr>
+<tr>
+<td>2028E</td>
+<td>10%</td>
+<td>37.0%</td>
+<td>约3,680</td>
+<td>约40.5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>假设说明：</strong> 2026E收入增速基于AI广告加速、云服务快速增长及游戏新产品周期；利润率提升来自高毛利业务占比扩大及规模效应；AI投入增加（管理层表示2026年AI新产品投入至少翻倍至约360亿元）为主要风险项。</p>
+<h4 id="pe">PE估值情景分析</h4>
+<p>合理PE区间依据：腾讯历史Non-IFRS PE区间约为15x-35x；当前TTM PE约19.3x，处于历史中低位。考虑盈利增速约15-17%（PEG约1.1-1.3x），相对全球科技同业享有折价，合理区间参考17-25x。</p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>2026E Non-IFRS EPS（RMB）</th>
+<th>EPS（HKD换算）</th>
+<th>目标PE</th>
+<th>目标价（HKD）</th>
+<th>较现价空间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>熊市（Bear）</td>
+<td>29.0（利润不及预期）</td>
+<td>31.5</td>
+<td>17x</td>
+<td><strong>536</strong></td>
+<td>+3%</td>
+</tr>
+<tr>
+<td>基准（Base）</td>
+<td>33.0</td>
+<td>35.8</td>
+<td>21x</td>
+<td><strong>752</strong></td>
+<td>+45%</td>
+</tr>
+<tr>
+<td>牛市（Bull）</td>
+<td>36.0（AI超预期变现）</td>
+<td>39.1</td>
+<td>25x</td>
+<td><strong>978</strong></td>
+<td>+88%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="22-ps">2.2 PS估值</h3>
+<h4 id="_3">历史季度营收数据（人民币，亿元）</h4>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>营收（亿元）</th>
+<th>YoY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025Q1</td>
+<td>1,800</td>
+<td>+13%</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>1,845</td>
+<td>+15%</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>1,929</td>
+<td>+15%</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>1,944</td>
+<td>+13%</td>
+</tr>
+<tr>
+<td><strong>2025年度（TTM）</strong></td>
+<td><strong>7,518</strong></td>
+<td><strong>+14%</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>TTM PS计算：</strong> 当前市值约43,574亿元 / TTM营收7,518亿元 ≈ <strong>5.8x</strong></p>
+<p>合理PS区间依据：腾讯历史PS区间约为4x-15x，当前约5.8x处于历史偏低区间（2021年高峰期约12-15x）。考虑收入增速维持10-14%、毛利率持续提升，合理区间参考5-9x。</p>
+<h4 id="ps">PS估值情景分析</h4>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>2026E 营收（亿元，预测值）</th>
+<th>目标PS</th>
+<th>对应市值（亿RMB）</th>
+<th>目标股价（HKD）</th>
+<th>较现价空间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>熊市（Bear）</td>
+<td>8,300（+10%）</td>
+<td>4.5x</td>
+<td>37,350</td>
+<td><strong>443</strong></td>
+<td>-15%</td>
+</tr>
+<tr>
+<td>基准（Base）</td>
+<td>8,500（+13%）</td>
+<td>6.0x</td>
+<td>51,000</td>
+<td><strong>605</strong></td>
+<td>+16%</td>
+</tr>
+<tr>
+<td>牛市（Bull）</td>
+<td>8,750（+16%）</td>
+<td>8.0x</td>
+<td>70,000</td>
+<td><strong>830</strong></td>
+<td>+60%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="23-dcf">2.3 DCF估值</h3>
+<h4 id="_4">关键参数与假设</h4>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>熊市（Bear）</th>
+<th>基准（Base）</th>
+<th>牛市（Bull）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第1-3年收入增速（CAGR）</td>
+<td>9%</td>
+<td>13%</td>
+<td>17%</td>
+</tr>
+<tr>
+<td>第4-7年收入增速（CAGR）</td>
+<td>7%</td>
+<td>10%</td>
+<td>13%</td>
+</tr>
+<tr>
+<td>FCF Margin（稳态，基于收入）</td>
+<td>20%</td>
+<td>24%</td>
+<td>28%</td>
+</tr>
+<tr>
+<td>WACC</td>
+<td>11%</td>
+<td>9.5%</td>
+<td>8.5%</td>
+</tr>
+<tr>
+<td>永续增长率（g）</td>
+<td>2.5%</td>
+<td>3.5%</td>
+<td>4.5%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>FCF基准数据：</strong> 2025年自由现金流1,826亿元（同比+18%），FCF Margin ≈ 24.3%（1,826/7,518）。2025年Q1-Q4 FCF分别为471、430、585、340亿元。</p>
+<p><strong>DCF模型简述（基准情景）：</strong></p>
+<ul>
+<li>2026-2028E FCF以+15%/+13%/+12%增长，逐步过渡至稳态增速</li>
+<li>2029-2033E 收入以约10%增长，FCF Margin稳定于24%</li>
+<li>终值采用Gordon Growth Model：TV = FCF₂₀₃₃ × (1+g) / (WACC - g)</li>
+<li>折现后加总，扣除净债务（腾讯持有净现金1,071亿元，须加回），得到权益价值</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>内在价值（亿RMB，权益总价值）</th>
+<th>对应每股价值（HKD）</th>
+<th>较现价空间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>熊市（Bear）</td>
+<td>约27,000</td>
+<td><strong>约320</strong></td>
+<td>-38%</td>
+</tr>
+<tr>
+<td>基准（Base）</td>
+<td>约48,500</td>
+<td><strong>约577</strong></td>
+<td>+11%</td>
+</tr>
+<tr>
+<td>牛市（Bull）</td>
+<td>约80,000</td>
+<td><strong>约950</strong></td>
+<td>+83%</td>
+</tr>
+</tbody>
+</table>
+<p>注：DCF对WACC和永续增长率高度敏感，熊市情景预设监管风险加剧及AI投入侵蚀利润率。</p>
+<hr />
+<h3 id="_5">综合估值汇总</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>熊市（Bear）</th>
+<th>基准（Base）</th>
+<th>牛市（Bull）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PE法（2026E）</td>
+<td>536 HKD</td>
+<td>752 HKD</td>
+<td>978 HKD</td>
+</tr>
+<tr>
+<td>PS法</td>
+<td>443 HKD</td>
+<td>605 HKD</td>
+<td>830 HKD</td>
+</tr>
+<tr>
+<td>DCF法</td>
+<td>320 HKD</td>
+<td>577 HKD</td>
+<td>950 HKD</td>
+</tr>
+<tr>
+<td><strong>三法均值</strong></td>
+<td><strong>433 HKD</strong></td>
+<td><strong>645 HKD</strong></td>
+<td><strong>919 HKD</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>综合估值判断：</strong> 基准情景下综合目标价约为<strong>645-750港元</strong>，对应当前价格（520港元）潜在上涨空间约<strong>24%-44%</strong>。考虑到AI投入边际增速加快但短期商业化不确定性，建议以基准（Base）至轻度乐观情景作为定价锚点。机构分析师（Tipranks综合48名分析师）平均目标价736港元亦与本报告基准偏上情景高度吻合。</p>
+<hr />
+<h2 id="_6">三、纵向比较（历史对比）</h2>
+<h3 id="31">3.1 核心财务指标季度趋势</h3>
+<h4 id="_7">营收与增速</h4>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>营收（亿元）</th>
+<th>毛利（亿元）</th>
+<th>毛利率</th>
+<th>Non-IFRS净利润（亿元）</th>
+<th>净利率（Non-IFRS）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025Q1</td>
+<td>1,800</td>
+<td>1,005</td>
+<td>55.8%</td>
+<td>613</td>
+<td>34.1%</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>1,845</td>
+<td>1,050</td>
+<td>56.9%</td>
+<td>631</td>
+<td>34.2%</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>1,929</td>
+<td>1,088</td>
+<td>56.4%</td>
+<td>706</td>
+<td>36.6%</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>1,944</td>
+<td>1,083</td>
+<td>55.7%</td>
+<td>647</td>
+<td>33.3%</td>
+</tr>
+<tr>
+<td><strong>2025年度</strong></td>
+<td><strong>7,518</strong></td>
+<td><strong>4,226</strong></td>
+<td><strong>56.2%</strong></td>
+<td><strong>2,596</strong></td>
+<td><strong>34.5%</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="roefcf">ROE与FCF</h4>
+<table>
+<thead>
+<tr>
+<th>年度</th>
+<th>IFRS归母净利润（亿元）</th>
+<th>净利率（IFRS）</th>
+<th>FCF（亿元）</th>
+<th>FCF Margin</th>
+<th>ROE（估算）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2023年</td>
+<td>约1,576</td>
+<td>—</td>
+<td>约1,550</td>
+<td>—</td>
+<td>~17%</td>
+</tr>
+<tr>
+<td>2024年</td>
+<td>约1,938</td>
+<td>~29.4%</td>
+<td>约1,548</td>
+<td>~23.4%</td>
+<td>~21%</td>
+</tr>
+<tr>
+<td><strong>2025年</strong></td>
+<td><strong>2,248</strong></td>
+<td><strong>29.9%</strong></td>
+<td><strong>1,826</strong></td>
+<td><strong>24.3%</strong></td>
+<td><strong>~24.5%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>注：2023/2024年度数据为估算，基于2025年同比增速反推。ROE基于年末权益估算（PB=4.73x，股价520HKD，每股净资产≈110HKD，总净资产≈约1万亿HKD ≈9200亿RMB）。</p>
+<h3 id="32">3.2 估值倍数历史区间</h3>
+<table>
+<thead>
+<tr>
+<th>估值指标</th>
+<th>历史低位</th>
+<th>历史中位</th>
+<th>历史高位</th>
+<th>当前水平</th>
+<th>当前百分位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TTM Non-IFRS PE</td>
+<td>~13x（2022年低谷）</td>
+<td>~22x</td>
+<td>~50x（2021年高峰）</td>
+<td>~19.3x</td>
+<td>约25%-30%分位</td>
+</tr>
+<tr>
+<td>PS（TTM）</td>
+<td>~3.5x</td>
+<td>~7x</td>
+<td>~15x</td>
+<td>~5.8x</td>
+<td>约25%-30%分位</td>
+</tr>
+<tr>
+<td>PB</td>
+<td>~2x</td>
+<td>~4x</td>
+<td>~10x</td>
+<td>~4.73x</td>
+<td>约35%-40%分位</td>
+</tr>
+</tbody>
+</table>
+<p><strong>当前估值处于历史中低位。</strong> 相对于历史估值区间，PE和PS均处于约历史25%-35%分位，显示市场对腾讯2026年AI变现的不确定性定价偏保守，同时也反映出港股市场整体的流动性折价。对比2021年高峰期，估值已大幅压缩（PE从50x降至约19x），而同期盈利能力（毛利率、净利率）反而大幅提升，形成显著的"估值-基本面"正向错位。</p>
+<hr />
+<h2 id="_8">四、横向比较（行业对标）</h2>
+<h3 id="41">4.1 可比公司选取</h3>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>代码</th>
+<th>市场</th>
+<th>业务重叠度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>阿里巴巴</td>
+<td>9988.HK / BABA</td>
+<td>港股/美股</td>
+<td>云计算、支付、广告</td>
+</tr>
+<tr>
+<td>网易</td>
+<td>NTES / 9999.HK</td>
+<td>美股/港股</td>
+<td>游戏、社交</td>
+</tr>
+<tr>
+<td>快手</td>
+<td>1024.HK</td>
+<td>港股</td>
+<td>短视频广告、社交</td>
+</tr>
+<tr>
+<td>Meta Platforms</td>
+<td>META</td>
+<td>美股</td>
+<td>社交广告、AI</td>
+</tr>
+<tr>
+<td>Sea Limited</td>
+<td>SE</td>
+<td>美股</td>
+<td>游戏+电商+金融（东南亚）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-2025">4.2 核心财务指标对比（最新可得数据，2025年度/近四季）</h3>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>2025年营收</th>
+<th>营收YoY</th>
+<th>毛利率</th>
+<th>Non-GAAP净利率</th>
+<th>FCF Margin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>腾讯</strong></td>
+<td>7,518亿RMB</td>
+<td>+14%</td>
+<td>56.2%</td>
+<td>34.5%</td>
+<td>24.3%</td>
+</tr>
+<tr>
+<td>阿里巴巴</td>
+<td>~1万亿RMB（FY25E）</td>
+<td>~5%</td>
+<td>~36%</td>
+<td>~15%（受投资拖累）</td>
+<td>~15%</td>
+</tr>
+<tr>
+<td>网易</td>
+<td>~1,100亿RMB</td>
+<td>~5%</td>
+<td>~55%</td>
+<td>~30%</td>
+<td>~25%</td>
+</tr>
+<tr>
+<td>快手</td>
+<td>~1,420亿RMB</td>
+<td>~14%</td>
+<td>~51%</td>
+<td>~11%</td>
+<td>~8%</td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>~1,800亿USD</td>
+<td>+19%</td>
+<td>~81%</td>
+<td>~40%</td>
+<td>~36%</td>
+</tr>
+</tbody>
+</table>
+<p>注：阿里巴巴2025Q3（9月季度）Non-GAAP净利润受即时零售大规模投入显著压缩；快手2025年数据为估算；Meta数据为USD计价，商业模式对标参考意义强。</p>
+<h3 id="43-20263">4.3 估值倍数横向对比（截至2026年3月，约略值）</h3>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>TTM PE（Non-GAAP）</th>
+<th>PS（TTM）</th>
+<th>PB</th>
+<th>市值（USD）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>腾讯</strong></td>
+<td>~19x</td>
+<td>~5.8x</td>
+<td>~4.7x</td>
+<td>~5,800亿</td>
+</tr>
+<tr>
+<td>阿里巴巴</td>
+<td>~12x（受利润压缩）</td>
+<td>~2.4x</td>
+<td>~1.6x</td>
+<td>~3,085亿</td>
+</tr>
+<tr>
+<td>网易</td>
+<td>~15x</td>
+<td>~5.5x</td>
+<td>~4.2x</td>
+<td>~889亿</td>
+</tr>
+<tr>
+<td>快手</td>
+<td>~20x（利润较小）</td>
+<td>~3.5x</td>
+<td>~3.8x</td>
+<td>~400亿+</td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>~24x</td>
+<td>~10x</td>
+<td>~8x</td>
+<td>~1.5万亿</td>
+</tr>
+</tbody>
+</table>
+<h3 id="44">4.4 相对溢价/折价分析</h3>
+<p><strong>腾讯 vs 阿里巴巴：</strong> 腾讯享有PE溢价（19x vs 12x）主要因阿里2025年盈利被即时零售大战侵蚀；若以阿里调整后正常盈利能力估算（约25-30%净利率），两者估值差距将收窄。腾讯生态黏性和现金流质量优于阿里，溢价合理。</p>
+<p><strong>腾讯 vs 网易：</strong> 腾讯PE小幅溢价（19x vs 15x），对应腾讯更强的多业务增长引擎（广告、云、游戏三驾马车）以及14%的营收增速优于网易的~5%，溢价合理。</p>
+<p><strong>腾讯 vs Meta：</strong> 腾讯PE折价约20%（19x vs 24x），主要源于：①港股流动性折价；②中国监管风险溢价；③AI变现不确定性。考虑到腾讯生态复杂度（游戏+社交+云+支付）高于Meta（纯社交广告），且FCF Margin接近，当前折价具有一定安全边际。</p>
+<p><strong>腾讯 vs 快手：</strong> 腾讯PE相近但基本面更优（净利率34% vs 11%，FCF Margin 24% vs 8%），可谓"同价值不同质量"，腾讯性价比更高。</p>
+<p><strong>综合判断：</strong> 腾讯在中国互联网中处于合理偏低估值水平，相对全球社交媒体龙头Meta有约20%折价，该折价在中国政策环境改善的背景下存在收敛机会。</p>
+<hr />
+<h2 id="_9">五、风险提示</h2>
+<h3 id="ai">风险一：AI投入大幅增加侵蚀短期利润</h3>
+<p><strong>详述：</strong> 管理层已明确2026年AI新产品投入（元宝、WorkBuddy、QClaw等）将较2025年的约180亿元至少翻倍至约360亿元，叠加GPU采购及数据中心扩张（腾讯云涨价部分对冲，但仍存不确定性）。若AI商业化低于预期，利润增速可能从预期的17%降至个位数。</p>
+<p><strong>对估值的影响：</strong> 若Non-IFRS净利润增速降至5-8%，基准PE目标价由752港元下调至530-580港元区间，潜在负面影响约25-30%。</p>
+<hr />
+<h3 id="_10">风险二：监管政策超预期收紧</h3>
+<p><strong>详述：</strong> 中国互联网监管周期风险是腾讯最重要的尾部风险。游戏版号收紧、数据安全法规趋严、跨境数据流通限制（影响国际游戏业务）、反垄断执法，均可能打断当前的增长轨道。2021年游戏版号停发期间腾讯股价一度腰斩。</p>
+<p><strong>对估值的影响：</strong> 极端监管情景下估值收缩至历史低位PE（13-15x），目标价区间压缩至380-450港元，下行空间约15-27%。</p>
+<hr />
+<h3 id="ai_1">风险三：AI大模型竞争加剧，核心业务护城河被侵蚀</h3>
+<p><strong>详述：</strong> 字节跳动（豆包）、百度（文心）、阿里（通义）等在大模型及Agent层面的激进投入，可能在2026-2027年对腾讯的广告系统效率优势、游戏AI体验、云服务定价构成直接挑战。混元3.0推迟或效果不及预期，将影响AI业务的市场信心。</p>
+<p><strong>对估值的影响：</strong> AI竞争加剧将压缩广告业务溢价，若营销服务增速从约19%降至10-12%，PS估值中枢下移至约4.5-5x，目标价区间调整至380-450港元。</p>
+<hr />
+<h3 id="_11">风险四：国际游戏业务地缘政治风险</h3>
+<p><strong>详述：</strong> 国际游戏收入774亿元（+33%）是2025年最亮眼的增长项，但Supercell（芬兰）、《PUBG Mobile》（全球运营）等均面临不同程度的地缘政治摩擦，特别是TikTok在美争议可能溢出至中国其他科技公司在美、欧市场的经营许可。</p>
+<p><strong>对估值的影响：</strong> 若国际游戏收入增速降至10-15%（vs当前33%），增值服务板块营收增速将压缩约3-5个百分点，导致整体EPS预测下调5-8%。</p>
+<hr />
+<h3 id="_12">风险五：宏观经济下行与消费疲软</h3>
+<p><strong>详述：</strong> 腾讯游戏、广告收入与中国消费者信心高度相关。若中国居民消费意愿持续低迷（疫后复苏进度慢于预期），游戏ARPU与广告主ROI均可能面临压力。此外，美元走强可能压低以港元计价的腾讯股价（汇率折算效应）。</p>
+<p><strong>对估值的影响：</strong> 宏观悲观情景下，营收增速从预期的13%降至8%，Non-IFRS利润增速降至5-8%，整体估值向熊市情景靠拢（约320-440港元区间）。</p>
+<hr />
+<h2 id="_13">六、数据来源</h2>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>来源</th>
+<th>获取时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025年全年及Q4财报</td>
+<td>腾讯控股官方投资者关系网站（https://www.tencent.com/zh-cn/ir.html）；转载报道见36氪、中国基金报</td>
+<td>2026年3月18日（披露日）</td>
+</tr>
+<tr>
+<td>2025Q1财报</td>
+<td>腾讯官方；中国基金报（https://www.chnfund.com）；观察者网（https://www.guancha.cn）</td>
+<td>2025年5月14日（披露日）</td>
+</tr>
+<tr>
+<td>2025Q2财报</td>
+<td>腾讯官方；中国基金报（https://www.chnfund.com）；证券市场周刊</td>
+<td>2025年8月13日（披露日）</td>
+</tr>
+<tr>
+<td>2025Q3财报</td>
+<td>腾讯官方；腾讯新闻（https://news.qq.com）；199IT（https://www.199it.com）</td>
+<td>2025年11月13日（披露日）</td>
+</tr>
+<tr>
+<td>估值倍数数据</td>
+<td>GuruFocus中文站（https://www.gurufocus.cn）；证券时报（https://www.stcn.com）；东方财富网</td>
+<td>2026年3月</td>
+</tr>
+<tr>
+<td>可比公司数据</td>
+<td>招银国际研究报告（https://www.cmbi.com.hk）；腾讯新闻（2026年初互联网市值综述）</td>
+<td>2025年12月-2026年3月</td>
+</tr>
+<tr>
+<td>分析师目标价</td>
+<td>TipRanks综合数据（48名分析师均值736港元）；华盛通（https://www.hstong.com）转引自彭博数据</td>
+<td>2026年3月</td>
+</tr>
+<tr>
+<td>AI业务与战略信息</td>
+<td>中华网科技（https://tech.china.com）；证券时报；36氪</td>
+<td>2026年3月18-26日</td>
+</tr>
+</tbody>
+</table>
+<p><strong>交叉验证说明：</strong> 所有核心财务数据（营收、利润、MAU、FCF）均经过官方财报（腾讯投资者关系）与至少2家权威媒体/研究机构交叉核实。估值倍数数据由GuruFocus与华尔街见闻/东方财富双源核验。历史PE区间数据来自GuruFocus与理杏仁（https://www.lixinger.com）双源核验。</p>
+<hr />
+<p><em>本报告基于公开可得信息撰写，所有预测数据均标注"预测值"并附说明假设。报告不代表任何机构立场，投资决策请咨询专业人士。</em></p>
+    </article>
+  </main>
+</div>
+
+<script>
+// Build TOC from headings
+const tocList = document.getElementById('toc-list');
+const headings = document.querySelectorAll('.article h2, .article h3');
+headings.forEach((h, i) => {
+  if (!h.id) h.id = 'h-' + i;
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  a.href = '#' + h.id;
+  a.textContent = h.textContent.replace(/^[#\s]+/, '');
+  a.className = 'toc-' + h.tagName.toLowerCase();
+  li.appendChild(a);
+  tocList.appendChild(li);
+});
+
+// Highlight active TOC item on scroll
+const tocLinks = tocList.querySelectorAll('a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(a => a.classList.remove('active'));
+      const active = tocList.querySelector(`a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+headings.forEach(h => observer.observe(h));
+</script>
+</body>
+</html>

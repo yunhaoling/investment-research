@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DUOLINGO_AGENT_TEMPLATE.md</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #0b0d12;
+  --bg2:    #10131a;
+  --bg3:    #161923;
+  --bg4:    #1d2130;
+  --border: #222638;
+  --border2:#2a2f45;
+  --text:   #dde3f0;
+  --text2:  #8a93b0;
+  --text3:  #505878;
+  --accent: #5b6af0;
+  --green:  #2ed380;
+  --amber:  #f5c542;
+  --red:    #ff5566;
+  --mono:   'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ── Header ── */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex; align-items: center; gap: 16px; height: 52px;
+}
+.back-link {
+  color: var(--text3); text-decoration: none; font-size: 13px;
+  font-family: var(--mono); transition: color .2s;
+}
+.back-link:hover { color: var(--text2); }
+.header-sep { color: var(--border2); }
+.header-title { font-size: 13px; color: var(--text2); }
+
+/* ── Layout ── */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+/* ── TOC Sidebar ── */
+.toc {
+  position: sticky; top: 52px; align-self: start;
+  height: calc(100vh - 52px); overflow-y: auto;
+  padding: 28px 0;
+  border-right: 1px solid var(--border);
+  background: var(--bg2);
+}
+.toc-title {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--text3); font-family: var(--mono);
+  padding: 0 20px 12px;
+}
+.toc ul { list-style: none; }
+.toc a {
+  display: block; padding: 5px 20px;
+  font-size: 12.5px; color: var(--text3);
+  text-decoration: none; transition: color .15s, background .15s;
+  border-left: 2px solid transparent;
+}
+.toc a:hover { color: var(--text2); background: var(--bg3); }
+.toc a.active { color: var(--accent); border-left-color: var(--accent); }
+.toc .toc-h2 { padding-left: 20px; }
+.toc .toc-h3 { padding-left: 34px; font-size: 11.5px; }
+
+/* ── Article ── */
+.article {
+  max-width: 860px;
+  padding: 48px 60px 80px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Headings */
+.article h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.article h2 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px; font-weight: 600;
+  color: var(--text);
+  margin: 40px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.article h2::before {
+  content: ''; display: block;
+  width: 3px; height: 18px; border-radius: 2px;
+  background: var(--accent); flex-shrink: 0;
+}
+.article h3 {
+  font-size: 15px; font-weight: 500;
+  color: var(--text2);
+  margin: 28px 0 12px;
+}
+.article h4 {
+  font-size: 13px; font-weight: 500;
+  color: var(--text3); text-transform: uppercase; letter-spacing: .06em;
+  margin: 20px 0 8px;
+}
+
+/* Body text */
+.article p { margin-bottom: 14px; color: var(--text2); }
+.article strong { color: var(--text); font-weight: 500; }
+.article em { color: var(--amber); font-style: normal; }
+.article hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+/* Blockquote */
+.article blockquote {
+  margin: 20px 0;
+  padding: 14px 20px;
+  background: var(--bg3);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+}
+.article blockquote p {
+  color: var(--text2); margin: 0;
+  font-size: 13.5px; line-height: 1.8;
+}
+
+/* Tables */
+.article table {
+  width: 100%; border-collapse: collapse;
+  margin: 20px 0 28px; font-size: 13px;
+}
+.article thead th {
+  padding: 8px 12px;
+  text-align: right;
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .07em;
+  color: var(--text3);
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border2);
+  font-family: var(--mono);
+}
+.article thead th:first-child { text-align: left; }
+.article tbody td {
+  padding: 8px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+.article tbody td:first-child {
+  text-align: left;
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.article tbody tr:hover td { background: var(--bg3); }
+
+/* Lists */
+.article ul, .article ol {
+  padding-left: 20px; margin-bottom: 14px;
+}
+.article li { color: var(--text2); margin-bottom: 4px; }
+.article li strong { color: var(--text); }
+
+/* Inline code */
+.article code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 1px 5px; border-radius: 4px;
+  color: var(--amber);
+}
+.article pre {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+.article pre code {
+  background: none; border: none; padding: 0;
+  color: var(--text2); font-size: 13px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { display: none; }
+  .article { padding: 32px 20px 60px; }
+  .site-header { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../" class="back-link">← index</a>
+  <span class="header-sep">/</span>
+  <span class="header-title">DUOL</span>
+</header>
+
+<div class="layout">
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ul id="toc-list"></ul>
+  </nav>
+
+  <main>
+    <article class="article" id="article">
+      <h1 id="duolingo_agent_templatemd">DUOLINGO_AGENT_TEMPLATE.md</h1>
+<h1 id="duol-agent-v20">多邻国 DUOL · 投资研究仪表板 · Agent 操作手册 v2.0</h1>
+<h1 id="duolingo_moat_trackerhtml">适用文件：duolingo_moat_tracker.html</h1>
+<hr />
+<h2 id="_1">一、概述与触发机制</h2>
+<h3 id="_2">这份文档是什么</h3>
+<p>本文档是供 AI Agent 执行的完整季度更新 SOP（标准操作流程）。<br />
+每次运行后，<code>duolingo_moat_tracker.html</code> 应完整反映最新一个季度的所有数据。</p>
+<p>Agent 需要具备的能力：<code>web_search</code>、<code>web_fetch</code>、文件读写（<code>str_replace</code> 或等效工具）。</p>
+<h3 id="_3">触发条件</h3>
+<table>
+<thead>
+<tr>
+<th>触发类型</th>
+<th>条件</th>
+<th>执行范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>主要触发</strong></td>
+<td>Duolingo 季度财报发布（季末后约 6–8 周）</td>
+<td>全流程，MODULE 1–5</td>
+</tr>
+<tr>
+<td><strong>次要触发 A</strong></td>
+<td>重大产品变更公告（新功能上线、定价调整）</td>
+<td>MODULE 3 + MODULE 4 情绪相关区域</td>
+</tr>
+<tr>
+<td><strong>次要触发 B</strong></td>
+<td>股价单日波动超过 ±10%</td>
+<td>MODULE 1 财务速览 + MODULE 2 信号更新</td>
+</tr>
+<tr>
+<td><strong>次要触发 C</strong></td>
+<td>Reddit r/duolingo 出现大规模舆情事件</td>
+<td>MODULE 3 情绪采集</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_4">执行顺序与依赖关系</h3>
+<div class="highlight"><pre><span></span><code>MODULE 1: 财务数据采集
+    ↓  （输出：核心指标数值）
+MODULE 2: 护城河信号判断
+    ↓  （依赖 MODULE 1 数据）
+MODULE 3: 情绪数据采集
+    ↓  （独立执行，不依赖前两步）
+MODULE 4: HTML 文件更新
+    ↓  （依赖 MODULE 1 + 2 + 3 全部完成）
+MODULE 5: 质量检验与版本归档
+</code></pre></div>
+
+<hr />
+<h2 id="module-1">二、MODULE 1：财务数据采集</h2>
+<p><strong>目标</strong>：从 SEC EDGAR 获取最新季度的所有核心财务和用户指标。</p>
+<h3 id="11">1.1 定位最新季报</h3>
+<p><strong>步骤 1</strong>：搜索最新股东信</p>
+<div class="highlight"><pre><span></span><code>web_search: &quot;Duolingo shareholder letter [最新季度] site:sec.gov&quot;
+</code></pre></div>
+
+<p>或直接访问 IR 页面获取最新链接：<br />
+<code>https://investors.duolingo.com</code></p>
+<p><strong>步骤 2</strong>：SEC 文件 URL 规律</p>
+<div class="highlight"><pre><span></span><code>Q1: .../q1fy[YY]duolingo[月-日]share.htm
+Q2: .../q2fy[YY]duolingo[月-日]share.htm
+Q3: .../q3fy[YY]duolingo[月-日]share.htm
+Q4: .../q4fy[YY]duolingo[月-日]shar.htm
+</code></pre></div>
+
+<p>EDGAR 归档入口（找最新 8-K）：<br />
+<code>https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001562088&amp;type=8-K&amp;count=10</code></p>
+<h3 id="12">1.2 必须采集的字段</h3>
+<p>从股东信「Summary of Financial and Key Operating Metrics」表格提取：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 用户指标（直接引用原文数字）</span>
+<span class="nt">dau_millions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">          </span><span class="c1"># 日活用户（百万）</span>
+<span class="nt">dau_yoy_pct</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">           </span><span class="c1"># 同比增速（%）</span>
+<span class="nt">mau_millions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">          </span><span class="c1"># 月活用户（百万）</span>
+<span class="nt">mau_qoq_change</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">        </span><span class="c1"># 环比变化（百万，带正负号）</span>
+<span class="nt">paid_subscribers_millions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">paid_yoy_pct</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+
+<span class="c1"># 财务指标（直接引用原文数字）</span>
+<span class="nt">total_bookings_millions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">bookings_yoy_pct</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">revenue_millions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">revenue_yoy_pct</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">gross_margin_pct</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">adj_ebitda_millions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">adj_ebitda_margin_pct</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+
+<span class="c1"># 计算字段（Agent 自行计算，必须核验）</span>
+<span class="nt">dau_mau_ratio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">         </span><span class="c1"># = DAU ÷ MAU × 100，保留一位小数</span>
+</code></pre></div>
+
+<p><strong>数据验证规则</strong>（采集后立即核算）：</p>
+<div class="highlight"><pre><span></span><code>✓ adj_ebitda_margin = adj_ebitda ÷ revenue × 100，与原文偏差 &lt; 0.2ppt
+✓ dau_mau_ratio 自行计算，不引用第三方估算
+✓ YoY 增速与计算结果偏差 &gt; 1ppt → 重新核对原文，可能有 recast
+</code></pre></div>
+
+<h3 id="13">1.3 采集管理层指引</h3>
+<p>在股东信「Guidance」部分提取：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">next_q_guidance</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">quarter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="w">  </span><span class="nt">bookings_growth_yoy_pct</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="w">  </span><span class="nt">revenue_growth_yoy_pct</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="w">  </span><span class="nt">adj_ebitda_margin_pct</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="w">  </span><span class="nt">gross_margin_note</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">       </span><span class="c1"># 如有特殊说明（如 AI 成本影响）</span>
+
+<span class="nt">fy_guidance</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">year</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="w">  </span><span class="nt">bookings_growth_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="w">  </span><span class="nt">revenue_growth_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="w">  </span><span class="nt">adj_ebitda_margin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="w">  </span><span class="nt">dau_growth_expectation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">  </span><span class="c1"># 如披露</span>
+</code></pre></div>
+
+<p><strong>指引 DAU 估算规则</strong>（如管理层给出 YoY 增速而非绝对值）：</p>
+<div class="highlight"><pre><span></span><code>指引 DAU = 上年同季度实际 DAU × (1 + 指引 YoY 增速)
+不得用上季度末 DAU 乘以增速
+</code></pre></div>
+
+<h3 id="14">1.4 采集关键定性表述</h3>
+<p>阅读股东信正文，摘录管理层对以下方面的表述：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">qualitative_notes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">user_growth_driver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">       </span><span class="c1"># DAU 增长主要来源</span>
+<span class="w">  </span><span class="nt">ai_cost_comment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">          </span><span class="c1"># GenAI 成本趋势</span>
+<span class="w">  </span><span class="nt">product_highlight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">        </span><span class="c1"># 重点产品进展</span>
+<span class="w">  </span><span class="nt">strategic_shift</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">          </span><span class="c1"># 新战略调整（如无则 None）</span>
+<span class="w">  </span><span class="nt">guidance_rationale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">       </span><span class="c1"># 指引逻辑说明</span>
+</code></pre></div>
+
+<p><strong>重点关注触发词</strong>——出现以下词汇时完整记录原句：<br />
+<code>"friction"</code> / <code>"headwind"</code> / <code>"prioritize"</code> / <code>"AI-first"</code> / <code>"we acknowledge"</code> / <code>"accelerate"</code></p>
+<hr />
+<h2 id="module-2">三、MODULE 2：护城河信号判断</h2>
+<p><strong>目标</strong>：基于 MODULE 1 数据，判断四条护城河的当季状态，与上季度对比。</p>
+<h3 id="21">2.1 行为锁定护城河</h3>
+<p><strong>核心指标</strong>：DAU/MAU ratio</p>
+<table>
+<thead>
+<tr>
+<th>数值区间</th>
+<th>判断</th>
+<th>颜色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>≥ 40% 且环比上升</td>
+<td>强·持续加深</td>
+<td>green</td>
+</tr>
+<tr>
+<td>37%–40% 或持平</td>
+<td>稳·维持中</td>
+<td>amber</td>
+</tr>
+<tr>
+<td>&lt; 37% 或连续两季环比下滑</td>
+<td>弱·出现松动</td>
+<td>red</td>
+</tr>
+</tbody>
+</table>
+<p><strong>辅助判断</strong>：<br />
+- MAU 环比方向（止跌回升 = 拉新恢复 / 继续下滑 = 获客受损）<br />
+- 管理层是否披露 streak 相关数据<br />
+- 付费转化率 = 付费用户 ÷ MAU，是否维持 ≥ 8.5%</p>
+<p><strong>输出</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">moat_behavioral_lock</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">                  </span><span class="c1"># 强化中 / 稳定 / 受损</span>
+<span class="w">  </span><span class="nt">key_evidence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="w">  </span><span class="nt">signal_color</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">            </span><span class="c1"># green / amber / red</span>
+<span class="w">  </span><span class="nt">vs_last_quarter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">         </span><span class="c1"># 改善 / 持平 / 恶化</span>
+</code></pre></div>
+
+<h3 id="22">2.2 数据飞轮护城河</h3>
+<p><strong>核心指标</strong>：毛利率 + R&amp;D 占收入比 + Sub ARPU 增速</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>健康基准</th>
+<th>警报线</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>毛利率</td>
+<td>≥ 72%</td>
+<td>&lt; 70% 连续两季</td>
+</tr>
+<tr>
+<td>R&amp;D / Revenue (GAAP)</td>
+<td>≤ 32%，持续下降趋势</td>
+<td>反弹超过 35%</td>
+</tr>
+<tr>
+<td>Sub ARPU YoY</td>
+<td>≥ +5%</td>
+<td>负增长</td>
+</tr>
+<tr>
+<td>EBITDA margin</td>
+<td>≥ 25%（战略期允许主动压低）</td>
+<td>&lt; 20% 且非主动选择</td>
+</tr>
+</tbody>
+</table>
+<p><strong>2026 年特殊规则</strong>：管理层主动将毛利率压低至约 69–71%（向免费用户开放 AI），<br />
+此期间毛利率下滑属于战略预期内。若实际低于指引超过 1.5ppt，才标记红色。</p>
+<p><strong>输出</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">moat_data_flywheel</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">                          </span><span class="c1"># 飞轮加速 / 正常运转 / 成本压制</span>
+<span class="w">  </span><span class="nt">gross_margin_vs_guidance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">        </span><span class="c1"># 超预期 / 在轨 / 低于指引</span>
+<span class="w">  </span><span class="nt">ai_cost_trend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">                   </span><span class="c1"># 改善 / 持平 / 恶化</span>
+<span class="w">  </span><span class="nt">signal_color</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+</code></pre></div>
+
+<h3 id="23">2.3 品牌资产护城河</h3>
+<p><strong>核心判断矩阵</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>信号组合</th>
+<th>判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S&amp;M 比率下降 + DAU 增速维持</td>
+<td>品牌飞轮在转（green）</td>
+</tr>
+<tr>
+<td>S&amp;M 比率上升 + DAU 增速回升</td>
+<td>依赖付费获客（amber）</td>
+</tr>
+<tr>
+<td>S&amp;M 比率上升 + DAU 仍下滑</td>
+<td>双重恶化（red）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>辅助信号</strong>：<br />
+- 管理层是否提及病毒式营销活动及曝光数据<br />
+- App Store 评分是否维持 ≥ 4.5（MODULE 3 提供）<br />
+- 社区 UGC 情绪（MODULE 3 提供）</p>
+<p><strong>输出</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">moat_brand</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sm_ratio_trend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">          </span><span class="c1"># 下降 / 持平 / 上升</span>
+<span class="w">  </span><span class="nt">dau_vs_sm_scissors</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">      </span><span class="c1"># 剪刀差扩大 / 持平 / 收窄</span>
+<span class="w">  </span><span class="nt">signal_color</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+</code></pre></div>
+
+<h3 id="24">2.4 网络效应护城河</h3>
+<p><strong>当前基准</strong>：★★（弱），处于早期演进阶段。</p>
+<p><strong>观察信号（定性为主）</strong>：<br />
+- 管理层是否披露 Chess PvP 参与率或社区赛事数据<br />
+- 是否有「因为朋友在用 Chess 而留下」的用户表述<br />
+- Friend Streak 渗透率是否继续上升</p>
+<p><strong>输出</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">moat_network_effect</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rating_change</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">           </span><span class="c1"># 升级 ★★→★★★ / 维持 ★★ / 无新数据</span>
+<span class="w">  </span><span class="nt">chess_community_signal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">  </span><span class="c1"># 正向 / 中性 / 无</span>
+<span class="w">  </span><span class="nt">signal_color</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">            </span><span class="c1"># green / amber / gray</span>
+</code></pre></div>
+
+<h3 id="25-html">2.5 护城河摘要（写入 HTML）</h3>
+<p>完成 2.1–2.4 后，写出本季度的一段护城河健康度摘要（≤ 80 字），用于更新 HTML「护城河信号」Tab 顶部说明文字。</p>
+<hr />
+<h2 id="module-3">四、MODULE 3：情绪数据采集</h2>
+<p><strong>目标</strong>：采集三方平台用户情绪信号，与财务数据交叉验证。</p>
+<h3 id="31">3.1 应用商店评分</h3>
+<div class="highlight"><pre><span></span><code># App Store
+web_fetch: https://apps.apple.com/us/app/duolingo-language-lessons/id570060128
+采集: ios_rating, ios_rating_count
+
+# Google Play
+web_fetch: https://play.google.com/store/apps/details?id=com.duolingo&amp;hl=en_US
+采集: android_rating, android_rating_count, android_top_recent_complaint
+
+# Trustpilot
+web_fetch: https://www.trustpilot.com/review/duolingo.com
+采集: trustpilot_rating, trustpilot_review_count, trustpilot_complaint_type
+</code></pre></div>
+
+<p><strong>Trustpilot 解读规则</strong>：<br />
+- 投诉类型为「计费/退款/客服」→ 不触发护城河警报，标注说明<br />
+- 投诉类型转向「产品质量/内容变差」→ 触发品牌护城河警报</p>
+<p><strong>评分变化阈值</strong>（超过以下阈值须向情绪时间线新增事件）：<br />
+- iOS 或 Android 变化 ≥ 0.1 分<br />
+- Trustpilot 投诉主类型发生转变</p>
+<h3 id="32-reddit">3.2 Reddit 情绪采样</h3>
+<p>按顺序执行：</p>
+<div class="highlight"><pre><span></span><code>搜索 1: reddit.com/r/duolingo 月度热帖
+  URL: https://www.reddit.com/r/duolingo/top/?t=month
+
+搜索 2: &quot;duolingo&quot; site:reddit.com [本季度核心关键词]
+  关键词示例：AI free / energy system / MAU / chess / leaving duolingo
+
+搜索 3: &quot;duolingo alternative&quot; site:reddit.com 最近3个月
+</code></pre></div>
+
+<p><strong>输出字段</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">reddit_overall_sentiment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">   </span><span class="c1"># 正面 / 分裂 / 负面</span>
+<span class="nt">reddit_top_positive</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">        </span><span class="c1"># [主题1, 主题2]</span>
+<span class="nt">reddit_top_negative</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">        </span><span class="c1"># [主题1, 主题2]</span>
+<span class="nt">reddit_switch_intent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">       </span><span class="c1"># 低 / 中 / 高（「换 App」帖子频率）</span>
+<span class="nt">reddit_notable_post_title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+<span class="nt">reddit_notable_post_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span>
+</code></pre></div>
+
+<h3 id="33-google-trends">3.3 Google Trends</h3>
+<div class="highlight"><pre><span></span><code>web_search: google trends duolingo vs babbel vs chatgpt language learning 12 months
+目标 URL: https://trends.google.com/trends/explore?q=duolingo,babbel,chatgpt+language&amp;date=today+12-m
+</code></pre></div>
+
+<p><strong>输出字段</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">trends_direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">                   </span><span class="c1"># 上升 / 持平 / 下降</span>
+<span class="nt">trends_vs_chatgpt_language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">         </span><span class="c1"># 领先 / 接近 / 落后</span>
+<span class="nt">trends_notable_spike</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~</span><span class="w">               </span><span class="c1"># 异常峰值及原因，或 None</span>
+</code></pre></div>
+
+<h3 id="34-class-central">3.4 Class Central（可选）</h3>
+<div class="highlight"><pre><span></span><code>web_search: &quot;Duolingo [季度] [年份] site:classcentral.com&quot;
+</code></pre></div>
+
+<p>如有新报告，提取其独立分析结论，记录为定性注释。</p>
+<hr />
+<h2 id="module-4html">五、MODULE 4：HTML 文件更新</h2>
+<p><strong>目标文件</strong>：<code>duolingo_moat_tracker.html</code><br />
+<strong>原则</strong>：所有更新使用 <code>str_replace</code> 精确定位替换，不盲目追加内容。</p>
+<h3 id="41-tab">4.1 「用户与财务」Tab</h3>
+<p><strong>新增季度卡片</strong>（在 <code>.q-grid</code> 末尾插入）：</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;q-card&quot;</span> <span class="na">onclick</span><span class="o">=</span><span class="s">&quot;selQ([N])&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;qc[N]&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;q-quarter&quot;</span><span class="p">&gt;</span>[Q# YYYY]<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;q-dau&quot;</span><span class="p">&gt;</span>[DAU]M<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;q-yoy [badge]&quot;</span><span class="p">&gt;</span>↑ +[X]% DAU YoY<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>徽章规则：<code>badge-up</code>（≥30%）/ <code>badge-warn</code>（15–29%）/ <code>badge-danger</code>（&lt;15%）</p>
+<p><strong>更新数据表格</strong>：每一行末尾追加新列，保持与卡片数量一致。</p>
+<p><strong>更新柱状图 bar 宽度换算</strong>（DAU 增速）：</p>
+<table>
+<thead>
+<tr>
+<th>增速</th>
+<th>width</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50%</td>
+<td>83%</td>
+</tr>
+<tr>
+<td>40%</td>
+<td>67%</td>
+</tr>
+<tr>
+<td>30%</td>
+<td>50%</td>
+</tr>
+<tr>
+<td>20%</td>
+<td>33%</td>
+</tr>
+<tr>
+<td>10%</td>
+<td>17%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>同步更新 selQ() 函数</strong>中的循环范围：<code>for (let i = 0; i &lt; [N+1]; i++)</code></p>
+<h3 id="42-tab">4.2 「护城河信号」Tab</h3>
+<p>更新四个 <code>moat-card</code> 的 <code>.moat-body</code> 文字和 <code>.moat-dot</code> 颜色类（dot-green / dot-amber / dot-red）。</p>
+<p>规则：保留历史关键数据点，在前面插入新季度数据；护城河★评级仅在真正升降时更新。</p>
+<p>若新季度触发警报，新增或更新 <code>.alert</code> 框：</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;alert [amber/red]&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>[⚠/🔴] [标题，10字以内]<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+  [说明，聚焦护城河含义，≤80字]
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h3 id="43-2026-tab">4.3 「2026 指引」Tab</h3>
+<ul>
+<li>将上一季度的「指引」列更新为实际值（去掉指引样式）</li>
+<li>新增下一季度的指引列（使用 <code>guide-col</code> 和虚线样式）</li>
+<li>更新底部 <code>.prose</code> 战略解读文字</li>
+</ul>
+<h3 id="44-q1-2026-tab">4.4 「Q1 2026 观察清单」Tab（动态更新）</h3>
+<p>财报发布后：<br />
+1. 已达标指标 → 更新 priority badge 为绿色「✓ 已验证」<br />
+2. 未达标指标 → 在 <code>.wl-interp</code> 末尾追加实际结果行<br />
+3. 季度标题和财报预计日期更新为下一季度<br />
+4. 按最新护城河判断（MODULE 2 输出）重写 9 个观察指标</p>
+<h3 id="45-tab">4.5 「应用评分」Tab</h3>
+<p>更新每个 <code>platform-card</code> 的评分数值、评分数量和更新日期。</p>
+<h3 id="46-tab">4.6 「情绪时间线」Tab</h3>
+<p><strong>评分历史快照</strong>：在末行前插入新行（颜色规则：≥4.5→green, 4.0–4.4→amber, &lt;4.0→red）</p>
+<p><strong>情绪事件</strong>（满足任一条件时添加）：<br />
+- 评分变化 ≥ 0.1 分<br />
+- Reddit 大规模情绪波动<br />
+- 重大产品变更引发明显社区反应<br />
+- 与护城河假设直接相关的用户反馈变化</p>
+<p>新事件插入位置：<code>.snt-timeline</code> 中最后一个 <code>.tl-item</code> 之前。</p>
+<p><strong>Reddit 热词标签</strong>：替换整组 <code>&lt;span&gt;</code> 标签（绿=正面，红=负面，橙=争议）。</p>
+<h3 id="47-tab">4.7 「数据来源」Tab</h3>
+<p>新增 SEC 季报链接行，并在校验记录中记录本次更新中发现的任何数据修正。</p>
+<h3 id="48">4.8 通用更新</h3>
+<div class="highlight"><pre><span></span><code>□ footer 版本号递增（v2.X → v2.X+1）
+□ footer 日期更新
+□ notice 框（如有）在财报发布后移除或更新
+□ Q1 指引列在实际值发布后取消「指引」样式
+</code></pre></div>
+
+<hr />
+<h2 id="module-5">六、MODULE 5：质量检验与版本归档</h2>
+<h3 id="51">5.1 数据一致性自检</h3>
+<div class="highlight"><pre><span></span><code>财务数据
+□ DAU/MAU ratio 自行计算，与原文数字一致？
+□ EBITDA 利润率 = EBITDA ÷ Revenue，与财报一致？
+□ 指引 DAU 估算：基准为上年同期，而非上季度末？
+□ 指引列是否有「指引」样式标注（虚线/橙色）？
+
+护城河判断
+□ 四条护城河信号颜色与数据逻辑一致？
+□ 观察清单中已验证指标全部标注？
+□ 新季度观察清单基于最新指引重写？
+
+情绪数据
+□ 评分来自当前页面（非缓存）？
+□ Trustpilot 低分注明投诉类型？
+□ 新增情绪事件标注了数据来源？
+
+页面完整性
+□ 所有 Tab 可正常切换（switchTab 函数未被破坏）？
+□ selQ() 循环范围与 q-card 数量一致？
+□ footer 版本号已递增？
+</code></pre></div>
+
+<h3 id="52">5.2 边界情况处理</h3>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>处理方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>某项数据未披露</td>
+<td>HTML 填 <code>—（未披露）</code>，不估算</td>
+</tr>
+<tr>
+<td>管理层 recast 历史数据</td>
+<td>在来源 Tab 校验记录中记录，更新所有受影响历史行</td>
+</tr>
+<tr>
+<td>SEC URL 无法访问</td>
+<td>用 <code>web_search</code> 找 IR 页面备用 PDF</td>
+</tr>
+<tr>
+<td>Google Play 评分显示整数</td>
+<td>来源 Tab 标注「精确到0.1分，部分渠道显示四舍五入值」</td>
+</tr>
+<tr>
+<td>MAU 低于上季度</td>
+<td><code>mau_qoq_change</code> 填负值，HTML 用 <code>danger</code> 色标注</td>
+</tr>
+</tbody>
+</table>
+<h3 id="53">5.3 版本归档</h3>
+<p>在本文档「附录 D：版本历史」追加：</p>
+<div class="highlight"><pre><span></span><code>| v[X.X] | [YYYY-MM-DD] | [Q# YYYY] 财报更新 · [本次主要变化简述] |
+</code></pre></div>
+
+<hr />
+<h2 id="a">附录 A：全部数据源速查</h2>
+<h3 id="_5">财务数据源（一级）</h3>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q1 2025</td>
+<td>https://www.sec.gov/Archives/edgar/data/0001562088/000156208825000098/q1fy25duolingo3-31x25share.htm</td>
+</tr>
+<tr>
+<td>Q2 2025</td>
+<td>https://www.sec.gov/Archives/edgar/data/0001562088/000156208825000165/q2fy25duolingo6-30x25share.htm</td>
+</tr>
+<tr>
+<td>Q3 2025</td>
+<td>https://www.sec.gov/Archives/edgar/data/1562088/000162828025049514/q3fy25duolingo9-30x25share.htm</td>
+</tr>
+<tr>
+<td>Q4 2025</td>
+<td>https://www.sec.gov/Archives/edgar/data/0001562088/000162828026012246/q4fy25duolingo12-31x25shar.htm</td>
+</tr>
+<tr>
+<td>EDGAR 归档</td>
+<td>https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001562088&amp;type=8-K&amp;count=10</td>
+</tr>
+<tr>
+<td>IR 主页</td>
+<td>https://investors.duolingo.com</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_6">情绪数据源</h3>
+<table>
+<thead>
+<tr>
+<th>平台</th>
+<th>URL</th>
+<th>频率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>App Store</td>
+<td>https://apps.apple.com/us/app/duolingo-language-lessons/id570060128</td>
+<td>每季度</td>
+</tr>
+<tr>
+<td>Google Play</td>
+<td>https://play.google.com/store/apps/details?id=com.duolingo</td>
+<td>每季度</td>
+</tr>
+<tr>
+<td>Trustpilot</td>
+<td>https://www.trustpilot.com/review/duolingo.com</td>
+<td>每季度</td>
+</tr>
+<tr>
+<td>Sitejabber</td>
+<td>https://www.sitejabber.com/reviews/duolingo.com</td>
+<td>每季度</td>
+</tr>
+<tr>
+<td>Reddit 月度热帖</td>
+<td>https://www.reddit.com/r/duolingo/top/?t=month</td>
+<td>每月</td>
+</tr>
+<tr>
+<td>Google Trends</td>
+<td>https://trends.google.com/trends/explore?q=duolingo,babbel,pimsleur&amp;date=today+12-m</td>
+<td>每季度</td>
+</tr>
+<tr>
+<td>Sensor Tower</td>
+<td>https://app.sensortower.com/overview/com.duolingo?country=US</td>
+<td>每季度</td>
+</tr>
+<tr>
+<td>Kimola</td>
+<td>https://kimola.com/reports/comprehensive-duolingo-review-report-insights-feedback-google-play-en-us-142121</td>
+<td>每半年</td>
+</tr>
+<tr>
+<td>Class Central</td>
+<td>https://www.classcentral.com/report/duolingo-2025/</td>
+<td>财报后</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="b-html">附录 B：护城河信号 → HTML 颜色映射</h2>
+<table>
+<thead>
+<tr>
+<th>护城河</th>
+<th>核心指标</th>
+<th>green 条件</th>
+<th>amber 条件</th>
+<th>red 条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>行为锁定</td>
+<td>DAU/MAU ratio</td>
+<td>≥40% 且环比升</td>
+<td>37–40% 或持平</td>
+<td>&lt;37% 或连续下滑</td>
+</tr>
+<tr>
+<td>数据飞轮</td>
+<td>毛利率</td>
+<td>≥72%（或符合指引）</td>
+<td>70–72%</td>
+<td>&lt;70% 且非战略选择</td>
+</tr>
+<tr>
+<td>品牌资产</td>
+<td>S&amp;M/Rev 比率趋势</td>
+<td>比率降 + DAU 增速稳</td>
+<td>比率持平</td>
+<td>比率升 + DAU 仍降</td>
+</tr>
+<tr>
+<td>网络效应</td>
+<td>社区/Chess 信号</td>
+<td>出现具体社区化证据</td>
+<td>无新信号</td>
+<td>热度消退</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="chtml-str_replace">附录 C：HTML 结构索引（str_replace 定位用）</h2>
+<div class="highlight"><pre><span></span><code>季度卡片区域       → id=&quot;qc0&quot; 至 id=&quot;qcN&quot;
+数据表格           → class=&quot;data-table&quot; 内的 class=&quot;data-row&quot;
+DAU 柱状图         → id=&quot;overview&quot; 内第一个 class=&quot;bar-section&quot;
+EBITDA 柱状图      → id=&quot;overview&quot; 内第二个 class=&quot;bar-section&quot;
+护城河卡片         → id=&quot;moat&quot; 内的 class=&quot;moat-card&quot;
+护城河警报         → class=&quot;alert amber&quot; 或 class=&quot;alert red&quot;
+指引表格           → id=&quot;outlook&quot; 内的 class=&quot;detail&quot;
+观察清单           → id=&quot;watchlist&quot; 内的 class=&quot;wl-block&quot;
+评分卡片           → id=&quot;sent_ratings&quot; 内的 class=&quot;platform-card&quot;
+情绪时间线         → id=&quot;sent_timeline&quot; 内的 class=&quot;snt-timeline&quot;
+评分历史快照       → id=&quot;sent_timeline&quot; 内的评分快照 grid 区域
+Reddit 热词        → id=&quot;sent_timeline&quot; 内的 flex 热词 span 区域
+来源表格           → id=&quot;sources&quot; 内的 class=&quot;src-table&quot;
+数据校验记录       → id=&quot;sources&quot; 内的 class=&quot;verify-grid&quot;
+页面版本号         → footer 内 class=&quot;footer-note&quot;（右侧）
+</code></pre></div>
+
+<hr />
+<h2 id="d">附录 D：版本历史</h2>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>日期</th>
+<th>变更说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1.0</td>
+<td>2026-03</td>
+<td>初始版本，仅覆盖情绪数据采集</td>
+</tr>
+<tr>
+<td>v2.0</td>
+<td>2026-03</td>
+<td>完整重写，新增财务采集（MODULE 1）、护城河判断（MODULE 2）、完整 HTML 更新规范（MODULE 4）、质量检验（MODULE 5）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>配套 HTML 文件：<code>duolingo_moat_tracker.html</code></em><br />
+<em>最后更新：2026 年 3 月</em></p>
+    </article>
+  </main>
+</div>
+
+<script>
+// Build TOC from headings
+const tocList = document.getElementById('toc-list');
+const headings = document.querySelectorAll('.article h2, .article h3');
+headings.forEach((h, i) => {
+  if (!h.id) h.id = 'h-' + i;
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  a.href = '#' + h.id;
+  a.textContent = h.textContent.replace(/^[#\s]+/, '');
+  a.className = 'toc-' + h.tagName.toLowerCase();
+  li.appendChild(a);
+  tocList.appendChild(li);
+});
+
+// Highlight active TOC item on scroll
+const tocLinks = tocList.querySelectorAll('a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(a => a.classList.remove('active'));
+      const active = tocList.querySelector(`a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+headings.forEach(h => observer.observe(h));
+</script>
+</body>
+</html>
