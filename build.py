@@ -12,19 +12,6 @@ from pathlib import Path
 # Directories to skip when scanning for reports
 SKIP_DIRS = {"template", ".git", "node_modules", ".github", ".claude"}
 
-# Known ticker descriptions — add new ones here as you cover more companies
-TICKER_META = {
-    "BABA":  "阿里巴巴 · Alibaba",
-    "BILI":  "哔哩哔哩 · Bilibili",
-    "DDOG":  "Datadog · 数据狗",
-    "DUOL":  "Duolingo · 多邻国",
-    "MDB":   "MongoDB",
-    "MPNGY": "美团 · Meituan",
-    "PDD":   "拼多多 · PDD Holdings",
-    "SNOW":  "Snowflake",
-    "TCEHY": "腾讯 · Tencent",
-    "TCOM":  "携程 · Trip.com",
-}
 
 HTML_TEMPLATE = """\
 <!DOCTYPE html>
@@ -382,7 +369,7 @@ def build_nav_html(reports: dict[str, list[Path]], root: Path) -> str:
     for i, ticker in enumerate(tickers):
         is_last_ticker = i == len(tickers) - 1
         ticker_connector = "└──" if is_last_ticker else "├──"
-        desc = TICKER_META.get(ticker, ticker)
+        desc = ticker
         html_files = reports[ticker]
 
         lines.append(f'      <li class="tree-ticker">')
