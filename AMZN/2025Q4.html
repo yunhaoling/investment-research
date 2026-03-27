@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon.com, Inc.（NASDAQ: AMZN）深度投资研究报告</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #0b0d12;
+  --bg2:    #10131a;
+  --bg3:    #161923;
+  --bg4:    #1d2130;
+  --border: #222638;
+  --border2:#2a2f45;
+  --text:   #dde3f0;
+  --text2:  #8a93b0;
+  --text3:  #505878;
+  --accent: #5b6af0;
+  --green:  #2ed380;
+  --amber:  #f5c542;
+  --red:    #ff5566;
+  --mono:   'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ── Header ── */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex; align-items: center; gap: 16px; height: 52px;
+}
+.back-link {
+  color: var(--text3); text-decoration: none; font-size: 13px;
+  font-family: var(--mono); transition: color .2s;
+}
+.back-link:hover { color: var(--text2); }
+.header-sep { color: var(--border2); }
+.header-title { font-size: 13px; color: var(--text2); }
+
+/* ── Layout ── */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+/* ── TOC Sidebar ── */
+.toc {
+  position: sticky; top: 52px; align-self: start;
+  height: calc(100vh - 52px); overflow-y: auto;
+  padding: 28px 0;
+  border-right: 1px solid var(--border);
+  background: var(--bg2);
+}
+.toc-title {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--text3); font-family: var(--mono);
+  padding: 0 20px 12px;
+}
+.toc ul { list-style: none; }
+.toc a {
+  display: block; padding: 5px 20px;
+  font-size: 12.5px; color: var(--text3);
+  text-decoration: none; transition: color .15s, background .15s;
+  border-left: 2px solid transparent;
+}
+.toc a:hover { color: var(--text2); background: var(--bg3); }
+.toc a.active { color: var(--accent); border-left-color: var(--accent); }
+.toc .toc-h2 { padding-left: 20px; }
+.toc .toc-h3 { padding-left: 34px; font-size: 11.5px; }
+
+/* ── Article ── */
+.article {
+  max-width: 860px;
+  padding: 48px 60px 80px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Headings */
+.article h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.article h2 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px; font-weight: 600;
+  color: var(--text);
+  margin: 40px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.article h2::before {
+  content: ''; display: block;
+  width: 3px; height: 18px; border-radius: 2px;
+  background: var(--accent); flex-shrink: 0;
+}
+.article h3 {
+  font-size: 15px; font-weight: 500;
+  color: var(--text2);
+  margin: 28px 0 12px;
+}
+.article h4 {
+  font-size: 13px; font-weight: 500;
+  color: var(--text3); text-transform: uppercase; letter-spacing: .06em;
+  margin: 20px 0 8px;
+}
+
+/* Body text */
+.article p { margin-bottom: 14px; color: var(--text2); }
+.article strong { color: var(--text); font-weight: 500; }
+.article em { color: var(--amber); font-style: normal; }
+.article hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+/* Blockquote */
+.article blockquote {
+  margin: 20px 0;
+  padding: 14px 20px;
+  background: var(--bg3);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+}
+.article blockquote p {
+  color: var(--text2); margin: 0;
+  font-size: 13.5px; line-height: 1.8;
+}
+
+/* Tables */
+.article table {
+  width: 100%; border-collapse: collapse;
+  margin: 20px 0 28px; font-size: 13px;
+}
+.article thead th {
+  padding: 8px 12px;
+  text-align: right;
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .07em;
+  color: var(--text3);
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border2);
+  font-family: var(--mono);
+}
+.article thead th:first-child { text-align: left; }
+.article tbody td {
+  padding: 8px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+.article tbody td:first-child {
+  text-align: left;
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.article tbody tr:hover td { background: var(--bg3); }
+
+/* Lists */
+.article ul, .article ol {
+  padding-left: 20px; margin-bottom: 14px;
+}
+.article li { color: var(--text2); margin-bottom: 4px; }
+.article li strong { color: var(--text); }
+
+/* Inline code */
+.article code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 1px 5px; border-radius: 4px;
+  color: var(--amber);
+}
+.article pre {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+.article pre code {
+  background: none; border: none; padding: 0;
+  color: var(--text2); font-size: 13px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { display: none; }
+  .article { padding: 32px 20px 60px; }
+  .site-header { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../" class="back-link">← index</a>
+  <span class="header-sep">/</span>
+  <span class="header-title">AMZN</span>
+</header>
+
+<div class="layout">
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ul id="toc-list"></ul>
+  </nav>
+
+  <main>
+    <article class="article" id="article">
+      <h1 id="amazoncom-incnasdaq-amzn">Amazon.com, Inc.（NASDAQ: AMZN）深度投资研究报告</h1>
+<p><strong>报告日期：</strong> 2026年3月26日<br />
+<strong>报告类型：</strong> 买方深度研究<br />
+<strong>参考股价：</strong> ~$210（2026年3月25日收盘价）<br />
+<strong>分析师共识评级：</strong> 强力买入（47家机构，46 Buy / 1 Hold / 0 Sell）</p>
+<hr />
+<h2 id="moat-analysis">一、护城河分析（Moat Analysis）</h2>
+<h3 id="11-network-effects-prime">1.1 网络效应（Network Effects）——电商平台 &amp; Prime 生态</h3>
+<p><strong>核心逻辑：</strong> 亚马逊平台拥有买家与第三方卖家双边网络效应。买家越多，吸引卖家越多；卖家越多（当前约970万注册卖家，约200万活跃），商品丰富度越高，反过来留住更多买家。这一飞轮效应形成极高准入壁垒。</p>
+<p>全年2025年三方卖家服务收入达$1,722亿，Q4单季贡献$528亿，同比增11%；三方卖家占亚马逊平台已付单元比例达到61%。</p>
+<p><strong>关键指标：逐季数据</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>FY2025</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全球Prime会员数（估算，M）</td>
+<td>~215</td>
+<td>~217</td>
+<td>~219</td>
+<td>~220+</td>
+<td>~220+</td>
+</tr>
+<tr>
+<td>活跃客户数（M）</td>
+<td>~310</td>
+<td>~313</td>
+<td>~315</td>
+<td>~315+</td>
+<td>~315+</td>
+</tr>
+<tr>
+<td>三方卖家收入（$B）</td>
+<td>35.6</td>
+<td>40.3</td>
+<td>43.5</td>
+<td>52.8</td>
+<td>172.2</td>
+</tr>
+<tr>
+<td>三方卖家单元占比</td>
+<td>~60%</td>
+<td>~60%</td>
+<td>~61%</td>
+<td>~61%</td>
+<td>~61%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>强弱判断：</strong> 强。截至2025年，亚马逊拥有超过2亿Prime会员，其中约1.8亿在美国，平均每位Prime会员年消费额约$1,400，显著高于非会员。Prime生态的黏性极强——会员每年为两日达、流媒体、音乐等服务捆绑付费，退出成本高。</p>
+<p><strong>护城河趋势：拓宽。</strong> Prime Video广告版在16个国家上线，平均月活观众达3.15亿；广告业务成为亚马逊第三大收入来源，FY2025全年达$686亿。</p>
+<hr />
+<h3 id="12">1.2 成本优势 &amp; 规模经济——物流基础设施</h3>
+<p><strong>核心逻辑：</strong> 亚马逊构建了全球最大的自营物流网络（数百个履约中心、分拣中心、配送站），规模成本摊薄效应已超越其他任何电商。自建物流反向成为新的利润中心（对外提供FBA服务）。</p>
+<p><strong>关键指标：逐季数据</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>FY2025</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>北美营收（$B）</td>
+<td>92.9</td>
+<td>100.1</td>
+<td>106.3</td>
+<td>127.1</td>
+<td>426.3</td>
+</tr>
+<tr>
+<td>北美营业利润（$B）</td>
+<td>5.8</td>
+<td>7.4</td>
+<td>4.8*</td>
+<td>11.5</td>
+<td>29.6</td>
+</tr>
+<tr>
+<td>国际营收（$B）</td>
+<td>33.5</td>
+<td>36.8</td>
+<td>40.9</td>
+<td>50.7</td>
+<td>161.9</td>
+</tr>
+<tr>
+<td>国际营业利润（$B）</td>
+<td>0.9</td>
+<td>1.4</td>
+<td>1.2</td>
+<td>1.0</td>
+<td>4.7</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>*Q3北美含FTC和解金$2.5B等特殊费用</p>
+</blockquote>
+<p>北美分部FY2025营业利润为$296亿（vs 2024年$250亿），国际分部营业利润$47亿（vs 2024年$38亿），两者均创历史新高。</p>
+<p><strong>强弱判断：</strong> 强且持续改善。北美零售利润率已从2022-2023年的负值扭亏，2025年北美营业利润率约7%，较2024年有显著改善。国际分部仍处于投入爬坡期，但连续多季度盈利。</p>
+<p><strong>护城河趋势：拓宽。</strong> 配送网络已扩展同日达至超过2,300个城市（较2024年增加约60%），农村配送基础设施快速铺建。机器人与AI自动化（目标2027年每件降本$0.30）将进一步压低边际成本。</p>
+<hr />
+<h3 id="13-aws">1.3 转换成本 &amp; 无形资产——AWS云计算</h3>
+<p><strong>核心逻辑：</strong> 企业客户一旦将核心业务迁移至AWS，迁移成本（技术重构、人员培训、合同锁定）极高，客户留存率接近100%。AWS超过200项服务深度集成，形成"黏性飞轮"。</p>
+<p><strong>关键指标：逐季数据</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>FY2025</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AWS营收（$B）</td>
+<td>29.3</td>
+<td>30.9</td>
+<td>33.0</td>
+<td>35.6</td>
+<td>128.7</td>
+</tr>
+<tr>
+<td>AWS营收增速（YoY）</td>
+<td>+17%</td>
+<td>+17.5%</td>
+<td>+20%</td>
+<td>+24%</td>
+<td>+20%</td>
+</tr>
+<tr>
+<td>AWS营业利润（$B）</td>
+<td>11.5</td>
+<td>10.2</td>
+<td>11.4</td>
+<td>12.5</td>
+<td>45.6</td>
+</tr>
+<tr>
+<td>AWS营业利润率</td>
+<td>39.2%</td>
+<td>33.0%</td>
+<td>34.5%</td>
+<td>35.1%</td>
+<td>35.4%</td>
+</tr>
+<tr>
+<td>云市场份额（Synergy）</td>
+<td>~30%</td>
+<td>~30%</td>
+<td>~29%</td>
+<td>~28%</td>
+<td>~29-30%</td>
+</tr>
+<tr>
+<td>AWS剩余履约义务（$B）</td>
+<td>~215</td>
+<td>~220+</td>
+<td>~228</td>
+<td>244</td>
+<td>244</td>
+</tr>
+</tbody>
+</table>
+<p><strong>强弱判断：</strong> 极强。AWS积压订单增长40% YoY至$2,440亿，这预示着未来数年可见的强劲增长。Trainium和Graviton芯片组合年化收入已超过$100亿，并以三位数百分比速度增长。</p>
+<p><strong>护城河趋势：拓宽。</strong> AWS增速从Q2 2025的17.5%重新加速至Q4 2025的24%（13季度最快），背后驱动力是AI工作负载需求爆发。Andy Jassy表示，2026年亚马逊将在资本开支上投入约$2,000亿，大部分用于AI基础设施。</p>
+<hr />
+<h3 id="14">1.4 无形资产——广告平台</h3>
+<p><strong>核心逻辑：</strong> 亚马逊掌握电商用户的购买意图数据（最有价值的广告定向信号），广告主无法轻易绕开。亚马逊在美国电商市场占据约40%份额，意味着品牌商在亚马逊上投放广告几乎是必选项。</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>FY2025</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>广告服务营收（$B）</td>
+<td>13.9</td>
+<td>15.7</td>
+<td>17.7</td>
+<td>21.3</td>
+<td>68.6</td>
+</tr>
+<tr>
+<td>广告同比增速</td>
+<td>+18%</td>
+<td>+22%</td>
+<td>+24%</td>
+<td>+22%</td>
+<td>~+21%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>强弱判断：</strong> 极强，且具有定价权。广告业务近纯利润特性（边际成本极低），正成为整体利润的重要支撑。广告已超越AWS成为增速最快的高利润率收入来源之一。</p>
+<hr />
+<h2 id="valuation">二、估值分析（Valuation）</h2>
+<blockquote>
+<p><strong>估值基准：</strong> 当前股价 $210（2026年3月25日参考）；总股本约107.3亿股；市值约 $2.25T。</p>
+</blockquote>
+<hr />
+<h3 id="21-pe">2.1 PE 估值</h3>
+<p><strong>历史EPS及预测（逐季）</strong></p>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>报告EPS</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025Q1</td>
+<td>$1.59</td>
+<td>含Anthropic投资收益$3.3B（税前），调整后约$1.28</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>$1.68</td>
+<td>正常</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>$1.95</td>
+<td>含FTC和解金$2.5B等特殊支出$4.3B，调整后约$2.28</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>$1.95</td>
+<td>含特殊费用$2.4B，调整后约$2.17</td>
+</tr>
+<tr>
+<td><strong>FY2025</strong></td>
+<td><strong>$7.17</strong></td>
+<td><strong>TTM EPS</strong></td>
+</tr>
+<tr>
+<td>2026E（预测值）</td>
+<td><strong>$7.93</strong></td>
+<td>74位分析师共识，同比+10.6%</td>
+</tr>
+<tr>
+<td>2027E（预测值）</td>
+<td><strong>$9.65</strong></td>
+<td>70位分析师共识，同比+21.7%</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>预测值来源：74家分析师共识（WallStreetZen、SeekingAlpha），数据截至2026年3月</em></p>
+</blockquote>
+<p><strong>合理PE区间分析：</strong></p>
+<p>亚马逊过去3年平均PE约64x（历史高估；含低EPS年份影响较大），过去5年平均约49x。但随着EPS大幅增长，绝对PE已快速压缩：当前TTM PE约29x，Forward PE（2026E）约26.5x。相较于AWS增速重新加速（24% YoY Q4）、广告高速成长（22%）、和AI基础设施建设期的独特成长属性，合理区间为25x-40x（正常化盈利）。</p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>使用EPS</th>
+<th>目标PE</th>
+<th>目标股价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bear（悲观）</td>
+<td>2026E $7.93</td>
+<td>25x</td>
+<td><strong>$198</strong></td>
+</tr>
+<tr>
+<td>Base（基准）</td>
+<td>2026E $7.93</td>
+<td>33x</td>
+<td><strong>$262</strong></td>
+</tr>
+<tr>
+<td>Bull（乐观）</td>
+<td>2027E $9.65</td>
+<td>38x</td>
+<td><strong>$367</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="22-ps">2.2 PS 估值</h3>
+<p><strong>历史收入及预测（逐季）</strong></p>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>营收（$B）</th>
+<th>YoY增速</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025Q1</td>
+<td>155.7</td>
+<td>+9%</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>167.7</td>
+<td>+13%</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>180.2</td>
+<td>+13%</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>213.4</td>
+<td>+14%</td>
+</tr>
+<tr>
+<td><strong>FY2025</strong></td>
+<td><strong>716.9</strong></td>
+<td><strong>+12%</strong></td>
+</tr>
+<tr>
+<td>2026E（预测值）</td>
+<td><strong>~807.6B</strong></td>
+<td><strong>~+12.6%</strong>（Seeking Alpha共识）</td>
+</tr>
+<tr>
+<td>2027E（预测值）</td>
+<td><strong>~$890-900B</strong></td>
+<td><strong>~+11%</strong>（估算）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>合理PS区间分析：</strong></p>
+<p>亚马逊当前TTM P/S约3.1x（$2.25T / $716.9B）。历史区间：2021-2022年高峰约3.5-5x，2022-2023年低谷约1.5-2x，近期约3-4x。考虑到AWS（利润率35%+）与广告（极高利润率）占比持续提升，高于纯电商公司的溢价合理。</p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>使用收入</th>
+<th>目标PS</th>
+<th>目标股价（隐含）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bear（悲观）</td>
+<td>2026E $807.6B</td>
+<td>2.5x</td>
+<td><strong>$188</strong></td>
+</tr>
+<tr>
+<td>Base（基准）</td>
+<td>2026E $807.6B</td>
+<td>3.3x</td>
+<td><strong>$249</strong></td>
+</tr>
+<tr>
+<td>Bull（乐观）</td>
+<td>2027E ~$895B</td>
+<td>4.2x</td>
+<td><strong>$351</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="23-dcf">2.3 DCF 估值</h3>
+<p><strong>核心假设说明：</strong></p>
+<p>由于2026年资本开支预计高达$2,000亿（比2025年的$1,318亿增长52%），GAAP FCF在2026年将承压（可能接近0或为负）。DCF中"自由现金流"使用<strong>经营现金流 - 维护性资本开支（估算$35-50B）</strong>，即"调整FCF"，以剔除AI基础设施增长型资本支出的扭曲，反映企业真实盈利能力。</p>
+<p><strong>关键假设（三情景）</strong></p>
+<table>
+<thead>
+<tr>
+<th>假设项</th>
+<th>Bear</th>
+<th>Base</th>
+<th>Bull</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>短期收入增速（2026-2028）</strong></td>
+<td>9%</td>
+<td>12%</td>
+<td>16%</td>
+</tr>
+<tr>
+<td><strong>中期收入增速（2029-2031）</strong></td>
+<td>7%</td>
+<td>10%</td>
+<td>14%</td>
+</tr>
+<tr>
+<td><strong>调整FCF Margin（2026-2028）</strong></td>
+<td>12%</td>
+<td>16%</td>
+<td>20%</td>
+</tr>
+<tr>
+<td><strong>调整FCF Margin（2029+成熟期）</strong></td>
+<td>15%</td>
+<td>20%</td>
+<td>26%</td>
+</tr>
+<tr>
+<td><strong>WACC</strong></td>
+<td>11%</td>
+<td>10%</td>
+<td>9%</td>
+</tr>
+<tr>
+<td><strong>终端增长率（永续）</strong></td>
+<td>3.0%</td>
+<td>3.5%</td>
+<td>4.0%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>情景结果（内在价值/股）</strong></p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>核心假设驱动</th>
+<th>内在价值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bear</strong></td>
+<td>竞争加剧、AWS增速降至个位数、广告增长放缓</td>
+<td><strong>$155</strong></td>
+</tr>
+<tr>
+<td><strong>Base</strong></td>
+<td>AWS保持约18-20%增速，广告维持20%增长，资本开支周期2027年后开始边际改善</td>
+<td><strong>$260</strong></td>
+</tr>
+<tr>
+<td><strong>Bull</strong></td>
+<td>AWS重加速至25%+，广告达$100B，AI芯片业务爆发，资本开支ROI快速兑现</td>
+<td><strong>$400+</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="24">2.4 综合估值汇总</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>Bear</th>
+<th>Base</th>
+<th>Bull</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PE估值</td>
+<td>$198</td>
+<td>$262</td>
+<td>$367</td>
+</tr>
+<tr>
+<td>PS估值</td>
+<td>$188</td>
+<td>$249</td>
+<td>$351</td>
+</tr>
+<tr>
+<td>DCF估值</td>
+<td>$155</td>
+<td>$260</td>
+<td>$400+</td>
+</tr>
+<tr>
+<td><strong>综合均值</strong></td>
+<td><strong>~$180</strong></td>
+<td><strong>~$257</strong></td>
+<td><strong>~$370</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>综合判断：</strong> 当前股价约$210，处于Base情景下略有折价区间。三种方法的Base均值约$257，相对当前股价约22%上行空间。华尔街分析师中位数1年目标价为$294.76，共识评级"强力买入"，46位买入，1位持有，0位卖出。估值吸引力来自AI毛利扩张预期，但短期风险在于2026年$2,000亿资本开支压制FCF。</p>
+<hr />
+<h2 id="_1">三、纵向比较（历史对比）</h2>
+<h3 id="31">3.1 核心财务指标逐季趋势</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th><strong>FY2025</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>营收（$B）</td>
+<td>155.7</td>
+<td>167.7</td>
+<td>180.2</td>
+<td>213.4</td>
+<td><strong>716.9</strong></td>
+</tr>
+<tr>
+<td>营收YoY</td>
+<td>+9%</td>
+<td>+13%</td>
+<td>+13%</td>
+<td>+14%</td>
+<td><strong>+12%</strong></td>
+</tr>
+<tr>
+<td>营业利润（$B）</td>
+<td>18.4</td>
+<td>19.2</td>
+<td>17.4</td>
+<td>25.0</td>
+<td><strong>80.0</strong></td>
+</tr>
+<tr>
+<td>营业利润率</td>
+<td>11.8%</td>
+<td>11.4%</td>
+<td>9.7%*</td>
+<td>11.7%</td>
+<td><strong>11.2%</strong></td>
+</tr>
+<tr>
+<td>净利润（$B）</td>
+<td>17.1</td>
+<td>18.2</td>
+<td>21.2</td>
+<td>21.2</td>
+<td><strong>77.7</strong></td>
+</tr>
+<tr>
+<td>净利润率</td>
+<td>11.0%</td>
+<td>10.8%</td>
+<td>11.8%</td>
+<td>9.9%</td>
+<td><strong>10.8%</strong></td>
+</tr>
+<tr>
+<td>EPS（摊薄）</td>
+<td>$1.59</td>
+<td>$1.68</td>
+<td>$1.95</td>
+<td>$1.95</td>
+<td><strong>$7.17</strong></td>
+</tr>
+<tr>
+<td>毛利率（估算）</td>
+<td>~49.5%</td>
+<td>~49.8%</td>
+<td>~50.1%</td>
+<td>~51.2%</td>
+<td><strong>~50.3%</strong></td>
+</tr>
+<tr>
+<td>经营现金流（TTM $B）</td>
+<td>~115</td>
+<td>~121</td>
+<td>~128</td>
+<td>139.5</td>
+<td><strong>139.5</strong></td>
+</tr>
+<tr>
+<td>GAAP FCF（TTM $B）</td>
+<td>~28</td>
+<td>~18</td>
+<td>~14.8</td>
+<td>11.2</td>
+<td><strong>11.2</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>*Q3含FTC和解金$2.5B及遣散费$1.8B等特殊费用$4.3B</p>
+</blockquote>
+<p><strong>年度历史对比（FY2023 → FY2024 → FY2025）</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>FY2023</th>
+<th>FY2024</th>
+<th>FY2025</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>营收（$B）</td>
+<td>574.8</td>
+<td>638.0</td>
+<td>716.9</td>
+</tr>
+<tr>
+<td>营业利润（$B）</td>
+<td>36.9</td>
+<td>68.6</td>
+<td>80.0</td>
+</tr>
+<tr>
+<td>净利润（$B）</td>
+<td>30.4</td>
+<td>59.2</td>
+<td>77.7</td>
+</tr>
+<tr>
+<td>EPS</td>
+<td>$2.90</td>
+<td>$5.53</td>
+<td>$7.17</td>
+</tr>
+<tr>
+<td>毛利率</td>
+<td>~47%</td>
+<td>~48.9%</td>
+<td>~50.3%</td>
+</tr>
+<tr>
+<td>净利润率</td>
+<td>5.3%</td>
+<td>9.3%</td>
+<td>10.8%</td>
+</tr>
+<tr>
+<td>ROE</td>
+<td>—</td>
+<td>~20.7%</td>
+<td><strong>~18.9-22%</strong></td>
+</tr>
+<tr>
+<td>FCF（$B）</td>
+<td>35.5</td>
+<td>38.2</td>
+<td>11.2</td>
+</tr>
+</tbody>
+</table>
+<p>毛利率从2021年42%稳步提升至2025年50.3%，显示出定价策略优化、高利润率业务（AWS、广告）持续扩张的结构性改善。FCF的大幅下滑（$38.2B→$11.2B）完全由AI资本开支驱动，并非运营层面恶化，需区分理解。</p>
+<hr />
+<h3 id="32">3.2 估值倍数历史区间</h3>
+<table>
+<thead>
+<tr>
+<th>估值指标</th>
+<th>当前（2026/3）</th>
+<th>1年均值</th>
+<th>3年均值</th>
+<th>5年均值</th>
+<th>10年均值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PE（TTM）</td>
+<td>~29x</td>
+<td>~33x</td>
+<td>~64x</td>
+<td>~49x</td>
+<td>~102x</td>
+</tr>
+<tr>
+<td>Forward PE</td>
+<td>~26.5x</td>
+<td>~30x</td>
+<td>—</td>
+<td>~40x</td>
+<td>—</td>
+</tr>
+<tr>
+<td>PS</td>
+<td>~3.1x</td>
+<td>~3.3x</td>
+<td>~2.8x</td>
+<td>~3.5x</td>
+<td>~4x</td>
+</tr>
+<tr>
+<td>EV/EBITDA</td>
+<td>~16x</td>
+<td>~18x</td>
+<td>—</td>
+<td>~30x</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>当前估值位置判断：</strong></p>
+<p>基于历史区间，亚马逊当前PE处于近10年绝对<strong>历史低位</strong>（主要因为EPS快速增长使分母扩大）。AMZN当前PE约28.4x，较10年历史均值102x低72%；较3年均值64x低56%；较5年均值66x低57%。这是亚马逊EPS结构性提升的结果，意味着历史PE比较价值有限，更应关注Forward PE。Forward PE 26.5x（2026E）对于一家AWS增速重回24%、广告高速增长的公司，处于合理偏低位置。</p>
+<p><strong>综合判断：当前估值处于历史中低位，具备较好的安全边际。</strong></p>
+<hr />
+<h2 id="_2">四、横向比较（行业对标）</h2>
+<h3 id="41">4.1 可比公司选取</h3>
+<p>选取5家核心对标公司，覆盖云计算、广告、电商三维度竞争格局：</p>
+<ol>
+<li><strong>Microsoft（MSFT）</strong> — 云计算/AI（Azure直接竞争AWS）</li>
+<li><strong>Alphabet/Google（GOOGL）</strong> — 云计算 + 广告生态竞争</li>
+<li><strong>Meta（META）</strong> — 数字广告市场分流竞争</li>
+<li><strong>Walmart（WMT）</strong> — 美国零售电商直接竞争</li>
+<li><strong>阿里巴巴（BABA）</strong> — 全球电商 + 云计算对标</li>
+</ol>
+<hr />
+<h3 id="42-2025-cy2025">4.2 关键财务指标对比（2025财年 / CY2025）</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th><strong>Amazon</strong></th>
+<th>Microsoft</th>
+<th>Alphabet</th>
+<th>Meta</th>
+<th>Walmart</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>营收（$B）</strong></td>
+<td>716.9</td>
+<td>~305</td>
+<td>~402.8</td>
+<td>~175*</td>
+<td>~680*</td>
+</tr>
+<tr>
+<td><strong>营收增速</strong></td>
+<td>+12%</td>
+<td>+15%</td>
+<td>+15%</td>
+<td>+20%+</td>
+<td>+5%*</td>
+</tr>
+<tr>
+<td><strong>营业利润率</strong></td>
+<td>11.2%</td>
+<td>~45%</td>
+<td>~32%</td>
+<td>~42%*</td>
+<td>~4%*</td>
+</tr>
+<tr>
+<td><strong>毛利率</strong></td>
+<td>~50.3%</td>
+<td>~68%</td>
+<td>~58%</td>
+<td>~81%*</td>
+<td>~25%*</td>
+</tr>
+<tr>
+<td><strong>净利润率</strong></td>
+<td>10.8%</td>
+<td>~39%</td>
+<td>~32%</td>
+<td>~40%*</td>
+<td>~2.5%*</td>
+</tr>
+<tr>
+<td><strong>ROE</strong></td>
+<td>~20%</td>
+<td>~35%+</td>
+<td>~32%+</td>
+<td>~35%+</td>
+<td>~20%*</td>
+</tr>
+<tr>
+<td><strong>EPS（TTM）</strong></td>
+<td>$7.17</td>
+<td>~$16.00</td>
+<td>~$10.81</td>
+<td>~$23+*</td>
+<td>~$2.5*</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>*Meta、Walmart数据为近似估算，基于公开报道及分析师共识</p>
+</blockquote>
+<p><strong>说明：</strong> 亚马逊的营业利润率（11.2%）远低于微软（45%）和谷歌（32%），这是因为亚马逊把低利润的电商零售业务包含在内——这是一种"刻意的会计结构"：零售是引流护城河，利润来自AWS和广告。若单独看AWS（营业利润率35%+）和广告，利润质量极高。</p>
+<hr />
+<h3 id="43-20263">4.3 估值倍数横向对比（2026年3月）</h3>
+<table>
+<thead>
+<tr>
+<th>估值指标</th>
+<th><strong>Amazon</strong></th>
+<th>Microsoft</th>
+<th>Alphabet</th>
+<th>Meta</th>
+<th>Walmart</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TTM P/E</strong></td>
+<td>~29x</td>
+<td>~23x</td>
+<td>~27x</td>
+<td>~25x</td>
+<td>~35x</td>
+</tr>
+<tr>
+<td><strong>Forward P/E</strong></td>
+<td>~26.5x</td>
+<td>~21x</td>
+<td>~23x</td>
+<td>~22x*</td>
+<td>~33x*</td>
+</tr>
+<tr>
+<td><strong>P/S</strong></td>
+<td>~3.1x</td>
+<td>~12x</td>
+<td>~7.5x</td>
+<td>~9x+</td>
+<td>~0.8x</td>
+</tr>
+<tr>
+<td><strong>EV/EBITDA</strong></td>
+<td>~16x</td>
+<td>~16x</td>
+<td>~15x</td>
+<td>~15x*</td>
+<td>~20x*</td>
+</tr>
+<tr>
+<td><strong>PEG Ratio</strong></td>
+<td>~1.46</td>
+<td>~1.51</td>
+<td>~1.3</td>
+<td>~1.1*</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>分析师平均评级</strong></td>
+<td>强力买入</td>
+<td>买入</td>
+<td>买入</td>
+<td>买入</td>
+<td>持有/买入</td>
+</tr>
+</tbody>
+</table>
+<p><strong>云计算业务具体对比（FY2025 / CY2025）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>云业务</th>
+<th>AWS</th>
+<th>Azure（智能云）</th>
+<th>Google Cloud</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>季度营收（Q4/最新）</td>
+<td>$35.6B</td>
+<td>~$30.9B（Q1 FY26）</td>
+<td>~$12B+</td>
+</tr>
+<tr>
+<td>YoY增速</td>
+<td>+24%</td>
+<td>+40%</td>
+<td>+28-34%</td>
+</tr>
+<tr>
+<td>营业利润率</td>
+<td>~35%</td>
+<td>~43%（微软智能云整体）</td>
+<td>~30%（Q3 2025）</td>
+</tr>
+<tr>
+<td>市场份额</td>
+<td>~28-30%</td>
+<td>~20%</td>
+<td>~13%</td>
+</tr>
+</tbody>
+</table>
+<p>2025年Q2 AWS增速17.5%，而Azure增速约39%，Google Cloud约32%，竞争对手增速明显高于AWS。不过Q4 2025 AWS增速重新加速至24%（13季度最快），并非长期趋势逆转。</p>
+<hr />
+<h3 id="44">4.4 溢价/折价合理性判断</h3>
+<p><strong>结论：Amazon相对同业应享有合理溢价，当前估值反而偏折价。</strong></p>
+<p><strong>相对Microsoft：</strong> AMZN P/E(29x) &gt; MSFT P/E(23x)，溢价约26%。合理——AMZN营收增速更快，AWS增速在同类云中重新加速；但MSFT利润率远高，溢价应有限。整体合理。</p>
+<p><strong>相对Alphabet：</strong> AMZN P/E(29x) ≈ GOOGL P/E(27x)，几乎平价。考虑AMZN更多元的增长引擎（云+广告+零售），平价甚至折价均合理。</p>
+<p><strong>对比Walmart：</strong> AMZN P/S(3.1x) vs WMT P/S(0.8x)，溢价巨大但合理——AWS和广告等高利润率业务是核心驱动，Walmart无同等业务。</p>
+<hr />
+<h2 id="_3">五、风险提示</h2>
+<h3 id="1aifcf">风险1：AI资本开支"黑洞"——FCF恶化超预期 ⚠️</h3>
+<p>Amazon 2026年资本开支指引约$2,000亿，较2025年$1,318亿增加52%以上，主要投向AI数据中心基础设施。这意味着2026年GAAP FCF可能接近0甚至转负。若AI需求增长不及预期、投资回报周期拉长，市场将面临估值重估压力。</p>
+<p><strong>对估值影响：</strong> 若FCF恢复时间推迟2年，Base DCF价值将降低$30-40/股。</p>
+<hr />
+<h3 id="2aws">风险2：AWS市场份额流失——竞争加剧</h3>
+<p>AWS市场份额从2021年约33%缓慢下滑至2025年约28-29%，Azure和Google Cloud增速均持续超越AWS。若Azure通过OpenAI深度绑定进一步蚕食AWS份额，且Google Cloud AI工具优势扩大，AWS增长可能放缓至15%以下。</p>
+<p><strong>对估值影响：</strong> AWS增速每下降5个百分点，Base情景目标价约降低$25-35/股。</p>
+<hr />
+<h3 id="3">风险3：监管与反垄断风险</h3>
+<p>FTC反垄断诉讼预计2026年10月开庭审理，可能影响亚马逊Marketplace的运营模式和费率结构。欧盟数字市场法（DMA）持续施压；广告业务的数据使用也面临隐私法规约束。</p>
+<p><strong>对估值影响：</strong> 若被迫拆分或改变商业模式，整体估值存在10-20%下行风险。</p>
+<hr />
+<h3 id="4">风险4：宏观经济衰退冲击消费需求</h3>
+<p>亚马逊约60%营收来自电商和订阅服务，消费意愿受宏观景气度影响显著。若美国经济陷入衰退、消费降级，电商GMV增速可能从12%降至5%以下。</p>
+<p><strong>对估值影响：</strong> Bear情景P/E压缩至25x叠加EPS下调，目标价可能降至$150-180。</p>
+<hr />
+<h3 id="5ai-infra">风险5：AI Infra投资回报不确定性</h3>
+<p>2025年Amazon全年资本开支约$131.8B，2026年预计$200B，两年合计超$330B。若AI服务商业化进程迟缓（类似"科技寒冬"叠加DeepSeek等低成本竞争），AI相关服务2025年全年预计仅带来约$250亿收入，但三家超大规模云厂商投入合计超$2,400亿。这意味着短期投入产出比仍然悬殊。若市场对AI投资ROI普遍失去信心，AMZN估值可能回调至20x P/E以下。</p>
+<hr />
+<h2 id="_4">六、数据来源</h2>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>主要来源</th>
+<th>次要/交叉验证来源</th>
+<th>数据获取时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q4/FY2025财报原始数据</td>
+<td>Amazon SEC 8-K（sec.gov）</td>
+<td>BusinessWire官方新闻稿、AboutAmazon.com</td>
+<td>2026年2月5日发布</td>
+</tr>
+<tr>
+<td>Q1-Q3 2025财报数据</td>
+<td>SEC 8-K归档文件（Q1/Q2/Q3各期）</td>
+<td>CNBC、Yahoo Finance报道</td>
+<td>各季度发布日</td>
+</tr>
+<tr>
+<td>PE/PS估值倍数（历史+当前）</td>
+<td>FullRatio.com, Public.com, FinanceCharts.com</td>
+<td>MacroTrends.net, GuruFocus</td>
+<td>2026年3月24-26日</td>
+</tr>
+<tr>
+<td>市值/统计数据</td>
+<td>StockAnalysis.com（AMZN Statistics）</td>
+<td>—</td>
+<td>2026年3月</td>
+</tr>
+<tr>
+<td>云市场份额</td>
+<td>Synergy Research Group（via Statista/Cargoson）</td>
+<td>DigitalOcean比较研究</td>
+<td>2025年Q2-Q4数据</td>
+</tr>
+<tr>
+<td>Prime会员/电商统计</td>
+<td>BusinessTats.com（汇编自Amazon年报）、Market.us</td>
+<td>EDesk.com、Yaguara.co</td>
+<td>2025-2026年</td>
+</tr>
+<tr>
+<td>广告/卖家统计</td>
+<td>AMZPrep.com（基于Q4 2025财报）</td>
+<td>Amazon官方财报交叉验证</td>
+<td>2026年Q1</td>
+</tr>
+<tr>
+<td>竞争对手数据（MSFT）</td>
+<td>Microsoft SEC 8-K（FY2025年报及季报）</td>
+<td>FullRatio.com, StockAnalysis.com</td>
+<td>2025-2026年</td>
+</tr>
+<tr>
+<td>竞争对手数据（GOOGL）</td>
+<td>Alphabet SEC 8-K（Q2/Q3/Q4 2025）</td>
+<td>GuruFocus, Public.com</td>
+<td>2025-2026年</td>
+</tr>
+<tr>
+<td>分析师预测/共识</td>
+<td>WallStreetZen（74位分析师共识）、SeekingAlpha</td>
+<td>TradingView、24/7 Wall St.</td>
+<td>2026年3月</td>
+</tr>
+</tbody>
+</table>
+<p><strong>关键数据链接：</strong></p>
+<ul>
+<li>Amazon SEC 8-K（Q4 2025）：https://www.sec.gov/Archives/edgar/data/0001018724/000101872426000002/amzn-20251231xex991.htm</li>
+<li>Amazon Q4 2025官方新闻稿：https://www.aboutamazon.com/news/company-news/amazon-earnings-q4-2025-report</li>
+<li>Amazon Q1 2025官方新闻稿：https://ir.aboutamazon.com/news-release/news-release-details/2025/Amazon-com-Announces-First-Quarter-Results/default.aspx</li>
+<li>Amazon Q2 2025 SEC 8-K：https://www.sec.gov/Archives/edgar/data/0001018724/000101872425000084/amzn-20250630xex991.htm</li>
+<li>Amazon Q3 2025 SEC 8-K：https://www.sec.gov/Archives/edgar/data/0001018724/000101872425000121/amzn-20250930xex991.htm</li>
+<li>云市场份额（Synergy via Statista）：https://www.statista.com/chart/18819/worldwide-market-share-of-leading-cloud-infrastructure-service-providers/</li>
+<li>AMZN估值历史：https://www.macrotrends.net/stocks/charts/AMZN/amazon/pe-ratio</li>
+<li>分析师预测共识：https://www.wallstreetzen.com/stocks/us/nasdaq/amzn/stock-forecast</li>
+</ul>
+<p><strong>交叉验证说明：</strong></p>
+<ul>
+<li>Q4 2025 EPS $1.95：同时经SEC 8-K和CNBC/BusinessWire至少两个权威来源确认 ✓</li>
+<li>FY2025营收$716.9B：经SEC 8-K及AboutAmazon官方来源双重确认 ✓</li>
+<li>当前PE ~29x：经FullRatio、Public.com、MacroTrends三个来源交叉验证（区间28.4x-29.5x） ✓</li>
+<li>AWS市场份额~29-30%：经Synergy Research Group（via Statista）及Cargoson/DigitalOcean双重确认 ✓</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>免责声明：</strong> 本报告仅供研究参考，不构成任何投资建议。所有前瞻性预测（标注"预测值"）均基于公开数据和合理假设，实际结果可能与预测存在重大差异。投资决策请结合自身风险偏好并咨询专业投资顾问。</p>
+</blockquote>
+    </article>
+  </main>
+</div>
+
+<script>
+// Build TOC from headings
+const tocList = document.getElementById('toc-list');
+const headings = document.querySelectorAll('.article h2, .article h3');
+headings.forEach((h, i) => {
+  if (!h.id) h.id = 'h-' + i;
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  a.href = '#' + h.id;
+  a.textContent = h.textContent.replace(/^[# ]+/, '');
+  a.className = 'toc-' + h.tagName.toLowerCase();
+  li.appendChild(a);
+  tocList.appendChild(li);
+});
+
+// Highlight active TOC item on scroll
+const tocLinks = tocList.querySelectorAll('a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(a => a.classList.remove('active'));
+      const active = tocList.querySelector(`a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+headings.forEach(h => observer.observe(h));
+</script>
+</body>
+</html>
