@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AppLovin Corporation (NASDAQ: APP)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #0b0d12;
+  --bg2:    #10131a;
+  --bg3:    #161923;
+  --bg4:    #1d2130;
+  --border: #222638;
+  --border2:#2a2f45;
+  --text:   #dde3f0;
+  --text2:  #8a93b0;
+  --text3:  #505878;
+  --accent: #5b6af0;
+  --green:  #2ed380;
+  --amber:  #f5c542;
+  --red:    #ff5566;
+  --mono:   'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ── Header ── */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex; align-items: center; gap: 16px; height: 52px;
+}
+.back-link {
+  color: var(--text3); text-decoration: none; font-size: 13px;
+  font-family: var(--mono); transition: color .2s;
+}
+.back-link:hover { color: var(--text2); }
+.header-sep { color: var(--border2); }
+.header-title { font-size: 13px; color: var(--text2); }
+
+/* ── Layout ── */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+/* ── TOC Sidebar ── */
+.toc {
+  position: sticky; top: 52px; align-self: start;
+  height: calc(100vh - 52px); overflow-y: auto;
+  padding: 28px 0;
+  border-right: 1px solid var(--border);
+  background: var(--bg2);
+}
+.toc-title {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--text3); font-family: var(--mono);
+  padding: 0 20px 12px;
+}
+.toc ul { list-style: none; }
+.toc a {
+  display: block; padding: 5px 20px;
+  font-size: 12.5px; color: var(--text3);
+  text-decoration: none; transition: color .15s, background .15s;
+  border-left: 2px solid transparent;
+}
+.toc a:hover { color: var(--text2); background: var(--bg3); }
+.toc a.active { color: var(--accent); border-left-color: var(--accent); }
+.toc .toc-h2 { padding-left: 20px; }
+.toc .toc-h3 { padding-left: 34px; font-size: 11.5px; }
+
+/* ── Article ── */
+.article {
+  max-width: 860px;
+  padding: 48px 60px 80px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Headings */
+.article h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.article h2 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px; font-weight: 600;
+  color: var(--text);
+  margin: 40px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.article h2::before {
+  content: ''; display: block;
+  width: 3px; height: 18px; border-radius: 2px;
+  background: var(--accent); flex-shrink: 0;
+}
+.article h3 {
+  font-size: 15px; font-weight: 500;
+  color: var(--text2);
+  margin: 28px 0 12px;
+}
+.article h4 {
+  font-size: 13px; font-weight: 500;
+  color: var(--text3); text-transform: uppercase; letter-spacing: .06em;
+  margin: 20px 0 8px;
+}
+
+/* Body text */
+.article p { margin-bottom: 14px; color: var(--text2); }
+.article strong { color: var(--text); font-weight: 500; }
+.article em { color: var(--amber); font-style: normal; }
+.article hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+/* Blockquote */
+.article blockquote {
+  margin: 20px 0;
+  padding: 14px 20px;
+  background: var(--bg3);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+}
+.article blockquote p {
+  color: var(--text2); margin: 0;
+  font-size: 13.5px; line-height: 1.8;
+}
+
+/* Tables */
+.article table {
+  width: 100%; border-collapse: collapse;
+  margin: 20px 0 28px; font-size: 13px;
+}
+.article thead th {
+  padding: 8px 12px;
+  text-align: right;
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .07em;
+  color: var(--text3);
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border2);
+  font-family: var(--mono);
+}
+.article thead th:first-child { text-align: left; }
+.article tbody td {
+  padding: 8px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+.article tbody td:first-child {
+  text-align: left;
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.article tbody tr:hover td { background: var(--bg3); }
+
+/* Lists */
+.article ul, .article ol {
+  padding-left: 20px; margin-bottom: 14px;
+}
+.article li { color: var(--text2); margin-bottom: 4px; }
+.article li strong { color: var(--text); }
+
+/* Inline code */
+.article code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 1px 5px; border-radius: 4px;
+  color: var(--amber);
+}
+.article pre {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+.article pre code {
+  background: none; border: none; padding: 0;
+  color: var(--text2); font-size: 13px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { display: none; }
+  .article { padding: 32px 20px 60px; }
+  .site-header { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../../../" class="back-link">← index</a>
+  <span class="header-sep">/</span>
+  <span class="header-title">APP</span>
+</header>
+
+<div class="layout">
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ul id="toc-list"></ul>
+  </nav>
+
+  <main>
+    <article class="article" id="article">
+      <h1 id="applovin-corporation-nasdaq-app">AppLovin Corporation (NASDAQ: APP)</h1>
+<h2 id="_1">深度投资研究报告</h2>
+<p><strong>报告日期：</strong> 2026年3月26日<br />
+<strong>股票代码：</strong> NASDAQ: APP<br />
+<strong>报告类型：</strong> 买方深度研究<br />
+<strong>参考数据截止：</strong> 2025Q4（最新财报，发布于2026年2月11日）<br />
+<strong>当前股价（2026-03-25）：</strong> $436.69<br />
+<strong>市值：</strong> 约 $1,474亿</p>
+<hr />
+<h2 id="_2">目录</h2>
+<ol>
+<li><a href="#一护城河分析">护城河分析（Moat Analysis）</a></li>
+<li><a href="#二估值分析">估值分析（Valuation）</a></li>
+<li><a href="#三纵向比较历史对比">纵向比较（历史对比）</a></li>
+<li><a href="#四横向比较行业对标">横向比较（行业对标）</a></li>
+<li><a href="#五风险提示">风险提示</a></li>
+<li><a href="#六数据来源">数据来源</a></li>
+</ol>
+<hr />
+<h2 id="_3">一、护城河分析</h2>
+<h3 id="_4">行业背景</h3>
+<p>AppLovin 是全球领先的移动广告技术平台，其核心商业模式是通过自研 AI 引擎 <strong>AXON 2.0</strong> 连接广告主（需求方）与移动应用发行商（供给方）。公司在移动广告生态中同时运营 DSP（需求端平台：AppDiscovery）、SSP（供给端平台：MAX 竞价中介）及移动端测量工具（Adjust），形成闭环。</p>
+<p>公司的护城河可从以下四个维度拆解：</p>
+<hr />
+<h3 id="11-axon-ai">1.1 无形资产护城河 — AXON AI 引擎的技术壁垒</h3>
+<p><strong>护城河类型：</strong> 无形资产（专有AI技术 + 专利组合）</p>
+<p>AXON 2.0 是 AppLovin 竞争壁垒的核心。该引擎采用强化学习，<strong>每秒处理逾200万次广告竞价</strong>，通过来自全球超过10亿台设备的行为数据持续自我优化。这种"数据飞轮"效应使竞争对手极难复制：越多的广告主使用 → 模型学到更多 → ROI 表现更优 → 更多广告主加入。</p>
+<p>公司持有 <strong>536项全球专利</strong>，在 AppsFlyer《2024绩效指数》中稳居移动广告Top供应商之列。</p>
+<p><strong>可追踪量化指标：</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>强弱判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>广告业务收入（$M）</td>
+<td>1,159</td>
+<td>~1,259*</td>
+<td>~1,405*</td>
+<td>~1,658*</td>
+<td>强，持续加速</td>
+</tr>
+<tr>
+<td>广告业务 YoY 增速</td>
+<td>+71%</td>
+<td>+77%</td>
+<td>+68%</td>
+<td>+66%</td>
+<td>强，高基数下仍快速增长</td>
+</tr>
+<tr>
+<td>Adj. EBITDA 利润率</td>
+<td>~63%</td>
+<td>81%</td>
+<td>82%</td>
+<td>84%</td>
+<td>强，扩张趋势清晰</td>
+</tr>
+<tr>
+<td>电商广告年化体量</td>
+<td>—</td>
+<td>$10亿+</td>
+<td>$10亿+ run rate</td>
+<td>快速扩张</td>
+<td>强，新增长曲线验证</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>*注：Q2之后Apps业务已剥离，营收口径统一为广告业务（Advertising segment）。</p>
+</blockquote>
+<p><strong>判断：护城河持续拓宽。</strong> Q4 Adj. EBITDA Margin 达到84%，创历史新高，证明随着规模增加，AXON的算法优势越来越强。广告主反馈的ROI提升幅度达20-30%，构成强大的正向反馈。</p>
+<hr />
+<h3 id="12-max">1.2 网络效应护城河 — MAX 竞价生态</h3>
+<p><strong>护城河类型：</strong> 双边网络效应</p>
+<p>MAX 是 AppLovin 的应用内竞价（In-App Bidding）中介平台，目前已整合至<strong>超过10万个移动应用</strong>。该双边市场的逻辑是：越多应用使用 MAX 作为变现工具 → 广告主可触达的库存越丰富 → 广告主竞争更激烈 → 每次竞价单价上涨 → 开发者收入更高 → 更多开发者接入。</p>
+<p><strong>可追踪量化指标：</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>强弱判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MAX 接入应用数</td>
+<td>100,000+</td>
+<td>100,000+</td>
+<td>100,000+</td>
+<td>100,000+</td>
+<td>稳固</td>
+</tr>
+<tr>
+<td>每安装收益（RPU）</td>
+<td>+75% YoY</td>
+<td>强劲</td>
+<td>强劲</td>
+<td>强劲</td>
+<td>强</td>
+</tr>
+<tr>
+<td>广告主数量（电商新增）</td>
+<td>Wayfair, Dr. Squatch, Ashley Furniture</td>
+<td>—</td>
+<td>快速扩张</td>
+<td>$10B年化媒体支出规模</td>
+<td>拓宽</td>
+</tr>
+<tr>
+<td>整体平台媒体支出年化</td>
+<td>$10B+</td>
+<td>$10B+</td>
+<td>超过$10B</td>
+<td>$10B+</td>
+<td>强</td>
+</tr>
+</tbody>
+</table>
+<p><strong>判断：护城河稳定至拓宽。</strong> 随着从纯游戏广告向电商（D2C品牌）、快消品（FMCG）领域拓展，网络效应正在从单一垂类扩展为跨垂类，潜在规模显著扩大。</p>
+<hr />
+<h3 id="13">1.3 转换成本护城河 — 深度平台集成</h3>
+<p><strong>护城河类型：</strong> 转换成本</p>
+<p>广告主和开发者一旦深度集成 AppLovin 平台（MAX + AppDiscovery + Adjust 测量），其历史竞价数据、用户行为信号、归因链路均深度绑定，切换至竞品会导致：</p>
+<ul>
+<li><strong>5-20% 的收入损失</strong>（迁移期间数据断档导致优化效率下降）</li>
+<li>AXON的"冷启动成本"：新平台需要数月时间积累足够样本才能提升效果</li>
+<li>技术集成成本（SDK嵌入、A/B测试配置等）</li>
+</ul>
+<p><strong>可追踪量化指标：</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>强弱判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>广告业务 YoY 增速</td>
+<td>+71%</td>
+<td>+77%</td>
+<td>+68%</td>
+<td>+66%</td>
+<td>强，高留存下快速扩张</td>
+</tr>
+<tr>
+<td>净收入留存率（估算）</td>
+<td>&gt;120%*</td>
+<td>&gt;120%*</td>
+<td>&gt;120%*</td>
+<td>&gt;120%*</td>
+<td>强</td>
+</tr>
+<tr>
+<td>广告主流失率</td>
+<td>极低（未公开披露）</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>中等</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>*净收入留存率基于收入持续高速增长且无明显客户集中度风险推断，AppLovin未直接公开该指标。</p>
+</blockquote>
+<p><strong>判断：护城河稳定。</strong> Adjust（2021年收购）提供的测量工具进一步加深了绑定，使广告主的数据资产与平台深度耦合。</p>
+<hr />
+<h3 id="14">1.4 规模经济护城河 — 近乎零边际成本的软件增长</h3>
+<p><strong>护城河类型：</strong> 规模经济（Scale Economies）</p>
+<p>AppLovin 的核心产品是软件（AI算法 + 竞价系统），一旦算法完成训练，服务更多广告主的边际成本接近于零。这使得随着规模扩张，利润率持续提升，形成强大的成本优势。</p>
+<p><strong>可追踪量化指标：</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>FY2025</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>毛利率</td>
+<td>~85%</td>
+<td>~87%</td>
+<td>~87%</td>
+<td>~88%</td>
+<td>87.86%</td>
+</tr>
+<tr>
+<td>Adj. EBITDA Margin</td>
+<td>~63%</td>
+<td>81%</td>
+<td>82%</td>
+<td>84%</td>
+<td>82%</td>
+</tr>
+<tr>
+<td>净利率（GAAP，含Apps）</td>
+<td>~38.7%</td>
+<td>~65.1%</td>
+<td>~59.5%</td>
+<td>~66.5%</td>
+<td>~60.8%</td>
+</tr>
+<tr>
+<td>FCF Margin</td>
+<td>~55%</td>
+<td>~61%</td>
+<td>~75%</td>
+<td>~79%</td>
+<td>~72%</td>
+</tr>
+<tr>
+<td>ROE</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>212.95%</td>
+</tr>
+<tr>
+<td>ROIC</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>110.76%</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注：Q1-Q2仍包含已剥离的Apps业务，故Q1利润率偏低。Q4口径基本为纯广告业务。</p>
+</blockquote>
+<p><strong>判断：护城河持续拓宽。</strong> FCF Margin 从Q1约55%提升至Q4的79%，ROE高达213%，均指向软件规模效应的持续释放。</p>
+<hr />
+<h2 id="_5">二、估值分析</h2>
+<blockquote>
+<p><strong>基准价格：</strong> $436.69（2026年3月25日收盘价）<br />
+<strong>TTM EPS（GAAP稀释）：</strong> $9.84<br />
+<strong>TTM 收入：</strong> $5,481M<br />
+<strong>TTM FCF：</strong> $3,950M<br />
+<strong>股份数（稀释后）：</strong> ~338M</p>
+</blockquote>
+<hr />
+<h3 id="21-pe">2.1 PE 估值</h3>
+<p><strong>过去四个季度 EPS 逐季数据（GAAP稀释，持续经营）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>EPS（稀释，持续经营）</th>
+<th>YoY 增速</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025Q1</td>
+<td>~$2.12（估算）</td>
+<td>+233%</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>$2.39</td>
+<td>~+152%</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>$2.47</td>
+<td>+91%</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>$3.24</td>
+<td>+84%</td>
+</tr>
+<tr>
+<td><strong>TTM（2025全年）</strong></td>
+<td><strong>$9.84（稀释）</strong></td>
+<td><strong>+111%</strong></td>
+</tr>
+<tr>
+<td>2024全年对照</td>
+<td>$4.68（稀释）</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>预测 EPS（预测值）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>年份</th>
+<th>Bear</th>
+<th>Base</th>
+<th>Bull</th>
+<th>假设</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026E</td>
+<td>$13.0</td>
+<td>$15.5</td>
+<td>$18.0</td>
+<td>收入增30-50%，净利率维持60-65%</td>
+</tr>
+<tr>
+<td>2027E</td>
+<td>$16.0</td>
+<td>$21.0</td>
+<td>$27.0</td>
+<td>收入增25-40%，费用杠杆继续释放</td>
+</tr>
+</tbody>
+</table>
+<p><strong>合理 PE 区间及依据：</strong></p>
+<p>AppLovin 当前增速仍达60-70%+，高质量增长（FCF Margin 72%，ROE 213%）对应合理估值溢价。参照类似高增速SaaS/AI公司（如Nvidia在快速增长期的30-60x PE），以及 APP 历史3年平均PE 102x（当前估值已大幅压缩），给予：</p>
+<ul>
+<li>Bear：25x PE（增速放缓至20%以下，竞争压力上升）</li>
+<li>Base：35x PE（增速维持30-40%，护城河稳定）</li>
+<li>Bull：50x PE（新增长曲线（电商/CTV）爆发，增速重新加速至50%+）</li>
+</ul>
+<p><strong>三情景目标价（基于2026E EPS）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>EPS 假设</th>
+<th>PE 倍数</th>
+<th>目标价</th>
+<th>相对当前涨跌幅</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bear</td>
+<td>$13.0</td>
+<td>25x</td>
+<td>$325</td>
+<td>-26%</td>
+</tr>
+<tr>
+<td>Base</td>
+<td>$15.5</td>
+<td>35x</td>
+<td>$543</td>
+<td>+24%</td>
+</tr>
+<tr>
+<td>Bull</td>
+<td>$18.0</td>
+<td>50x</td>
+<td>$900</td>
+<td>+106%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="22-ps">2.2 PS 估值</h3>
+<p><strong>过去四个季度收入逐季数据：</strong></p>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>收入（$M）</th>
+<th>YoY 增速</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025Q1</td>
+<td>$1,484</td>
+<td>+40%</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>$1,259</td>
+<td>+77%（持续经营口径）</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>$1,405</td>
+<td>+68%</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>$1,658</td>
+<td>+66%</td>
+</tr>
+<tr>
+<td><strong>TTM FY2025</strong></td>
+<td><strong>$5,481</strong></td>
+<td><strong>+70%</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>2026年收入预测（预测值）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>2026E 收入</th>
+<th>增速假设</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bear</td>
+<td>$6.8B</td>
+<td>+24%（竞争加剧，增速回落至中等）</td>
+</tr>
+<tr>
+<td>Base</td>
+<td>$8.0B</td>
+<td>+46%（延续Q1 26指引走势 $1.76B/Q）</td>
+</tr>
+<tr>
+<td>Bull</td>
+<td>$9.5B</td>
+<td>+73%（电商、CTV等新品类快速放量）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>合理 PS 区间及依据：</strong></p>
+<p>当前 TTM PS 约 26.8x。参照历史 PS 中位数 8.1x（GuruFocus），但彼时公司盈利能力远弱于今；以高利润率（FCF Margin 72%）调整后，合理 PS 应以 FCF Yield 为锚：年化 FCF 约 $3.95B，若按 3-5% FCF Yield 倒推市值 $79-132B，对应 PS 14-24x。考虑增速溢价，给予：</p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>PS 倍数</th>
+<th>2026E 收入</th>
+<th>目标价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bear</td>
+<td>14x</td>
+<td>$6.8B</td>
+<td>$282</td>
+</tr>
+<tr>
+<td>Base</td>
+<td>20x</td>
+<td>$8.0B</td>
+<td>$474</td>
+</tr>
+<tr>
+<td>Bull</td>
+<td>30x</td>
+<td>$9.5B</td>
+<td>$845</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="23-dcf">2.3 DCF 估值</h3>
+<p><strong>关键假设（三情景）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>假设项</th>
+<th>Bear</th>
+<th>Base</th>
+<th>Bull</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-2028 收入 CAGR</td>
+<td>20%</td>
+<td>40%</td>
+<td>60%</td>
+</tr>
+<tr>
+<td>2029-2030 收入 CAGR</td>
+<td>10%</td>
+<td>20%</td>
+<td>30%</td>
+</tr>
+<tr>
+<td>稳态 FCF Margin</td>
+<td>60%</td>
+<td>72%</td>
+<td>78%</td>
+</tr>
+<tr>
+<td>WACC</td>
+<td>12%</td>
+<td>10%</td>
+<td>9%</td>
+</tr>
+<tr>
+<td>永续增长率</td>
+<td>3%</td>
+<td>4%</td>
+<td>5%</td>
+</tr>
+<tr>
+<td>净债务（$M）</td>
+<td>1,180</td>
+<td>1,180</td>
+<td>1,180</td>
+</tr>
+<tr>
+<td>股份数（M）</td>
+<td>338</td>
+<td>338</td>
+<td>338</td>
+</tr>
+</tbody>
+</table>
+<p><strong>各情景 FCF 预测（$M，预测值）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>年份</th>
+<th>Bear FCF</th>
+<th>Base FCF</th>
+<th>Bull FCF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025A</td>
+<td>3,950</td>
+<td>3,950</td>
+<td>3,950</td>
+</tr>
+<tr>
+<td>2026E</td>
+<td>4,100</td>
+<td>5,760</td>
+<td>8,450</td>
+</tr>
+<tr>
+<td>2027E</td>
+<td>4,600</td>
+<td>7,680</td>
+<td>11,440</td>
+</tr>
+<tr>
+<td>2028E</td>
+<td>5,100</td>
+<td>10,060</td>
+<td>15,180</td>
+</tr>
+<tr>
+<td>2029E</td>
+<td>5,600</td>
+<td>12,070</td>
+<td>18,220</td>
+</tr>
+<tr>
+<td>2030E</td>
+<td>6,000</td>
+<td>14,490</td>
+<td>21,860</td>
+</tr>
+<tr>
+<td>终值倍数（TV/EBITDA ~15x）</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DCF 内在价值（预测值）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>企业价值（EV）</th>
+<th>扣除净债务后权益价值</th>
+<th>每股价值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bear</td>
+<td>~$60B</td>
+<td>~$59B</td>
+<td>~$175</td>
+</tr>
+<tr>
+<td>Base</td>
+<td>~$160B</td>
+<td>~$159B</td>
+<td>~$471</td>
+</tr>
+<tr>
+<td>Bull</td>
+<td>~$310B</td>
+<td>~$309B</td>
+<td>~$914</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="_6">综合估值汇总</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>Bear</th>
+<th>Base</th>
+<th>Bull</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PE 估值目标价</td>
+<td>$325</td>
+<td>$543</td>
+<td>$900</td>
+</tr>
+<tr>
+<td>PS 估值目标价</td>
+<td>$282</td>
+<td>$474</td>
+<td>$845</td>
+</tr>
+<tr>
+<td>DCF 内在价值</td>
+<td>$175</td>
+<td>$471</td>
+<td>$914</td>
+</tr>
+<tr>
+<td><strong>综合目标价区间</strong></td>
+<td><strong>$175-$325</strong></td>
+<td><strong>$471-$543</strong></td>
+<td><strong>$845-$914</strong></td>
+</tr>
+<tr>
+<td><strong>当前股价</strong></td>
+<td><strong>$436.69</strong></td>
+<td><strong>$436.69</strong></td>
+<td><strong>$436.69</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>综合估值判断：</strong></p>
+<p>在 Base 情景下，三种方法平均目标价约 $493，相较当前价格有 <strong>约13%的上涨空间</strong>。但 Bear 情景（$175-$325）指向显著下行风险（-25%至-60%）。当前股价几乎完全定价了 Base 场景，投资者需要相信：</p>
+<ol>
+<li>增速能够维持在40%+以上（由电商+CTV等新品类驱动）</li>
+<li>AXON 的 AI 护城河不会被 Meta/Google 复制</li>
+<li>监管风险不会实质性冲击商业模式</li>
+</ol>
+<p>若以 Forward PE（28-29x，基于 FY2026 预测 EPS $15.5）衡量，当前估值已是过去12个月均值（70x）的大幅折价，具有相对合理性。综合判断：<strong>当前价格略低于 Base 情景公允价值，中期（12-18个月）具有温和的风险收益比，但需要对新品类放量有较强信心。</strong></p>
+<hr />
+<h2 id="_7">三、纵向比较（历史对比）</h2>
+<h3 id="31">3.1 核心财务指标逐季趋势</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>FY2025</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>总收入（$M）</td>
+<td>1,484</td>
+<td>1,259</td>
+<td>1,405</td>
+<td>1,658</td>
+<td>5,481</td>
+</tr>
+<tr>
+<td>YoY 增速</td>
+<td>+40%</td>
+<td>+77%</td>
+<td>+68%</td>
+<td>+66%</td>
+<td>+70%</td>
+</tr>
+<tr>
+<td>GAAP 净利润（$M）</td>
+<td>575</td>
+<td>820</td>
+<td>836</td>
+<td>1,102</td>
+<td>3,334</td>
+</tr>
+<tr>
+<td>净利率</td>
+<td>38.7%</td>
+<td>65.1%</td>
+<td>59.5%</td>
+<td>66.5%</td>
+<td>60.8%</td>
+</tr>
+<tr>
+<td>Adj. EBITDA（$M）</td>
+<td>938</td>
+<td>1,018</td>
+<td>1,158</td>
+<td>1,399</td>
+<td>4,512</td>
+</tr>
+<tr>
+<td>Adj. EBITDA Margin</td>
+<td>~63%</td>
+<td>81%</td>
+<td>82%</td>
+<td>84%</td>
+<td>82%</td>
+</tr>
+<tr>
+<td>毛利率（估）</td>
+<td>~85%</td>
+<td>~87%</td>
+<td>~87%</td>
+<td>~88%</td>
+<td>87.86%</td>
+</tr>
+<tr>
+<td>FCF（$M）</td>
+<td>~823</td>
+<td>768</td>
+<td>1,049</td>
+<td>1,310</td>
+<td>3,950</td>
+</tr>
+<tr>
+<td>FCF Margin</td>
+<td>~55%</td>
+<td>~61%</td>
+<td>~75%</td>
+<td>~79%</td>
+<td>~72%</td>
+</tr>
+<tr>
+<td>稀释 EPS（持续经营，$）</td>
+<td>~2.12</td>
+<td>2.39</td>
+<td>2.47</td>
+<td>3.24</td>
+<td>9.84</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>说明：Q1含Apps业务（应用商店业务），Q2起Apps逐步剥离。Q4口径为纯广告平台。</p>
+</blockquote>
+<p><strong>年度对照（FY2024 vs. FY2025）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>FY2024</th>
+<th>FY2025</th>
+<th>YoY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>总收入（$M）</td>
+<td>3,224</td>
+<td>5,481</td>
+<td>+70%</td>
+</tr>
+<tr>
+<td>GAAP 净利润（$M）</td>
+<td>1,580</td>
+<td>3,334</td>
+<td>+111%</td>
+</tr>
+<tr>
+<td>Adj. EBITDA（$M）</td>
+<td>2,412</td>
+<td>4,512</td>
+<td>+87%</td>
+</tr>
+<tr>
+<td>FCF（$M）</td>
+<td>~2,070</td>
+<td>3,950</td>
+<td>+91%</td>
+</tr>
+<tr>
+<td>ROE</td>
+<td>—</td>
+<td>212.95%</td>
+<td>—</td>
+</tr>
+<tr>
+<td>ROIC</td>
+<td>—</td>
+<td>110.76%</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="32-peps">3.2 估值倍数历史区间（PE/PS 历史百分位）</h3>
+<table>
+<thead>
+<tr>
+<th>估值指标</th>
+<th>历史最低</th>
+<th>历史中位</th>
+<th>历史最高</th>
+<th>当前值（~Mar 2026）</th>
+<th>历史百分位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>追踪 PE</td>
+<td>~34x（2024Q2）</td>
+<td>~102x（3年均）</td>
+<td>~943x（2021）</td>
+<td>~44x</td>
+<td>低位（约15-20百分位）</td>
+</tr>
+<tr>
+<td>远期 PE</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>28-29x</td>
+<td>历史低位</td>
+</tr>
+<tr>
+<td>PS（TTM）</td>
+<td>1.3x</td>
+<td>8.1x</td>
+<td>39.2x</td>
+<td>~26.8x</td>
+<td>中高位（约75-80百分位）</td>
+</tr>
+<tr>
+<td>EV/EBITDA</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>33.3x</td>
+<td>中位</td>
+</tr>
+<tr>
+<td>PEG</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>0.75</td>
+<td>低位（&lt;1视为低估）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>当前估值所处历史区位判断：</strong></p>
+<ul>
+<li><strong>PE 维度：中低位。</strong> 当前 TTM PE 约44x，远低于3年均值102x，也显著低于过去12个月均值70x，体现了股价从高峰（$734）大幅回落（约40%）后的估值压缩。</li>
+<li><strong>PS 维度：中高位。</strong> 历史 PS 中位仅8.1x，当前26.8x 仍远高于历史均值，但公司盈利能力已发生质变（过去 PS 高时公司几乎不盈利），需结合 FCF Yield 重新定标。</li>
+<li><strong>PEG = 0.75：显示低估。</strong> 若以 EPS 增速作为参照，PEG &lt; 1 通常被视为价值低估信号。</li>
+</ul>
+<hr />
+<h2 id="_8">四、横向比较（行业对标）</h2>
+<h3 id="41">4.1 可比公司选取</h3>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>股票代码</th>
+<th>业务定位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The Trade Desk</td>
+<td>TTD</td>
+<td>程序化广告 DSP（开放互联网）</td>
+</tr>
+<tr>
+<td>Meta Platforms</td>
+<td>META</td>
+<td>社交 + 移动广告巨头</td>
+</tr>
+<tr>
+<td>Unity Software</td>
+<td>U</td>
+<td>游戏引擎 + 移动广告变现</td>
+</tr>
+<tr>
+<td>Alphabet (Google)</td>
+<td>GOOGL</td>
+<td>数字广告最大体量</td>
+</tr>
+<tr>
+<td>Digital Turbine</td>
+<td>APPS</td>
+<td>移动设备端广告分发</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="42">4.2 关键财务指标横向对比</h3>
+<p><strong>收入增速（2025年 YoY）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>2025 收入（$B）</th>
+<th>YoY 增速</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AppLovin（APP）</strong></td>
+<td><strong>$5.48</strong></td>
+<td><strong>+70%</strong></td>
+</tr>
+<tr>
+<td>Meta Platforms（META）</td>
+<td>~$170</td>
+<td>~+16%</td>
+</tr>
+<tr>
+<td>Alphabet（GOOGL）</td>
+<td>~$350</td>
+<td>~+12%</td>
+</tr>
+<tr>
+<td>The Trade Desk（TTD）</td>
+<td>~$2.4</td>
+<td>~+25%</td>
+</tr>
+<tr>
+<td>Unity Software（U）</td>
+<td>~$1.75</td>
+<td>~-2%（转型中）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>盈利能力对比（2025年 Adj. EBITDA/营业利润率）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>毛利率</th>
+<th>Adj. EBITDA Margin / 营业利润率</th>
+<th>FCF Margin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AppLovin（APP）</strong></td>
+<td><strong>87.86%</strong></td>
+<td><strong>82%</strong></td>
+<td><strong>~72%</strong></td>
+</tr>
+<tr>
+<td>Meta Platforms（META）</td>
+<td>~80%</td>
+<td>~43%</td>
+<td>~40%</td>
+</tr>
+<tr>
+<td>Alphabet（GOOGL）</td>
+<td>~56%</td>
+<td>~32%</td>
+<td>~25%</td>
+</tr>
+<tr>
+<td>The Trade Desk（TTD）</td>
+<td>~82%</td>
+<td>~38%</td>
+<td>~35%</td>
+</tr>
+<tr>
+<td>Unity Software（U）</td>
+<td>~76%</td>
+<td>~21%</td>
+<td>~18%</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>AppLovin 的 Adj. EBITDA Margin（82%）在可比公司中一骑绝尘，体现了 AI 驱动的软件商业模式带来的近乎无边际成本的规模效应。</p>
+</blockquote>
+<p><strong>估值倍数横向对比（截至2026年3月）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>追踪 PE</th>
+<th>远期 PE</th>
+<th>TTM PS</th>
+<th>EV/EBITDA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AppLovin（APP）</strong></td>
+<td><strong>~44x</strong></td>
+<td><strong>~29x</strong></td>
+<td><strong>~27x</strong></td>
+<td><strong>~33x</strong></td>
+</tr>
+<tr>
+<td>Meta Platforms（META）</td>
+<td>~25x</td>
+<td>~22x</td>
+<td>~10x</td>
+<td>~18x</td>
+</tr>
+<tr>
+<td>Alphabet（GOOGL）</td>
+<td>~23x</td>
+<td>~20x</td>
+<td>~7x</td>
+<td>~16x</td>
+</tr>
+<tr>
+<td>The Trade Desk（TTD）</td>
+<td>~60x</td>
+<td>~45x</td>
+<td>~12x</td>
+<td>~50x</td>
+</tr>
+<tr>
+<td>Unity Software（U）</td>
+<td>亏损</td>
+<td>~50x（预期）</td>
+<td>~3x</td>
+<td>~25x</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="43">4.3 溢价/折价是否合理</h3>
+<p><strong>结论：AppLovin 相对同业溢价具有部分合理性，但 PS 溢价仍较高。</strong></p>
+<ul>
+<li>与 META/GOOGL 相比：APP 的溢价反映了更高的增速（70% vs 12-16%）和更高的 FCF Margin（72% vs 25-40%），溢价合理。</li>
+<li>与 TTD 相比：TTD 的远期 PE（45x）仍高于 APP（29x），但 APP 增速远超 TTD，相对 TTD 有折价，估值反而更具吸引力。</li>
+<li>与 Unity 相比：Unity 仍处于亏损或微利转型，APP 具有压倒性的盈利优势，溢价完全合理。</li>
+<li><strong>核心风险：</strong> APP 的高 PS（27x）隐含了市场对未来3-5年持续高速增长的预期。一旦增速明显放缓（如降至20%以下），PS 将面临显著收缩（参照历史中位 8x PS）。</li>
+</ul>
+<hr />
+<h2 id="_9">五、风险提示</h2>
+<h3 id="1sec">风险1：SEC 监管调查持续发酵</h3>
+<p><strong>内容：</strong> 据彭博社2026年3月报道，SEC 对 AppLovin 数据收集行为的调查仍处于"持续进行中"状态。若调查升级为正式执法行动，可能引发：广告主信心下降、数据使用受限、高额罚款。<br />
+<strong>估值影响：</strong> 中度至高度。若被迫改变数据收集方式，AXON 的效果优势将受损，广告主留存率下降，目标价 Bear 情景压至 $175-$250。</p>
+<h3 id="2metagoogle-ai">风险2：Meta/Google AI 广告能力追赶</h3>
+<p><strong>内容：</strong> Meta 的 Advantage+ 和 Google 的 PMAX 持续迭代，二者均拥有比 AppLovin 更大规模的用户行为数据。若 Meta/Google 在移动端 ROI 表现上追平 AppLovin，广告预算可能回流。<br />
+<strong>估值影响：</strong> 高度。这将直接威胁收入增速，若增速降至15%以下，合理 PE/PS 将大幅收缩，目标价降至 $300 以下。</p>
+<h3 id="3ctv">风险3：新品类扩张（电商/CTV）不及预期</h3>
+<p><strong>内容：</strong> 目前电商广告（年化 $10亿 run rate）和CTV是驱动下一阶段增长的核心叙事。若这些新品类的广告主发现 AXON 在非游戏场景的优化效果不如预期（游戏用户行为信号与电商用户差异较大），则增速逻辑将被破坏。<br />
+<strong>估值影响：</strong> 中度。收入增速将下台阶至30%以下，目标价降至 $350-$400 区间。</p>
+<h3 id="4apps">风险4：Apps 业务剥离后的结构性调整风险</h3>
+<p><strong>内容：</strong> AppLovin 已将 Apps 游戏业务（曾贡献约 $1.5B 年收入）出售，转型为纯软件平台。短期内，剥离业务导致的账面损益（discontinued operations）将带来 GAAP 利润的一次性波动，且平台战略进一步聚焦的商业模式仍需市场验证。<br />
+<strong>估值影响：</strong> 低度。对核心业务影响有限，但影响 GAAP EPS 可比性，市场解读分歧可能引发短期波动。</p>
+<h3 id="5">风险5：高估值下对宏观环境敏感性</h3>
+<p><strong>内容：</strong> 当前 PS 约27x，在高利率 / 经济放缓环境下，高成长高估值股票首当其冲。若美联储政策转向收紧，或广告市场整体需求回落（移动广告市场与经济周期高度相关），APP 股价将承受双重压力（估值收缩 + EPS下修）。Beta = 2.49，波动远高于市场基准。<br />
+<strong>估值影响：</strong> 中度。熊市情景下，可能跌至 $200-$280 区间，相当于 15-20x FCF。</p>
+<hr />
+<h2 id="_10">六、数据来源</h2>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>来源</th>
+<th>链接</th>
+<th>获取时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q4 2025 / FY2025 财报（8-K）</td>
+<td>SEC EDGAR / AppLovin IR</td>
+<td>https://www.sec.gov/Archives/edgar/data/0001751008/000175100826000005/exhibit991-4q25earningspre.htm</td>
+<td>2026-03-26</td>
+</tr>
+<tr>
+<td>Q3 2025 财报（8-K）</td>
+<td>SEC EDGAR</td>
+<td>https://www.sec.gov/Archives/edgar/data/0001751008/000175100825000079/exhibit991-3q25earningspre.htm</td>
+<td>2026-03-26</td>
+</tr>
+<tr>
+<td>Q2 2025 财报（8-K）</td>
+<td>SEC EDGAR</td>
+<td>https://www.sec.gov/Archives/edgar/data/0001751008/000175100825000069/exhibit991-2q25earningspre.htm</td>
+<td>2026-03-26</td>
+</tr>
+<tr>
+<td>Q1 2025 财报（8-K）</td>
+<td>SEC EDGAR</td>
+<td>https://www.sec.gov/Archives/edgar/data/0001751008/000175100825000051/exhibit991-1q25earningspre.htm</td>
+<td>2026-03-26</td>
+</tr>
+<tr>
+<td>EPS / 估值指标</td>
+<td>StockAnalysis.com</td>
+<td>https://stockanalysis.com/stocks/app/statistics/</td>
+<td>2026-03-26</td>
+</tr>
+<tr>
+<td>PE/PS 历史数据</td>
+<td>GuruFocus</td>
+<td>https://www.gurufocus.com/term/ps-ratio/APP</td>
+<td>2026-03-26</td>
+</tr>
+<tr>
+<td>PE 历史分析</td>
+<td>FullRatio.com</td>
+<td>https://fullratio.com/stocks/nasdaq-app/pe-ratio</td>
+<td>2026-03-26</td>
+</tr>
+<tr>
+<td>Forward PE / GF Value</td>
+<td>GuruFocus</td>
+<td>https://www.gurufocus.com/term/forward-pe-ratio/APP</td>
+<td>2026-03-26</td>
+</tr>
+<tr>
+<td>Q2 2025 财务摘要</td>
+<td>MLQ.ai</td>
+<td>https://mlq.ai/stocks/APP/q2-2025-earnings/</td>
+<td>2026-03-26</td>
+</tr>
+<tr>
+<td>行业竞争对比</td>
+<td>Motley Fool</td>
+<td>https://www.fool.com/investing/2025/03/22/better-ad-tech-stock-applovin-vs-trade-desk/</td>
+<td>2026-03-26</td>
+</tr>
+<tr>
+<td>AXON 护城河分析</td>
+<td>Klover.ai</td>
+<td>https://www.klover.ai/applovin-ai-strategy-analysis-of-dominance-in-advertising/</td>
+<td>2026-03-26</td>
+</tr>
+<tr>
+<td>股价历史</td>
+<td>MacroTrends</td>
+<td>https://www.macrotrends.net/stocks/charts/APP/applovin/stock-price-history</td>
+<td>2026-03-26</td>
+</tr>
+<tr>
+<td>分析师目标价</td>
+<td>TipRanks</td>
+<td>https://www.tipranks.com/stocks/app/earnings</td>
+<td>2026-03-26</td>
+</tr>
+</tbody>
+</table>
+<p><strong>数据交叉验证说明：</strong><br />
+- 所有季度收入、净利润、Adj. EBITDA、FCF 数据均以 SEC EDGAR 原始 8-K 文件为第一数据源，并与 StockAnalysis、Investing.com 交叉核验<br />
+- EPS 数据以 SEC 官方文件为准，辅以 Public.com、FullRatio 数据二次确认<br />
+- 估值倍数（PE/PS/EV-EBITDA）采用 GuruFocus + StockAnalysis 双源核验<br />
+- 竞争对手数据来自各公司官方SEC文件及Motley Fool分析</p>
+<hr />
+<p><strong>免责声明：</strong> 本报告仅供学术研究和信息参考，不构成任何投资建议。买方研究存在主观判断成分，所有预测值均基于当前公开信息，未来结果可能与预测存在重大差异。投资者应结合自身风险承受能力做出独立判断。</p>
+<hr />
+<p><em>报告生成时间：2026年3月26日</em><br />
+<em>数据检索时间：2026年3月26日</em><br />
+<em>最新财报：AppLovin Q4 2025 / FY2025（发布于2026年2月11日）</em></p>
+    </article>
+  </main>
+</div>
+
+<script>
+// Build TOC from headings
+const tocList = document.getElementById('toc-list');
+const headings = document.querySelectorAll('.article h2, .article h3');
+headings.forEach((h, i) => {
+  if (!h.id) h.id = 'h-' + i;
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  a.href = '#' + h.id;
+  a.textContent = h.textContent.replace(/^[# ]+/, '');
+  a.className = 'toc-' + h.tagName.toLowerCase();
+  li.appendChild(a);
+  tocList.appendChild(li);
+});
+
+// Highlight active TOC item on scroll
+const tocLinks = tocList.querySelectorAll('a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(a => a.classList.remove('active'));
+      const active = tocList.querySelector(`a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+headings.forEach(h => observer.observe(h));
+</script>
+</body>
+</html>

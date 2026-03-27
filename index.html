@@ -83,6 +83,34 @@
     font-size: 13px;
   }
 
+  /* Tabs */
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 8px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    cursor: pointer;
+    margin-bottom: -1px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .tab-btn:hover { color: var(--text2); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
   /* Tree */
   .tree {
     font-family: var(--mono);
@@ -123,11 +151,6 @@
   .ticker-name {
     color: var(--text);
     font-weight: 500;
-  }
-
-  .ticker-desc {
-    color: var(--text3);
-    font-size: 11px;
   }
 
   /* Report rows */
@@ -191,10 +214,10 @@
 
   /* Search */
   .search-wrap {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
-  #search {
+  .search-wrap input {
     width: 100%;
     background: var(--bg2);
     border: 1px solid var(--border2);
@@ -207,10 +230,10 @@
     transition: border-color 0.15s;
   }
 
-  #search::placeholder { color: var(--text3); }
-  #search:focus { border-color: var(--accent); }
+  .search-wrap input::placeholder { color: var(--text3); }
+  .search-wrap input:focus { border-color: var(--accent); }
 
-  #no-results {
+  .no-results {
     display: none;
     font-family: var(--mono);
     font-size: 12px;
@@ -237,24 +260,46 @@
   </header>
 
   <nav class="tree">
-    <div class="search-wrap">
-      <input id="search" type="text" placeholder="filter tickers..." autocomplete="off" spellcheck="false">
-      <div id="no-results">no matches</div>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="us">US Market</button>
+      <button class="tab-btn" data-tab="cn">China Market</button>
     </div>
-    <div class="tree-root">Coverage</div>
-    <!-- AUTO-NAV-START -->
+
+    <div class="tab-panel active" id="tab-us">
+      <div class="search-wrap">
+        <input type="text" placeholder="filter tickers..." autocomplete="off" spellcheck="false">
+        <div class="no-results">no matches</div>
+      </div>
+      <div class="tree-root">Coverage</div>
+    <!-- AUTO-NAV-us-market-START -->
     <ul class="tree-body">
 
       <li class="tree-ticker">
         <div class="tree-ticker-row">
           <span class="tree-connector">├──</span>
           <span class="ticker-name">AMZN</span>
-          <span class="ticker-desc">AMZN</span>
         </div>
         <ul class="tree-reports">
           <li class="tree-report-row">
             <span class="tree-indent">│   └── </span>
-            <a class="report-link" href="companies/AMZN/2025Q4.html">
+            <a class="report-link" href="companies/us-market/AMZN/2025Q4.html">
+              <span class="report-period">2025 Q4</span>
+              <span class="report-title">护城河追踪 · Moat Tracker</span>
+              <span class="report-type">Earnings</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="tree-ticker">
+        <div class="tree-ticker-row">
+          <span class="tree-connector">├──</span>
+          <span class="ticker-name">APP</span>
+        </div>
+        <ul class="tree-reports">
+          <li class="tree-report-row">
+            <span class="tree-indent">│   └── </span>
+            <a class="report-link" href="companies/us-market/APP/2025Q4.html">
               <span class="report-period">2025 Q4</span>
               <span class="report-title">护城河追踪 · Moat Tracker</span>
               <span class="report-type">Earnings</span>
@@ -267,12 +312,11 @@
         <div class="tree-ticker-row">
           <span class="tree-connector">├──</span>
           <span class="ticker-name">BABA</span>
-          <span class="ticker-desc">BABA</span>
         </div>
         <ul class="tree-reports">
           <li class="tree-report-row">
             <span class="tree-indent">│   └── </span>
-            <a class="report-link" href="companies/BABA/2025Q4.html">
+            <a class="report-link" href="companies/us-market/BABA/2025Q4.html">
               <span class="report-period">2025 Q4</span>
               <span class="report-title">护城河追踪 · Moat Tracker</span>
               <span class="report-type">Earnings</span>
@@ -285,12 +329,28 @@
         <div class="tree-ticker-row">
           <span class="tree-connector">├──</span>
           <span class="ticker-name">BILI</span>
-          <span class="ticker-desc">BILI</span>
         </div>
         <ul class="tree-reports">
           <li class="tree-report-row">
             <span class="tree-indent">│   └── </span>
-            <a class="report-link" href="companies/BILI/2025Q4.html">
+            <a class="report-link" href="companies/us-market/BILI/2025Q4.html">
+              <span class="report-period">2025 Q4</span>
+              <span class="report-title">护城河追踪 · Moat Tracker</span>
+              <span class="report-type">Earnings</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="tree-ticker">
+        <div class="tree-ticker-row">
+          <span class="tree-connector">├──</span>
+          <span class="ticker-name">CRM</span>
+        </div>
+        <ul class="tree-reports">
+          <li class="tree-report-row">
+            <span class="tree-indent">│   └── </span>
+            <a class="report-link" href="companies/us-market/CRM/2025Q4.html">
               <span class="report-period">2025 Q4</span>
               <span class="report-title">护城河追踪 · Moat Tracker</span>
               <span class="report-type">Earnings</span>
@@ -303,12 +363,11 @@
         <div class="tree-ticker-row">
           <span class="tree-connector">├──</span>
           <span class="ticker-name">DDOG</span>
-          <span class="ticker-desc">DDOG</span>
         </div>
         <ul class="tree-reports">
           <li class="tree-report-row">
             <span class="tree-indent">│   └── </span>
-            <a class="report-link" href="companies/DDOG/2025Q4.html">
+            <a class="report-link" href="companies/us-market/DDOG/2025Q4.html">
               <span class="report-period">2025 Q4</span>
               <span class="report-title">护城河追踪 · Moat Tracker</span>
               <span class="report-type">Earnings</span>
@@ -321,12 +380,11 @@
         <div class="tree-ticker-row">
           <span class="tree-connector">├──</span>
           <span class="ticker-name">DUOL</span>
-          <span class="ticker-desc">DUOL</span>
         </div>
         <ul class="tree-reports">
           <li class="tree-report-row">
             <span class="tree-indent">│   └── </span>
-            <a class="report-link" href="companies/DUOL/2025Q4.html">
+            <a class="report-link" href="companies/us-market/DUOL/2025Q4.html">
               <span class="report-period">2025 Q4</span>
               <span class="report-title">护城河追踪 · Moat Tracker</span>
               <span class="report-type">Earnings</span>
@@ -339,12 +397,11 @@
         <div class="tree-ticker-row">
           <span class="tree-connector">├──</span>
           <span class="ticker-name">MDB</span>
-          <span class="ticker-desc">MDB</span>
         </div>
         <ul class="tree-reports">
           <li class="tree-report-row">
             <span class="tree-indent">│   └── </span>
-            <a class="report-link" href="companies/MDB/2025Q4.html">
+            <a class="report-link" href="companies/us-market/MDB/2025Q4.html">
               <span class="report-period">2025 Q4</span>
               <span class="report-title">护城河追踪 · Moat Tracker</span>
               <span class="report-type">Earnings</span>
@@ -357,12 +414,11 @@
         <div class="tree-ticker-row">
           <span class="tree-connector">├──</span>
           <span class="ticker-name">MPNGY</span>
-          <span class="ticker-desc">MPNGY</span>
         </div>
         <ul class="tree-reports">
           <li class="tree-report-row">
             <span class="tree-indent">│   └── </span>
-            <a class="report-link" href="companies/MPNGY/2025Q4.html">
+            <a class="report-link" href="companies/us-market/MPNGY/2025Q4.html">
               <span class="report-period">2025 Q4</span>
               <span class="report-title">护城河追踪 · Moat Tracker</span>
               <span class="report-type">Earnings</span>
@@ -375,12 +431,11 @@
         <div class="tree-ticker-row">
           <span class="tree-connector">├──</span>
           <span class="ticker-name">PDD</span>
-          <span class="ticker-desc">PDD</span>
         </div>
         <ul class="tree-reports">
           <li class="tree-report-row">
             <span class="tree-indent">│   └── </span>
-            <a class="report-link" href="companies/PDD/2025Q4.html">
+            <a class="report-link" href="companies/us-market/PDD/2025Q4.html">
               <span class="report-period">2025 Q4</span>
               <span class="report-title">护城河追踪 · Moat Tracker</span>
               <span class="report-type">Earnings</span>
@@ -393,12 +448,11 @@
         <div class="tree-ticker-row">
           <span class="tree-connector">├──</span>
           <span class="ticker-name">SNOW</span>
-          <span class="ticker-desc">SNOW</span>
         </div>
         <ul class="tree-reports">
           <li class="tree-report-row">
             <span class="tree-indent">│   └── </span>
-            <a class="report-link" href="companies/SNOW/2025Q4.html">
+            <a class="report-link" href="companies/us-market/SNOW/2025Q4.html">
               <span class="report-period">2025 Q4</span>
               <span class="report-title">护城河追踪 · Moat Tracker</span>
               <span class="report-type">Earnings</span>
@@ -411,12 +465,11 @@
         <div class="tree-ticker-row">
           <span class="tree-connector">├──</span>
           <span class="ticker-name">TCEHY</span>
-          <span class="ticker-desc">TCEHY</span>
         </div>
         <ul class="tree-reports">
           <li class="tree-report-row">
             <span class="tree-indent">│   └── </span>
-            <a class="report-link" href="companies/TCEHY/2025Q4.html">
+            <a class="report-link" href="companies/us-market/TCEHY/2025Q4.html">
               <span class="report-period">2025 Q4</span>
               <span class="report-title">护城河追踪 · Moat Tracker</span>
               <span class="report-type">Earnings</span>
@@ -429,12 +482,11 @@
         <div class="tree-ticker-row">
           <span class="tree-connector">└──</span>
           <span class="ticker-name">TCOM</span>
-          <span class="ticker-desc">TCOM</span>
         </div>
         <ul class="tree-reports">
           <li class="tree-report-row">
             <span class="tree-indent">    └── </span>
-            <a class="report-link" href="companies/TCOM/2025Q4.html">
+            <a class="report-link" href="companies/us-market/TCOM/2025Q4.html">
               <span class="report-period">2025 Q4</span>
               <span class="report-title">护城河追踪 · Moat Tracker</span>
               <span class="report-type">Earnings</span>
@@ -444,29 +496,73 @@
       </li>
 
     </ul>
-    <!-- AUTO-NAV-END -->
+    <!-- AUTO-NAV-us-market-END -->
+    </div>
+
+    <div class="tab-panel" id="tab-cn">
+      <div class="search-wrap">
+        <input type="text" placeholder="filter tickers..." autocomplete="off" spellcheck="false">
+        <div class="no-results">no matches</div>
+      </div>
+      <div class="tree-root">Coverage</div>
+    <!-- AUTO-NAV-chinese-market-START -->
+    <ul class="tree-body">
+
+      <li class="tree-ticker">
+        <div class="tree-ticker-row">
+          <span class="tree-connector">└──</span>
+          <span class="ticker-name">600887</span>
+        </div>
+        <ul class="tree-reports">
+          <li class="tree-report-row">
+            <span class="tree-indent">    └── </span>
+            <a class="report-link" href="companies/chinese-market/600887/2025Q3.html">
+              <span class="report-period">2025 Q3</span>
+              <span class="report-title">护城河追踪 · Moat Tracker</span>
+              <span class="report-type">Earnings</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+    </ul>
+    <!-- AUTO-NAV-chinese-market-END -->
+    </div>
   </nav>
 
   <footer>yunhaoling · github.com/yunhaoling/investment-research</footer>
 </div>
 <script>
-  const search = document.getElementById('search');
-  const noResults = document.getElementById('no-results');
-
-  search.addEventListener('input', () => {
-    const q = search.value.toLowerCase().trim();
-    const tickers = document.querySelectorAll('.tree-ticker');
-    let visible = 0;
-    tickers.forEach(li => {
-      const name = li.querySelector('.ticker-name').textContent.toLowerCase();
-      const match = q === '' || name.includes(q);
-      li.style.display = match ? '' : 'none';
-      if (match) visible++;
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
     });
-    noResults.style.display = visible === 0 ? 'block' : 'none';
   });
 
-  search.focus();
+  // Search — one per tab panel
+  document.querySelectorAll('.tab-panel').forEach(panel => {
+    const input = panel.querySelector('input');
+    const noResults = panel.querySelector('.no-results');
+    input.addEventListener('input', () => {
+      const q = input.value.toLowerCase().trim();
+      const tickers = panel.querySelectorAll('.tree-ticker');
+      let visible = 0;
+      tickers.forEach(li => {
+        const name = li.querySelector('.ticker-name').textContent.toLowerCase();
+        const match = q === '' || name.includes(q);
+        li.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+      noResults.style.display = visible === 0 ? 'block' : 'none';
+    });
+  });
+
+  // Auto-focus search in active tab
+  document.querySelector('#tab-us input').focus();
 </script>
 </body>
 </html>

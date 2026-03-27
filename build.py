@@ -12,6 +12,9 @@ from pathlib import Path
 # Directories to skip when scanning for reports
 SKIP_DIRS = {"template", ".git", "node_modules", ".github", ".claude"}
 
+# Market subdirectories under companies/ — order controls tab order in index.html
+MARKET_DIRS = ["us-market", "chinese-market"]
+
 
 HTML_TEMPLATE = """\
 <!DOCTYPE html>
@@ -234,7 +237,7 @@ body {{
 <body>
 
 <header class="site-header">
-  <a href="../../" class="back-link">← index</a>
+  <a href="../../../" class="back-link">← index</a>
   <span class="header-sep">/</span>
   <span class="header-title">{ticker}</span>
 </header>
@@ -323,24 +326,29 @@ def md_to_html(md_path: Path) -> Path:
 
 
 def find_md_files(root: Path) -> list[Path]:
-    """Find all .md files under companies/, skipping excluded directories."""
-    companies_dir = root / "companies"
+    """Find all .md files under companies/*/  skipping excluded directories."""
     results = []
-    for path in companies_dir.rglob("*.md"):
-        if any(part in SKIP_DIRS for part in path.parts):
+    for market in MARKET_DIRS:
+        market_dir = root / "companies" / market
+        if not market_dir.exists():
             continue
-        results.append(path)
+        for path in market_dir.rglob("*.md"):
+            if any(part in SKIP_DIRS for part in path.parts):
+                continue
+            results.append(path)
     return sorted(results)
 
 
-def find_html_reports(root: Path) -> dict[str, list[Path]]:
+def find_html_reports(root: Path, market: str) -> dict[str, list[Path]]:
     """
-    Scan companies/ subdirectories for .html report files.
+    Scan companies/<market>/ for .html report files.
     Returns {ticker: [sorted list of html paths]}.
     """
     reports: dict[str, list[Path]] = {}
-    companies_dir = root / "companies"
-    for subdir in sorted(companies_dir.iterdir()):
+    market_dir = root / "companies" / market
+    if not market_dir.exists():
+        return reports
+    for subdir in sorted(market_dir.iterdir()):
         if not subdir.is_dir():
             continue
         if subdir.name in SKIP_DIRS or subdir.name.startswith("."):
@@ -362,34 +370,30 @@ def format_period(stem: str) -> str:
     return stem
 
 
-def build_nav_html(reports: dict[str, list[Path]], root: Path) -> str:
-    """Render the full <ul class="tree-body"> ... </ul> block."""
+def build_nav_html(reports: dict[str, list[Path]], market: str) -> str:
+    """Render the <ul class="tree-body"> block for one market."""
     tickers = list(reports.keys())
-    lines = ['    <!-- AUTO-NAV-START -->', '    <ul class="tree-body">', ""]
+    start = f"<!-- AUTO-NAV-{market}-START -->"
+    end   = f"<!-- AUTO-NAV-{market}-END -->"
+    lines = [f"    {start}", '    <ul class="tree-body">', ""]
 
     for i, ticker in enumerate(tickers):
         is_last_ticker = i == len(tickers) - 1
         ticker_connector = "└──" if is_last_ticker else "├──"
-        desc = ticker
         html_files = reports[ticker]
 
         lines.append(f'      <li class="tree-ticker">')
         lines.append(f'        <div class="tree-ticker-row">')
         lines.append(f'          <span class="tree-connector">{ticker_connector}</span>')
         lines.append(f'          <span class="ticker-name">{ticker}</span>')
-        lines.append(f'          <span class="ticker-desc">{desc}</span>')
         lines.append(f'        </div>')
         lines.append(f'        <ul class="tree-reports">')
 
         for j, html_path in enumerate(html_files):
             is_last_report = j == len(html_files) - 1
-            if is_last_ticker:
-                indent = "    └── " if is_last_report else "    ├── "
-            else:
-                indent = "│   └── " if is_last_report else "│   ├── "
-
+            indent = ("    " if is_last_ticker else "│   ") + ("└── " if is_last_report else "├── ")
             period = format_period(html_path.stem)
-            href = f"companies/{ticker}/{html_path.name}"
+            href = f"companies/{market}/{ticker}/{html_path.name}"
 
             lines.append(f'          <li class="tree-report-row">')
             lines.append(f'            <span class="tree-indent">{indent}</span>')
@@ -405,12 +409,12 @@ def build_nav_html(reports: dict[str, list[Path]], root: Path) -> str:
         lines.append("")
 
     lines.append("    </ul>")
-    lines.append("    <!-- AUTO-NAV-END -->")
+    lines.append(f"    {end}")
     return "\n".join(lines)
 
 
 def update_index(root: Path) -> None:
-    """Regenerate the AUTO-NAV section in index.html."""
+    """Regenerate the AUTO-NAV-<market> sections in index.html."""
     index_path = root / "index.html"
     if not index_path.exists():
         print("  index.html not found, skipping.")
@@ -418,19 +422,20 @@ def update_index(root: Path) -> None:
 
     content = index_path.read_text(encoding="utf-8")
 
-    reports = find_html_reports(root)
-    nav_html = build_nav_html(reports, root)
+    total_tickers = 0
+    total_reports = 0
+    for market in MARKET_DIRS:
+        reports = find_html_reports(root, market)
+        nav_html = build_nav_html(reports, market)
+        pattern = rf"[ \t]*<!-- AUTO-NAV-{market}-START -->.*?<!-- AUTO-NAV-{market}-END -->"
+        content, count = re.subn(pattern, nav_html, content, flags=re.DOTALL)
+        if count == 0:
+            print(f"  WARNING: AUTO-NAV-{market} markers not found — skipping.")
+        total_tickers += len(reports)
+        total_reports += sum(len(v) for v in reports.values())
 
-    # Replace everything between the marker comments (inclusive)
-    pattern = r"[ \t]*<!-- AUTO-NAV-START -->.*?<!-- AUTO-NAV-END -->"
-    new_content, count = re.subn(pattern, nav_html, content, flags=re.DOTALL)
-
-    if count == 0:
-        print("  WARNING: AUTO-NAV markers not found in index.html — skipping update.")
-        return
-
-    index_path.write_text(new_content, encoding="utf-8")
-    print(f"  index.html updated ({len(reports)} tickers, {sum(len(v) for v in reports.values())} reports)")
+    index_path.write_text(content, encoding="utf-8")
+    print(f"  index.html updated ({total_tickers} tickers, {total_reports} reports)")
 
 
 def main():
