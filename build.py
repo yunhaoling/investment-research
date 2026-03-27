@@ -1,17 +1,30 @@
 #!/usr/bin/env python3
 """
-Convert all markdown research reports to HTML.
+Convert all markdown research reports to HTML and update index.html.
 Usage: python build.py
 Requires: pip install markdown pygments
 """
 
-import os
 import re
 import markdown
 from pathlib import Path
 
-# Directories to skip
-SKIP_DIRS = {"template", ".git", "node_modules"}
+# Directories to skip when scanning for reports
+SKIP_DIRS = {"template", ".git", "node_modules", ".github", ".claude"}
+
+# Known ticker descriptions — add new ones here as you cover more companies
+TICKER_META = {
+    "BABA":  "阿里巴巴 · Alibaba",
+    "BILI":  "哔哩哔哩 · Bilibili",
+    "DDOG":  "Datadog · 数据狗",
+    "DUOL":  "Duolingo · 多邻国",
+    "MDB":   "MongoDB",
+    "MPNGY": "美团 · Meituan",
+    "PDD":   "拼多多 · PDD Holdings",
+    "SNOW":  "Snowflake",
+    "TCEHY": "腾讯 · Tencent",
+    "TCOM":  "携程 · Trip.com",
+}
 
 HTML_TEMPLATE = """\
 <!DOCTYPE html>
@@ -332,21 +345,122 @@ def find_md_files(root: Path) -> list[Path]:
     return sorted(results)
 
 
+def find_html_reports(root: Path) -> dict[str, list[Path]]:
+    """
+    Scan subdirectories for .html report files.
+    Returns {ticker: [sorted list of html paths]} — excludes root index.html
+    and template dirs.
+    """
+    reports: dict[str, list[Path]] = {}
+    for subdir in sorted(root.iterdir()):
+        if not subdir.is_dir():
+            continue
+        if subdir.name in SKIP_DIRS or subdir.name.startswith("."):
+            continue
+        html_files = sorted(
+            f for f in subdir.glob("*.html")
+            if "template" not in f.stem.lower()
+        )
+        if html_files:
+            reports[subdir.name] = html_files
+    return reports
+
+
+def format_period(stem: str) -> str:
+    """Turn '2025Q4' into '2025 Q4', leave other names as-is."""
+    m = re.match(r"^(\d{4})(Q\d)$", stem, re.IGNORECASE)
+    if m:
+        return f"{m.group(1)} {m.group(2).upper()}"
+    return stem
+
+
+def build_nav_html(reports: dict[str, list[Path]], root: Path) -> str:
+    """Render the full <ul class="tree-body"> ... </ul> block."""
+    tickers = list(reports.keys())
+    lines = ['    <!-- AUTO-NAV-START -->', '    <ul class="tree-body">', ""]
+
+    for i, ticker in enumerate(tickers):
+        is_last_ticker = i == len(tickers) - 1
+        ticker_connector = "└──" if is_last_ticker else "├──"
+        desc = TICKER_META.get(ticker, ticker)
+        html_files = reports[ticker]
+
+        lines.append(f'      <li class="tree-ticker">')
+        lines.append(f'        <div class="tree-ticker-row">')
+        lines.append(f'          <span class="tree-connector">{ticker_connector}</span>')
+        lines.append(f'          <span class="ticker-name">{ticker}</span>')
+        lines.append(f'          <span class="ticker-desc">{desc}</span>')
+        lines.append(f'        </div>')
+        lines.append(f'        <ul class="tree-reports">')
+
+        for j, html_path in enumerate(html_files):
+            is_last_report = j == len(html_files) - 1
+            if is_last_ticker:
+                indent = "    └── " if is_last_report else "    ├── "
+            else:
+                indent = "│   └── " if is_last_report else "│   ├── "
+
+            period = format_period(html_path.stem)
+            href = f"{ticker}/{html_path.name}"
+
+            lines.append(f'          <li class="tree-report-row">')
+            lines.append(f'            <span class="tree-indent">{indent}</span>')
+            lines.append(f'            <a class="report-link" href="{href}">')
+            lines.append(f'              <span class="report-period">{period}</span>')
+            lines.append(f'              <span class="report-title">护城河追踪 · Moat Tracker</span>')
+            lines.append(f'              <span class="report-type">Earnings</span>')
+            lines.append(f'            </a>')
+            lines.append(f'          </li>')
+
+        lines.append(f'        </ul>')
+        lines.append(f'      </li>')
+        lines.append("")
+
+    lines.append("    </ul>")
+    lines.append("    <!-- AUTO-NAV-END -->")
+    return "\n".join(lines)
+
+
+def update_index(root: Path) -> None:
+    """Regenerate the AUTO-NAV section in index.html."""
+    index_path = root / "index.html"
+    if not index_path.exists():
+        print("  index.html not found, skipping.")
+        return
+
+    content = index_path.read_text(encoding="utf-8")
+
+    reports = find_html_reports(root)
+    nav_html = build_nav_html(reports, root)
+
+    # Replace everything between the marker comments (inclusive)
+    pattern = r"[ \t]*<!-- AUTO-NAV-START -->.*?<!-- AUTO-NAV-END -->"
+    new_content, count = re.subn(pattern, nav_html, content, flags=re.DOTALL)
+
+    if count == 0:
+        print("  WARNING: AUTO-NAV markers not found in index.html — skipping update.")
+        return
+
+    index_path.write_text(new_content, encoding="utf-8")
+    print(f"  index.html updated ({len(reports)} tickers, {sum(len(v) for v in reports.values())} reports)")
+
+
 def main():
     root = Path(__file__).parent
     md_files = find_md_files(root)
 
     if not md_files:
         print("No markdown files found.")
-        return
+    else:
+        print(f"Found {len(md_files)} markdown file(s):\n")
+        for md_path in md_files:
+            rel = md_path.relative_to(root)
+            out = md_to_html(md_path)
+            print(f"  {rel}  →  {out.relative_to(root)}")
 
-    print(f"Found {len(md_files)} markdown file(s):\n")
-    for md_path in md_files:
-        rel = md_path.relative_to(root)
-        out = md_to_html(md_path)
-        print(f"  {rel}  →  {out.relative_to(root)}")
-
-    print(f"\nDone. {len(md_files)} file(s) converted.")
+    print("\nUpdating index.html...")
+    update_index(root)
+    print("\nDone.")
 
 
 if __name__ == "__main__":
