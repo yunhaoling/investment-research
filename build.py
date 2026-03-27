@@ -234,7 +234,7 @@ body {{
 <body>
 
 <header class="site-header">
-  <a href="../" class="back-link">← index</a>
+  <a href="../../" class="back-link">← index</a>
   <span class="header-sep">/</span>
   <span class="header-title">{ticker}</span>
 </header>
@@ -323,9 +323,10 @@ def md_to_html(md_path: Path) -> Path:
 
 
 def find_md_files(root: Path) -> list[Path]:
-    """Find all .md files, skipping excluded directories."""
+    """Find all .md files under companies/, skipping excluded directories."""
+    companies_dir = root / "companies"
     results = []
-    for path in root.rglob("*.md"):
+    for path in companies_dir.rglob("*.md"):
         if any(part in SKIP_DIRS for part in path.parts):
             continue
         results.append(path)
@@ -334,12 +335,12 @@ def find_md_files(root: Path) -> list[Path]:
 
 def find_html_reports(root: Path) -> dict[str, list[Path]]:
     """
-    Scan subdirectories for .html report files.
-    Returns {ticker: [sorted list of html paths]} — excludes root index.html
-    and template dirs.
+    Scan companies/ subdirectories for .html report files.
+    Returns {ticker: [sorted list of html paths]}.
     """
     reports: dict[str, list[Path]] = {}
-    for subdir in sorted(root.iterdir()):
+    companies_dir = root / "companies"
+    for subdir in sorted(companies_dir.iterdir()):
         if not subdir.is_dir():
             continue
         if subdir.name in SKIP_DIRS or subdir.name.startswith("."):
@@ -388,7 +389,7 @@ def build_nav_html(reports: dict[str, list[Path]], root: Path) -> str:
                 indent = "│   └── " if is_last_report else "│   ├── "
 
             period = format_period(html_path.stem)
-            href = f"{ticker}/{html_path.name}"
+            href = f"companies/{ticker}/{html_path.name}"
 
             lines.append(f'          <li class="tree-report-row">')
             lines.append(f'            <span class="tree-indent">{indent}</span>')
