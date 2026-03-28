@@ -1,0 +1,17 @@
+# pre-commit hook configuration
+# Setup (once per machine after cloning):
+#   pip install pre-commit
+#   pre-commit install
+#
+# On each commit, this builds HTML from .md files and stages the output.
+
+repos:
+  - repo: local
+    hooks:
+      - id: build-html
+        name: Build HTML from Markdown
+        entry: python scripts/pre_commit_build.py
+        language: python
+        additional_dependencies: [markdown, pygments]
+        pass_filenames: false
+        always_run: true

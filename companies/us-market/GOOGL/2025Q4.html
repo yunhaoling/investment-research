@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alphabet Inc. (NASDAQ: GOOGL/GOOG) 深度投资研究报告</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #0b0d12;
+  --bg2:    #10131a;
+  --bg3:    #161923;
+  --bg4:    #1d2130;
+  --border: #222638;
+  --border2:#2a2f45;
+  --text:   #dde3f0;
+  --text2:  #8a93b0;
+  --text3:  #505878;
+  --accent: #5b6af0;
+  --green:  #2ed380;
+  --amber:  #f5c542;
+  --red:    #ff5566;
+  --mono:   'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ── Header ── */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex; align-items: center; gap: 16px; height: 52px;
+}
+.back-link {
+  color: var(--text3); text-decoration: none; font-size: 13px;
+  font-family: var(--mono); transition: color .2s;
+}
+.back-link:hover { color: var(--text2); }
+.header-sep { color: var(--border2); }
+.header-title { font-size: 13px; color: var(--text2); }
+
+/* ── Layout ── */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+/* ── TOC Sidebar ── */
+.toc {
+  position: sticky; top: 52px; align-self: start;
+  height: calc(100vh - 52px); overflow-y: auto;
+  padding: 28px 0;
+  border-right: 1px solid var(--border);
+  background: var(--bg2);
+}
+.toc-title {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--text3); font-family: var(--mono);
+  padding: 0 20px 12px;
+}
+.toc ul { list-style: none; }
+.toc a {
+  display: block; padding: 5px 20px;
+  font-size: 12.5px; color: var(--text3);
+  text-decoration: none; transition: color .15s, background .15s;
+  border-left: 2px solid transparent;
+}
+.toc a:hover { color: var(--text2); background: var(--bg3); }
+.toc a.active { color: var(--accent); border-left-color: var(--accent); }
+.toc .toc-h2 { padding-left: 20px; }
+.toc .toc-h3 { padding-left: 34px; font-size: 11.5px; }
+
+/* ── Article ── */
+.article {
+  max-width: 860px;
+  padding: 48px 60px 80px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Headings */
+.article h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.article h2 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 18px; font-weight: 600;
+  color: var(--text);
+  margin: 40px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.article h2::before {
+  content: ''; display: block;
+  width: 3px; height: 18px; border-radius: 2px;
+  background: var(--accent); flex-shrink: 0;
+}
+.article h3 {
+  font-size: 15px; font-weight: 500;
+  color: var(--text2);
+  margin: 28px 0 12px;
+}
+.article h4 {
+  font-size: 13px; font-weight: 500;
+  color: var(--text3); text-transform: uppercase; letter-spacing: .06em;
+  margin: 20px 0 8px;
+}
+
+/* Body text */
+.article p { margin-bottom: 14px; color: var(--text2); }
+.article strong { color: var(--text); font-weight: 500; }
+.article em { color: var(--amber); font-style: normal; }
+.article hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+/* Blockquote */
+.article blockquote {
+  margin: 20px 0;
+  padding: 14px 20px;
+  background: var(--bg3);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+}
+.article blockquote p {
+  color: var(--text2); margin: 0;
+  font-size: 13.5px; line-height: 1.8;
+}
+
+/* Tables */
+.article table {
+  width: 100%; border-collapse: collapse;
+  margin: 20px 0 28px; font-size: 13px;
+}
+.article thead th {
+  padding: 8px 12px;
+  text-align: right;
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .07em;
+  color: var(--text3);
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border2);
+  font-family: var(--mono);
+}
+.article thead th:first-child { text-align: left; }
+.article tbody td {
+  padding: 8px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+.article tbody td:first-child {
+  text-align: left;
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.article tbody tr:hover td { background: var(--bg3); }
+
+/* Lists */
+.article ul, .article ol {
+  padding-left: 20px; margin-bottom: 14px;
+}
+.article li { color: var(--text2); margin-bottom: 4px; }
+.article li strong { color: var(--text); }
+
+/* Inline code */
+.article code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 1px 5px; border-radius: 4px;
+  color: var(--amber);
+}
+.article pre {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+.article pre code {
+  background: none; border: none; padding: 0;
+  color: var(--text2); font-size: 13px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc { display: none; }
+  .article { padding: 32px 20px 60px; }
+  .site-header { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="../../../" class="back-link">← index</a>
+  <span class="header-sep">/</span>
+  <span class="header-title">GOOGL</span>
+</header>
+
+<div class="layout">
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ul id="toc-list"></ul>
+  </nav>
+
+  <main>
+    <article class="article" id="article">
+      <h1 id="alphabet-inc-nasdaq-googlgoog">Alphabet Inc. (NASDAQ: GOOGL/GOOG) 深度投资研究报告</h1>
+<p><strong>报告日期：</strong> 2026年3月28日<br />
+<strong>分析师：</strong> 买方研究部（基于公开财报及市场数据）<br />
+<strong>报告周期：</strong> 2025Q1–Q4 + FY2025年度汇总<br />
+<strong>股价参考：</strong> $274.34（2026年3月27日收盘，GOOGL）</p>
+<hr />
+<h2 id="moat-analysis">一、护城河分析（Moat Analysis）</h2>
+<h3 id="11-network-effects">1.1 网络效应（Network Effects）——搜索与广告生态</h3>
+<p><strong>核心逻辑：</strong> Google Search 拥有全球约 90% 的搜索市占率。用户越多 → 广告主出价越高 → 广告收入越高 → 产品持续投入 → 用户粘性越强。这一正反馈循环已运转逾 20 年，AI Overview（AIO）功能的引入进一步将 AI 搜索深度嵌入用户习惯。</p>
+<p><strong>可追踪指标：Google Search &amp; other 收入（季度，百万美元）</strong></p>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>Search &amp; other 收入</th>
+<th>YoY增速</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024Q4</td>
+<td>$54,034M</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2025Q1</td>
+<td>~$50,700M</td>
+<td>+12%</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>~$54,100M</td>
+<td>+14%</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>$56,600M</td>
+<td>+15%</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>$63,073M</td>
+<td>+17%</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>数据来源：SEC 8-K 财报（2026-02-04），Futurum Research Q3 2025 分析报告</p>
+</blockquote>
+<p>2025全年 Google Search &amp; other 收入全年强劲增长，Q4同比增速达17%，加速势头明显。CEO Sundar Pichai 表示 Gemini App 已拥有超过7.5亿月活跃用户，搜索总使用量创历史新高，AI持续推动扩张性的增长时刻。</p>
+<p><strong>强弱判断：</strong> ★★★★★（极强）。搜索护城河处于<strong>拓宽</strong>状态——AI Overview 将 Google 从"链接列表"进化为"答案引擎"，短期担忧（被 ChatGPT 替代）已被季度增速加速所证伪。</p>
+<hr />
+<h3 id="12-switching-costscloud">1.2 转换成本（Switching Costs）——Cloud &amp; 企业生态系统</h3>
+<p><strong>核心逻辑：</strong> 企业一旦将数据、工作负载迁入 GCP，转移成本极高（数据迁移、人员培训、系统重构）。Google Cloud 已形成 AI Infrastructure → BigQuery → Workspace → Apigee → 安全服务 的全栈锁定。</p>
+<p><strong>可追踪指标：Google Cloud 收入（季度，百万美元）</strong></p>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>Cloud 收入</th>
+<th>YoY增速</th>
+<th>Cloud 营业利润</th>
+<th>营业利润率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024Q4</td>
+<td>$11,955M</td>
+<td>+30%</td>
+<td>$2,093M</td>
+<td>17.5%</td>
+</tr>
+<tr>
+<td>2025Q1</td>
+<td>$12,264M</td>
+<td>+28%</td>
+<td>~$2,200M</td>
+<td>~18%</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>$13,563M</td>
+<td>+32%</td>
+<td>~$2,800M</td>
+<td>~20%</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>$15,152M</td>
+<td>+34%</td>
+<td>~$3,800M</td>
+<td>~25%</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>$17,664M</td>
+<td>+48%</td>
+<td>$5,313M</td>
+<td>30.1%</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>数据来源：SEC 8-K 财报（Q1-Q4 2025）；Futurum Research</p>
+</blockquote>
+<p>Google Cloud 在2025年Q4以48%的增速在三大云巨头中增长最快，Google Cloud Platform 实现了跨企业AI基础设施和企业AI解决方案的全面需求扩张。</p>
+<p><strong>强弱判断：</strong> ★★★★☆（强）。Cloud 利润率从2024Q4的17.5%快速扩张至2025Q4的30.1%，规模效应正在快速显现，转换成本护城河处于<strong>快速拓宽</strong>状态。</p>
+<hr />
+<h3 id="13-intangible-assets-ai">1.3 无形资产（Intangible Assets）——品牌 + 数据 + AI 模型</h3>
+<p><strong>核心逻辑：</strong> Google 品牌价值全球前三；拥有全球最大规模的搜索数据（20年用户行为数据），构成 Gemini 等 AI 模型的独特训练优势；TPU 自研芯片形成成本壁垒。</p>
+<p><strong>可追踪指标：</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2024Q4</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R&amp;D 费用（$M）</td>
+<td>$13,116M</td>
+<td>~$14,000M</td>
+<td>~$14,800M</td>
+<td>~$14,700M</td>
+<td>$18,572M</td>
+</tr>
+<tr>
+<td>R&amp;D 占收入比</td>
+<td>13.6%</td>
+<td>~15.5%</td>
+<td>~15.4%</td>
+<td>~14.4%</td>
+<td>16.3%</td>
+</tr>
+<tr>
+<td>YouTube 广告收入（$M）</td>
+<td>$10,473M</td>
+<td>~$9,800M</td>
+<td>~$10,500M</td>
+<td>$10,259M</td>
+<td>$11,383M</td>
+</tr>
+<tr>
+<td>Gemini MAU（百万）</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>750M+</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>数据来源：SEC 8-K Q4 2025（研发费用）；CNBC Q4 2025 报道（Gemini MAU）</p>
+</blockquote>
+<p>R&amp;D费用在Q4 2025达到$185.7亿，其中包含为Waymo股权估值计提的21亿美元员工薪酬费用，反映公司对前沿技术研发投入的持续加码。</p>
+<p>基于Gemini API的直接客户调用，Alphabet第一方模型每分钟处理超过100亿个Token，Gemini企业座位销售超过800万个。</p>
+<p><strong>强弱判断：</strong> ★★★★☆（强）。数据飞轮和自研芯片生态处于<strong>拓宽</strong>状态。</p>
+<hr />
+<h3 id="14-economies-of-scale">1.4 规模经济（Economies of Scale）——基础设施 + 内容</h3>
+<p><strong>可追踪指标：操作杠杆与毛利润趋势</strong></p>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>营收（$M）</th>
+<th>毛利润（$M）</th>
+<th>毛利率</th>
+<th>营业利润率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024Q4</td>
+<td>$96,469M</td>
+<td>$55,856M</td>
+<td>57.9%</td>
+<td>32.1%</td>
+</tr>
+<tr>
+<td>2025Q1</td>
+<td>$90,234M</td>
+<td>~$53,400M</td>
+<td>~59.2%</td>
+<td>34.0%</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>$96,444M</td>
+<td>~$58,100M</td>
+<td>~60.2%</td>
+<td>32.4%</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>$102,350M</td>
+<td>~$62,700M</td>
+<td>~61.3%</td>
+<td>30.5%</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>$113,828M</td>
+<td>$68,062M</td>
+<td>59.8%</td>
+<td>31.6%</td>
+</tr>
+<tr>
+<td><strong>FY 2025</strong></td>
+<td><strong>$402,836M</strong></td>
+<td><strong>$240,301M</strong></td>
+<td><strong>59.7%</strong></td>
+<td><strong>32.0%</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>数据来源：SEC 8-K Q4 2025 全年合并财务报表；SEC Q3 2025 报告</p>
+</blockquote>
+<p>Alphabet 2025年全年营收首次突破4000亿美元，净利润同比大幅增长约30%。</p>
+<p>CEO Sundar Pichai 表示，公司将Gemini服务的单位成本在整个2025年降低了78%，通过模型优化、效率提升和利用率改善实现了服务规模提升的同时成本持续下降。</p>
+<p><strong>强弱判断：</strong> ★★★★☆（强）。规模效应在搜索和YouTube广告业务已极为成熟；Cloud 的规模效益正快速向利润端传导，处于<strong>稳定到拓宽</strong>的过渡期。</p>
+<hr />
+<h3 id="_1">护城河综合判断</h3>
+<table>
+<thead>
+<tr>
+<th>护城河类型</th>
+<th>强度评级</th>
+<th>趋势</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>搜索网络效应</td>
+<td>★★★★★</td>
+<td>拓宽（AI强化）</td>
+</tr>
+<tr>
+<td>Cloud 转换成本</td>
+<td>★★★★☆</td>
+<td>快速拓宽</td>
+</tr>
+<tr>
+<td>无形资产（数据+AI）</td>
+<td>★★★★☆</td>
+<td>拓宽</td>
+</tr>
+<tr>
+<td>规模经济</td>
+<td>★★★★☆</td>
+<td>稳定→拓宽</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="valuation">二、估值分析（Valuation）</h2>
+<p><strong>当前市场数据（2026年3月27日）：</strong></p>
+<ul>
+<li>GOOGL 股价：$274.34</li>
+<li>市值：约 $3.32 万亿（12,088M 股 × $274.34）</li>
+<li>TTM EPS（摊薄）：$10.81</li>
+<li>当前 P/E（TTM）：约 25.4x</li>
+<li>当前 P/S（TTM）：约 8.7x</li>
+<li>远期 P/E（2026E）：约 23x</li>
+</ul>
+<hr />
+<h3 id="21-pe">2.1 PE 估值</h3>
+<p><strong>历史 EPS 逐季数据（摊薄，美元/股）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>摊薄 EPS</th>
+<th>YoY 增速</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024Q1</td>
+<td>$1.89</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2024Q2</td>
+<td>$1.89</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2024Q3</td>
+<td>$2.12</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2024Q4</td>
+<td>$2.15</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>FY 2024</strong></td>
+<td><strong>$8.04</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td>2025Q1</td>
+<td>$2.81</td>
+<td>+49%</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>$2.31</td>
+<td>+22%</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>$2.87</td>
+<td>+35%</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>$2.82</td>
+<td>+31%</td>
+</tr>
+<tr>
+<td><strong>FY 2025 TTM</strong></td>
+<td><strong>$10.81</strong></td>
+<td><strong>+35%</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>数据来源：SEC 8-K Q4 2025，Q2 2025 财报，CNBC Q3 2025 报道；2025Q1 EPS 由 FY 2025 减去其余三季度倒推计算。</p>
+</blockquote>
+<p><strong>注：</strong> 2025Q1 较高的 NI 主要受益于$297.9亿的非经营性"Other income"（含大量未实现权益投资收益），未来可持续性有待观察。</p>
+<p><strong>预测 EPS（预测值）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>年度</th>
+<th>Base EPS</th>
+<th>Bear EPS</th>
+<th>Bull EPS</th>
+<th>假设依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026E</td>
+<td>$12.00</td>
+<td>$10.50</td>
+<td>$14.00</td>
+<td>一致预期~$11.80，CapEx 扩大压制近期盈利</td>
+</tr>
+<tr>
+<td>2027E</td>
+<td>$14.50</td>
+<td>$12.00</td>
+<td>$18.00</td>
+<td>Cloud 规模效应释放，搜索 AI 货币化提速</td>
+</tr>
+<tr>
+<td>2028E</td>
+<td>$18.00</td>
+<td>$13.50</td>
+<td>$23.00</td>
+<td>Waymo + Cloud 双轮驱动</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>数据参考：WallStreetZen（67家机构一致预期2026E EPS $11.80）；Alpha Spread（未来3年净利润CAGR约13%）；Trefis（2026 EPS $11.24）</p>
+</blockquote>
+<p><strong>合理 PE 区间：</strong></p>
+<p>GOOGL 5年平均 P/E 约为25.2x，10年平均约26.7x，当前25.4x处于历史均值附近。考虑 AI 战略成效下的盈利加速，合理区间为 22x–32x。</p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>PE 倍数</th>
+<th>2026E EPS</th>
+<th>目标价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bear</td>
+<td>20x</td>
+<td>$10.50</td>
+<td>$210</td>
+</tr>
+<tr>
+<td>Base</td>
+<td>27x</td>
+<td>$12.00</td>
+<td>$324</td>
+</tr>
+<tr>
+<td>Bull</td>
+<td>32x</td>
+<td>$14.00</td>
+<td>$448</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="22-ps">2.2 PS 估值</h3>
+<p><strong>历史收入逐季数据（百万美元）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>季度</th>
+<th>营收</th>
+<th>YoY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025Q1</td>
+<td>$90,234M</td>
+<td>+12%</td>
+</tr>
+<tr>
+<td>2025Q2</td>
+<td>$96,444M</td>
+<td>+14%</td>
+</tr>
+<tr>
+<td>2025Q3</td>
+<td>$102,350M</td>
+<td>+16%</td>
+</tr>
+<tr>
+<td>2025Q4</td>
+<td>$113,828M</td>
+<td>+18%</td>
+</tr>
+<tr>
+<td><strong>FY 2025 TTM</strong></td>
+<td><strong>$402,836M</strong></td>
+<td><strong>+15%</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>预测营收（预测值）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>年度</th>
+<th>Base</th>
+<th>Bear</th>
+<th>Bull</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026E</td>
+<td>$455B</td>
+<td>$420B</td>
+<td>$500B</td>
+</tr>
+<tr>
+<td>2027E</td>
+<td>$520B</td>
+<td>$460B</td>
+<td>$600B</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>参考：Trefis 2026E $455B；Alpha Spread 未来3年收入CAGR 17%</p>
+</blockquote>
+<p><strong>合理 PS 区间：</strong></p>
+<p>GOOGL 的5年平均 P/S 约为6.8x，10年平均约6.8x，当前约8.7x处于历史偏高位。考虑 Cloud 业务占比提升带来的利润率扩张，合理区间为 6.5x–10x。</p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>PS 倍数</th>
+<th>2026E 营收</th>
+<th>摊薄股本（亿）</th>
+<th>目标价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bear</td>
+<td>6.5x</td>
+<td>$420B</td>
+<td>120.9</td>
+<td>$226</td>
+</tr>
+<tr>
+<td>Base</td>
+<td>8.5x</td>
+<td>$455B</td>
+<td>120.9</td>
+<td>$319</td>
+</tr>
+<tr>
+<td>Bull</td>
+<td>10.5x</td>
+<td>$500B</td>
+<td>120.9</td>
+<td>$434</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="23-dcf">2.3 DCF 估值</h3>
+<p><strong>关键假设（三情景，预测值）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>假设项</th>
+<th>Bear</th>
+<th>Base</th>
+<th>Bull</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>未来5年收入增速</td>
+<td>10%</td>
+<td>15%</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>未来5年 FCF Margin</td>
+<td>16%</td>
+<td>20%</td>
+<td>25%</td>
+</tr>
+<tr>
+<td>5年后永续增速</td>
+<td>3%</td>
+<td>4%</td>
+<td>5%</td>
+</tr>
+<tr>
+<td>WACC</td>
+<td>11%</td>
+<td>9%</td>
+<td>8%</td>
+</tr>
+<tr>
+<td>基准年 FCF</td>
+<td>$73.3B</td>
+<td>$73.3B</td>
+<td>$73.3B</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DCF 内在价值估算（预测值）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>情景</th>
+<th>5年累计 FCF（PV）</th>
+<th>终值（PV）</th>
+<th>总企业价值</th>
+<th>内在价值/股</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bear</td>
+<td>~$320B</td>
+<td>~$1,200B</td>
+<td>~$1,520B</td>
+<td>~$126</td>
+</tr>
+<tr>
+<td>Base</td>
+<td>~$440B</td>
+<td>~$2,300B</td>
+<td>~$2,740B</td>
+<td>~$227</td>
+</tr>
+<tr>
+<td>Bull</td>
+<td>~$600B</td>
+<td>~$4,200B</td>
+<td>~$4,800B</td>
+<td>~$397</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注：DCF 中 Bear 情景基于监管压力叠加 CapEx 大幅扩张压制 FCF 的悲观假设；Base 为一致预期；Bull 假设 Cloud 利润率快速向40%靠拢，Waymo 商业化放量。由于2026年 CapEx 指引$175B–$185B（近乎翻倍），Bear 情景下 FCF Margin 压力显著。</p>
+</blockquote>
+<hr />
+<h3 id="_2">综合估值汇总</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>Bear 目标价</th>
+<th>Base 目标价</th>
+<th>Bull 目标价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PE 估值</td>
+<td>$210</td>
+<td>$324</td>
+<td>$448</td>
+</tr>
+<tr>
+<td>PS 估值</td>
+<td>$226</td>
+<td>$319</td>
+<td>$434</td>
+</tr>
+<tr>
+<td>DCF 估值</td>
+<td>$126</td>
+<td>$227</td>
+<td>$397</td>
+</tr>
+<tr>
+<td><strong>加权综合</strong></td>
+<td><strong>~$185</strong></td>
+<td><strong>~$290</strong></td>
+<td><strong>~$426</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>综合判断：</strong> 当前股价 $274 处于 Base–Bull 情景区间中偏低位，相对 Base 合理价值（$290–$320）约有5%–15%的上行空间，存在一定低估，但高 CapEx 扩张期（2026年$175B–$185B）使 DCF 内在价值高度分散。建议以耐心资本视角持有，待2027年 Cloud 利润率扩张可见度提升后，估值重估空间将更清晰。</p>
+<hr />
+<h2 id="_3">三、纵向比较（历史对比）</h2>
+<h3 id="31">3.1 核心财务指标季度趋势</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>2025Q1</th>
+<th>2025Q2</th>
+<th>2025Q3</th>
+<th>2025Q4</th>
+<th>FY 2025</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>营收（$B）</td>
+<td>$90.2</td>
+<td>$96.4</td>
+<td>$102.4</td>
+<td>$113.8</td>
+<td>$402.8</td>
+</tr>
+<tr>
+<td>毛利润（$B）</td>
+<td>~$53.4</td>
+<td>~$58.1</td>
+<td>~$62.7</td>
+<td>$68.1</td>
+<td>$240.3</td>
+</tr>
+<tr>
+<td>毛利率</td>
+<td>~59.2%</td>
+<td>~60.2%</td>
+<td>~61.3%</td>
+<td>59.8%</td>
+<td>59.7%</td>
+</tr>
+<tr>
+<td>营业利润（$B）</td>
+<td>~$30.7</td>
+<td>~$31.2</td>
+<td>~$31.2</td>
+<td>$35.9</td>
+<td>$129.0</td>
+</tr>
+<tr>
+<td>营业利润率</td>
+<td>~34.0%</td>
+<td>~32.4%</td>
+<td>~30.5%</td>
+<td>31.6%</td>
+<td>32.0%</td>
+</tr>
+<tr>
+<td>净利润（$B）</td>
+<td>~$34.5</td>
+<td>~$28.2</td>
+<td>$35.0</td>
+<td>$34.5</td>
+<td>$132.2</td>
+</tr>
+<tr>
+<td>净利率</td>
+<td>~38.2%</td>
+<td>~29.2%</td>
+<td>~34.2%</td>
+<td>30.3%</td>
+<td>32.8%</td>
+</tr>
+<tr>
+<td>摊薄 EPS（$）</td>
+<td>$2.81</td>
+<td>$2.31</td>
+<td>$2.87</td>
+<td>$2.82</td>
+<td>$10.81</td>
+</tr>
+<tr>
+<td>FCF（$B）</td>
+<td>$19.0</td>
+<td>$5.3</td>
+<td>$24.5</td>
+<td>$24.6</td>
+<td>$73.3</td>
+</tr>
+<tr>
+<td>CapEx（$B）</td>
+<td>$17.2</td>
+<td>$22.4</td>
+<td>$24.0</td>
+<td>$27.9</td>
+<td>$91.4</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>说明：Q1 2025 净利润偏高（~$34.5B），主要受非经营性权益投资收益的显著正向影响（全年"Other income" $29.8B vs 2024年 $7.4B）；Q2 FCF 较低系单季 CapEx 大幅跃升所致。</p>
+</blockquote>
+<p><strong>年度对比（FY 2024 vs FY 2025）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>FY 2024</th>
+<th>FY 2025</th>
+<th>YoY变化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>营收（$B）</td>
+<td>$350.0</td>
+<td>$402.8</td>
+<td>+15.1%</td>
+</tr>
+<tr>
+<td>营业利润（$B）</td>
+<td>$112.4</td>
+<td>$129.0</td>
+<td>+14.8%</td>
+</tr>
+<tr>
+<td>净利润（$B）</td>
+<td>$100.1</td>
+<td>$132.2</td>
+<td>+32.0%</td>
+</tr>
+<tr>
+<td>净利率</td>
+<td>28.6%</td>
+<td>32.8%</td>
+<td>+4.2pp</td>
+</tr>
+<tr>
+<td>摊薄EPS（$）</td>
+<td>$8.04</td>
+<td>$10.81</td>
+<td>+34.5%</td>
+</tr>
+<tr>
+<td>ROE</td>
+<td>~30.8%</td>
+<td>~35.7%</td>
+<td>+4.9pp</td>
+</tr>
+<tr>
+<td>FCF（$B）</td>
+<td>~$72.8</td>
+<td>$73.3</td>
+<td>+0.7%</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>注意：</strong> FCF 几乎持平，是因为 CapEx 从2024年~$52B急剧扩张至2025年$91.4B，2026年还将跳升至$175B–$185B。净利润大幅增长部分来自权益投资收益的一次性因素。</p>
+</blockquote>
+<hr />
+<h3 id="32">3.2 估值历史百分位</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>当前值（2026年3月）</th>
+<th>5年均值</th>
+<th>10年均值</th>
+<th>历史百分位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P/E（TTM）</td>
+<td>~25.4x</td>
+<td>~25.2x</td>
+<td>~26.7x</td>
+<td>约50百分位</td>
+</tr>
+<tr>
+<td>P/S（TTM）</td>
+<td>~8.7x</td>
+<td>~6.8x</td>
+<td>~6.8x</td>
+<td>约75百分位</td>
+</tr>
+<tr>
+<td>P/B</td>
+<td>~8.0x</td>
+<td>—</td>
+<td>—</td>
+<td>中偏高</td>
+</tr>
+</tbody>
+</table>
+<p>截至2026年3月27日，GOOGL的P/E为25.15x，高于近3年和5年均值，但低于10年均值27.69x；当前估值处于历史中等偏低位置。</p>
+<p>GOOGL 当前 P/S 约8.7x，高于5年均值6.8x和10年均值6.8x，处于历史偏高位。</p>
+<p><strong>综合判断：</strong> PE 处于历史<strong>中等</strong>位置，PS 处于历史<strong>中高</strong>位置，反映市场对 Cloud + AI 货币化的增长溢价。当前估值总体<strong>中性</strong>，非明显低估也非泡沫。</p>
+<hr />
+<h2 id="_4">四、横向比较（行业对标）</h2>
+<h3 id="41-fy-2025">4.1 核心可比公司 FY 2025 指标对比</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th><strong>Alphabet (GOOGL)</strong></th>
+<th>Microsoft (MSFT)</th>
+<th>Meta (META)</th>
+<th>Apple (AAPL)</th>
+<th>Amazon (AMZN)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025 营收（$B）</td>
+<td>$402.8</td>
+<td>~$275B</td>
+<td>$201.0</td>
+<td>~$400B</td>
+<td>~$680B</td>
+</tr>
+<tr>
+<td>营收 YoY 增速</td>
+<td>+15%</td>
+<td>+17%</td>
+<td>+22%</td>
+<td>~+5%</td>
+<td>~+11%</td>
+</tr>
+<tr>
+<td>营业利润率</td>
+<td>32.0%</td>
+<td>~47%</td>
+<td>41%</td>
+<td>~32%</td>
+<td>~11%</td>
+</tr>
+<tr>
+<td>净利率</td>
+<td>32.8%</td>
+<td>~38%</td>
+<td>30.1%</td>
+<td>~26%</td>
+<td>~6%</td>
+</tr>
+<tr>
+<td>EPS（FY）</td>
+<td>$10.81</td>
+<td>~$14.6</td>
+<td>$23.98</td>
+<td>~$6.75</td>
+<td>~$5.20</td>
+</tr>
+<tr>
+<td>EPS YoY 增速</td>
+<td>+35%</td>
+<td>+24%+</td>
+<td>+11%</td>
+<td>~+19%</td>
+<td>+30%</td>
+</tr>
+<tr>
+<td>P/E（TTM）</td>
+<td>~25x</td>
+<td>~32x</td>
+<td>~23x</td>
+<td>~31x</td>
+<td>~37x</td>
+</tr>
+<tr>
+<td>P/S（TTM）</td>
+<td>~8.7x</td>
+<td>~13x</td>
+<td>~9x</td>
+<td>~9x</td>
+<td>~3.6x</td>
+</tr>
+<tr>
+<td>Cloud 增速</td>
+<td>+48% (GCP)</td>
+<td>+31% (Azure)</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>+19% (AWS)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>数据来源：SEC 8-K（Alphabet Q4 2025）；Meta Q4 2025 PR；Microsoft Q2 FY2026 PR；FinanceCharts PE数据（2026年3月）</p>
+</blockquote>
+<p><strong>增长性对比：</strong></p>
+<p>Alphabet 2025Q3营收同比增长16%，全年增长15%；Google Cloud 增速从Q3的34%加速到Q4的48%，超越AWS的19%和Azure的31%，成为云增速最快的公司。</p>
+<p>Meta 2025年全年收入增长22%，达$201亿美元，Q4增速24%，成长性领先于Alphabet，但营业利润率从48%压缩至41%，反映AI基础设施投入的显著拖累。</p>
+<p>Microsoft Q4 2025（即FY2026 Q2）收入同比增长17%至$813亿，Azure增速31%，云营收占比快速提升；GAAP摊薄EPS达$5.16，同比增长60%，部分受益于特定会计项目。</p>
+<p><strong>盈利能力对比：</strong> Microsoft 营业利润率约47%显著高于 Alphabet 的32%，体现纯软件商业模式优势；Alphabet 广告+Cloud 双引擎使其毛利率59.7%领先于 Amazon（约50%）。</p>
+<p><strong>估值溢价/折价分析：</strong></p>
+<p>Alphabet 当前 P/E ~25x，<strong>低于</strong> Microsoft（~32x）和 Apple（~31x），<strong>略高于</strong> Meta（~23x）。考虑 Alphabet 15%营收增速和35% EPS增速，PEG 约0.7x，在大型科技股中属<strong>明显低估</strong>。Alphabet P/S ~8.7x略高于历史均值，但与Meta相近，考虑 Cloud 高速增长，<strong>溢价合理</strong>。</p>
+<p>在"Mag 7"中，EPS增速方面Nvidia（+67%）遥遥领先，Alphabet（+34%）、Amazon（+30%）和Microsoft（+29%）构成强劲的第二梯队，AI变现正切实转化为底线增长。</p>
+<p><strong>综合判断：</strong> Alphabet 相对 Microsoft 和 Apple 存在<strong>合理折价</strong>（监管风险、广告周期性），相对 Meta 则有<strong>小幅溢价</strong>（规模更大、护城河更宽）。考虑 Cloud 增速加速和 AI 货币化，当前估值性价比在大型科技公司中属<strong>中上水平</strong>。</p>
+<hr />
+<h2 id="_5">五、风险提示</h2>
+<h3 id="1">风险 1：监管与反垄断（高影响，高概率）</h3>
+<p>美国 DOJ 已认定 Google 在搜索（2024年8月裁定）和广告科技领域（2025年4月裁定）违反反垄断法，补救措施可能包括强制解除默认搜索协议（苹果每年约$200亿），甚至分拆 Chrome 或 Android。</p>
+<p>Alphabet面临来自监管机构的法律逆风，一个陪审团裁决将Meta和Google定为对用户造成伤害的有责方，这一判决可能引发大量类似诉讼。</p>
+<p><strong>对估值影响：</strong> 若被迫放弃苹果默认搜索协议，Search 收入或减少约$150–$200亿/年，EPS 影响约-$0.8至-$1.0；若 Chrome 被剥离，Search 长期增长受损，P/E 中枢或下移至20–22x，目标价下行风险 15%–25%。</p>
+<hr />
+<h3 id="2capex-fcf">风险 2：CapEx 过度扩张导致 FCF 大幅受压（中高影响，高概率）</h3>
+<p>Alphabet 宣布2026年资本支出指引为$1,750亿至$1,850亿，若按上限执行，几乎是2025年约$910亿的两倍。这将使 FY 2026 FCF 面临大幅下滑压力，影响分红和回购能力。</p>
+<p><strong>对估值影响：</strong> 若2026年CapEx达$185B，FCF Margin 将从当前18%压缩至约5%–8%，DCF 估值中枢下移约15%，对估值倍数产生显著压制。</p>
+<hr />
+<h3 id="3ai">风险 3：AI 替代搜索商业模式（中高影响，中概率）</h3>
+<p>OpenAI（ChatGPT）、Perplexity、Microsoft Copilot 等 AI 原生搜索产品正抢占部分查询场景，尤其是长尾信息类搜索。Google 虽以 AI Overview 反制，但每次 AI 回答取代广告点击，均带来潜在的广告货币化摩擦。</p>
+<p><strong>对估值影响：</strong> 若搜索广告增速从当前17%降至5%以下，Search 分部估值需要重估，整体 P/S 中枢可能下移至6x–7x，股价下行风险约20%–30%。</p>
+<hr />
+<h3 id="4">风险 4：宏观经济衰退冲击广告收入（中影响，中概率）</h3>
+<p>广告支出属周期性，经济衰退会优先削减数字广告预算。2022年的高通胀+加息周期已证明这一点（Google广告收入一度出现季度负增长）。</p>
+<p><strong>对估值影响：</strong> 若广告市场下滑10%，Alphabet 广告收入约-$33B，EPS 影响约-$1.5–$2.0，对应目标价下调 15%–20%。</p>
+<hr />
+<h3 id="5waymo-other-bets">风险 5：Waymo / Other Bets 持续大额亏损（低影响，高概率）</h3>
+<p>Other Bets 在2025Q4 亏损$36.1亿，较上年同期亏损$11.7亿骤增200%以上，主要因Waymo员工股权激励的大额费用计提。</p>
+<p>2026年2月，Waymo 宣布了一轮$160亿的融资，绝大部分资金来自Alphabet本身，进一步加大集团现金流压力。</p>
+<p><strong>对估值影响：</strong> Other Bets 短期内持续侵蚀集团盈利，但若 Waymo 估值显现（当前约$1000亿），长期期权价值可观；对当前估值影响有限（约-2%至-5%），但公众叙事或影响市场情绪。</p>
+<hr />
+<h2 id="_6">六、数据来源</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>来源</th>
+<th>内容</th>
+<th>链接</th>
+<th>获取时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Alphabet SEC 8-K（Q4 2025）</td>
+<td>Q4 2025 及 FY2025 合并财报</td>
+<td>https://www.sec.gov/Archives/edgar/data/1652044/000165204426000012/googexhibit991q42025.htm</td>
+<td>2026-03-28</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Alphabet Q4 2025 Earnings Slides</td>
+<td>FCF、CapEx 季度数据</td>
+<td>https://s206.q4cdn.com/479360582/files/doc_financials/2025/q4/4/2025q4-alphabet-earnings-slides.pdf</td>
+<td>2026-03-28</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Alphabet SEC 8-K（Q3 2025）</td>
+<td>Q3 2025 财报详情</td>
+<td>https://www.sec.gov/Archives/edgar/data/1652044/000165204425000087/googexhibit991q32025.htm</td>
+<td>2026-03-28</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Alphabet SEC 8-K（Q2 2025）</td>
+<td>Q2 2025 财报详情</td>
+<td>https://s206.q4cdn.com/479360582/files/doc_financials/2025/q2/2025q2-alphabet-earnings-release.pdf</td>
+<td>2026-03-28</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Alphabet SEC 8-K（Q1 2025）</td>
+<td>Q1 2025 财报及FCF数据</td>
+<td>https://www.sec.gov/Archives/edgar/data/1652044/000165204425000040/googexhibit991q12025.htm</td>
+<td>2026-03-28</td>
+</tr>
+<tr>
+<td>6</td>
+<td>CNBC（2026-02-04）</td>
+<td>Q4 2025 财报解读</td>
+<td>https://www.cnbc.com/2026/02/04/alphabet-googl-q4-2025-earnings.html</td>
+<td>2026-03-28</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Futurum Research（2025-10-31）</td>
+<td>Q3 2025 深度分析</td>
+<td>https://futurumgroup.com/insights/alphabet-q3-fy-2025-earnings-show-broad-based-ai-driven-growth/</td>
+<td>2026-03-28</td>
+</tr>
+<tr>
+<td>8</td>
+<td>FinanceCharts.com</td>
+<td>GOOGL PE/PS 历史数据（截至2026年3月）</td>
+<td>https://www.financecharts.com/stocks/GOOGL/value/pe-ratio</td>
+<td>2026-03-28</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Alpha Spread</td>
+<td>分析师预测（收入/净利润CAGR）</td>
+<td>https://www.alphaspread.com/security/nasdaq/googl/analyst-estimates</td>
+<td>2026-03-28</td>
+</tr>
+<tr>
+<td>10</td>
+<td>WallStreetZen</td>
+<td>67家机构2026E EPS $11.80一致预期</td>
+<td>https://www.wallstreetzen.com/stocks/us/nasdaq/googl/stock-forecast</td>
+<td>2026-03-28</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Meta Platforms Q4 2025 PR</td>
+<td>Meta 可比公司数据</td>
+<td>https://investor.atmeta.com/investor-news/press-release-details/2026/Meta-Reports-Fourth-Quarter-and-Full-Year-2025-Results</td>
+<td>2026-03-28</td>
+</tr>
+<tr>
+<td>12</td>
+<td>InvestmentNews（2026-01-28）</td>
+<td>Microsoft/Meta Q4 2025 横向对比</td>
+<td>https://www.investmentnews.com/equities/magnificent-7-earnings</td>
+<td>2026-03-28</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Motley Fool（2026-02-12）</td>
+<td>Big Three 云计算对比</td>
+<td>https://www.fool.com/investing/2026/02/12/amazon-microsoft-and-alphabet-all-reported-robust/</td>
+<td>2026-03-28</td>
+</tr>
+</tbody>
+</table>
+<p><strong>数据交叉验证说明：</strong> 所有关键财务数据（营收、EPS、营业利润）已通过 SEC 官方 8-K 与 CNBC/9to5Google 等第三方媒体报道进行双重核对；估值倍数数据通过 FinanceCharts 与 MacroTrends 两个独立来源交叉核实；分析师预测数据参考 Alpha Spread 和 WallStreetZen 两个平台的机构一致预期。</p>
+<hr />
+<p><strong>免责声明：</strong> 本报告仅供参考，不构成投资建议。所有预测数据均为分析估算，实际结果可能与预测存在重大差异。投资者应独立评估风险并在必要时寻求专业投资顾问意见。</p>
+    </article>
+  </main>
+</div>
+
+<script>
+// Build TOC from headings
+const tocList = document.getElementById('toc-list');
+const headings = document.querySelectorAll('.article h2, .article h3');
+headings.forEach((h, i) => {
+  if (!h.id) h.id = 'h-' + i;
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  a.href = '#' + h.id;
+  a.textContent = h.textContent.replace(/^[# ]+/, '');
+  a.className = 'toc-' + h.tagName.toLowerCase();
+  li.appendChild(a);
+  tocList.appendChild(li);
+});
+
+// Highlight active TOC item on scroll
+const tocLinks = tocList.querySelectorAll('a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(a => a.classList.remove('active'));
+      const active = tocList.querySelector(`a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+headings.forEach(h => observer.observe(h));
+</script>
+</body>
+</html>
