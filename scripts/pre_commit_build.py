@@ -18,3 +18,5 @@ if result.returncode != 0:
 subprocess.run(["git", "add", "index.html"], cwd=root)
 for html in sorted(root.glob("companies/**/*.html")):
     subprocess.run(["git", "add", str(html.relative_to(root))], cwd=root)
+for html in sorted(root.glob("business-analysis-model/*.html")):
+    subprocess.run(["git", "add", str(html.relative_to(root))], cwd=root)

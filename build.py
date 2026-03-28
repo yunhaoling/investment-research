@@ -237,9 +237,9 @@ body {{
 <body>
 
 <header class="site-header">
-  <a href="../../../" class="back-link">← index</a>
+  <a href="{back_href}" class="back-link">← index</a>
   <span class="header-sep">/</span>
-  <span class="header-title">{ticker}</span>
+  <span class="header-title">{header_label}</span>
 </header>
 
 <div class="layout">
@@ -296,13 +296,8 @@ def extract_title(md_text: str, filepath: Path) -> str:
     return filepath.stem
 
 
-def md_to_html(md_path: Path) -> Path:
-    """Convert a markdown file to HTML and return the output path."""
-    md_text = md_path.read_text(encoding="utf-8")
-
-    title = extract_title(md_text, md_path)
-    ticker = md_path.parent.name  # e.g. BABA
-
+def _render_md(md_text: str) -> str:
+    """Convert markdown text to HTML body string."""
     md_ext = markdown.Markdown(
         extensions=[
             "tables",
@@ -316,13 +311,47 @@ def md_to_html(md_path: Path) -> Path:
             "codehilite": {"css_class": "highlight", "guess_lang": False},
         },
     )
-    body = md_ext.convert(md_text)
+    return md_ext.convert(md_text)
 
-    html = HTML_TEMPLATE.format(title=title, ticker=ticker, body=body)
 
+def md_to_html(md_path: Path) -> Path:
+    """Convert a company report markdown file to HTML and return the output path."""
+    md_text = md_path.read_text(encoding="utf-8")
+    title = extract_title(md_text, md_path)
+    ticker = md_path.parent.name  # e.g. BABA
+
+    html = HTML_TEMPLATE.format(
+        title=title,
+        header_label=ticker,
+        back_href="../../../",
+        body=_render_md(md_text),
+    )
     out_path = md_path.with_suffix(".html")
     out_path.write_text(html, encoding="utf-8")
     return out_path
+
+
+def build_skill_pages(root: Path) -> list[Path]:
+    """Convert all markdown files in business-analysis-model/ to HTML."""
+    skill_dir = root / "business-analysis-model"
+    if not skill_dir.exists():
+        return []
+
+    generated = []
+    for md_path in sorted(skill_dir.glob("*.md")):
+        md_text = md_path.read_text(encoding="utf-8")
+        title = extract_title(md_text, md_path)
+
+        html = HTML_TEMPLATE.format(
+            title=title,
+            header_label=title,
+            back_href="../",
+            body=_render_md(md_text),
+        )
+        out_path = md_path.with_suffix(".html")
+        out_path.write_text(html, encoding="utf-8")
+        generated.append(out_path)
+    return generated
 
 
 def find_md_files(root: Path) -> list[Path]:
@@ -450,6 +479,12 @@ def main():
             rel = md_path.relative_to(root)
             out = md_to_html(md_path)
             print(f"  {rel}  →  {out.relative_to(root)}")
+
+    skill_pages = build_skill_pages(root)
+    if skill_pages:
+        print(f"\nBuilt {len(skill_pages)} skill page(s):")
+        for p in skill_pages:
+            print(f"  {p.relative_to(root)}")
 
     print("\nUpdating index.html...")
     update_index(root)
